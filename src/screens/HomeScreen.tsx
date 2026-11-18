@@ -32,7 +32,9 @@ export function HomeScreen() {
     ? `${name}、復習の時間だよ！ ${due} 問が「そろそろ忘れそう」になってる。今やると一気に定着するよ。`
     : nextLesson
       ? `次の依頼は「${nextLesson.quest}」だよ。行ってみよう！`
-      : '今ある依頼はぜんぶクリア！ 星3つを目指して、もう一度挑戦するのもアリだね。';
+      : unit.upcoming.length === 0
+        ? `${unit.region}に灯がもどったよ！ 次の地方は準備中。星3つ集めや復習クエストで、理術をみがいておこう！`
+        : '今ある依頼はぜんぶクリア！ 星3つを目指して、もう一度挑戦するのもアリだね。';
 
   return (
     <div className="home">
@@ -76,14 +78,15 @@ export function HomeScreen() {
           const rec = lessons[l.id];
           const open = isUnlocked(l.id, lessons);
           const isNext = nextLesson?.id === l.id;
+          const isBoss = l.steps.some((st) => st.kind === 'boss');
           return (
             <li key={l.id}>
               <button
-                className={`lesson-node ${rec ? 'done' : ''} ${isNext ? 'next' : ''}`}
+                className={`lesson-node ${rec ? 'done' : ''} ${isNext ? 'next' : ''} ${isBoss ? 'boss' : ''}`}
                 disabled={!open}
                 onClick={() => go(`/lesson/${l.id}`)}
               >
-                <span className="node-no">{rec ? '✓' : l.no}</span>
+                <span className="node-no">{rec ? '✓' : isBoss ? '👹' : l.no}</span>
                 <span className="node-body">
                   <span className="node-quest">{l.quest}</span>
                   <span className="node-title">{l.title}</span>

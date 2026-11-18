@@ -47,7 +47,7 @@ export function ReviewScreen() {
 
   const startDrill = () => {
     const ids = clearedLessons.flatMap((l) =>
-      l.steps.flatMap((s) => (s.kind === 'practice' ? s.questions.map(itemId) : [])),
+      l.steps.flatMap((s) => (s.kind === 'practice' || s.kind === 'boss' ? s.questions.map(itemId) : [])),
     );
     setResult(null);
     setSession({ items: buildItems(shuffle([...new Set(ids)]).slice(0, 8)), kind: 'drill' });

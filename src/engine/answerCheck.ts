@@ -1,5 +1,5 @@
 import type { InputQuestion, MarkQuestion } from '../content/types';
-import { constValue, isTidy, normalizeInput, parsePoly, polyEqual } from './poly';
+import { constValue, isFactored, isTidy, normalizeInput, parsePoly, polyEqual } from './poly';
 
 export type CheckResult =
   | { ok: true }
@@ -27,6 +27,13 @@ export function checkInput(q: InputQuestion, raw: string): CheckResult {
   }
 
   if (!polyEqual(given, expected)) return { ok: false, reason: 'wrong' };
+  if (q.factored && !isFactored(raw)) {
+    return {
+      ok: false,
+      reason: 'form',
+      message: '値は合っているよ！でも因数分解では「かっこのかけ算の形」で答えてね',
+    };
+  }
   if (q.tidy && !isTidy(raw)) {
     return {
       ok: false,

@@ -115,7 +115,9 @@ function ChoiceInput({ q, done, onJudge }: { q: ChoiceQuestion; done: boolean; o
             }}
           >
             <span className="choice-no">{String.fromCharCode(9312 + i)}</span>
-            <RichText text={c} inline />
+            <span className="choice-text">
+              <RichText text={c} inline />
+            </span>
           </button>
         );
       })}

@@ -9,6 +9,7 @@ import { QuestionView } from '../components/questions/QuestionView';
 import { RichText, Tex } from '../components/RichText';
 import { Dialogue } from '../components/story/Dialogue';
 import { SceneBanner } from '../components/story/Scenes';
+import { BossView } from './BossView';
 import { RiCard } from './CardsScreen';
 import { PracticeSession, type SessionResult } from './PracticeSession';
 
@@ -19,6 +20,7 @@ const STEP_META: Record<Step['kind'], { icon: string; label: string }> = {
   usage: { icon: '🌍', label: 'どこで使う？' },
   practice: { icon: '⚔️', label: '練習' },
   card: { icon: '🃏', label: 'カード獲得' },
+  boss: { icon: '👹', label: 'ボス戦' },
 };
 
 export function LessonScreen({ id }: { id: string }) {
@@ -76,6 +78,16 @@ export function LessonScreen({ id }: { id: string }) {
             step={step}
             lessonId={lesson.id}
             onDone={(r) => {
+              setResult(r);
+              next();
+            }}
+          />
+        )}
+        {step.kind === 'boss' && (
+          <BossView
+            step={step}
+            lessonId={lesson.id}
+            onWin={(r) => {
               setResult(r);
               next();
             }}

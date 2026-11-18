@@ -10,7 +10,7 @@ function allQuestions(): Question[] {
   const out: Question[] = [];
   for (const l of allLessons) {
     for (const s of l.steps) {
-      if (s.kind === 'practice') for (const q of s.questions) if (q.type !== 'gen') out.push(q);
+      if (s.kind === 'practice' || s.kind === 'boss') for (const q of s.questions) if (q.type !== 'gen') out.push(q);
       if (s.kind === 'explore' && s.check) out.push(s.check);
     }
   }
@@ -48,7 +48,7 @@ describe('教材データ', () => {
   it('生成問題の名前がすべて存在する', () => {
     for (const l of allLessons) {
       for (const s of l.steps) {
-        if (s.kind !== 'practice') continue;
+        if (s.kind !== 'practice' && s.kind !== 'boss') continue;
         for (const q of s.questions) {
           if (q.type === 'gen') expect(generators[q.gen], q.gen).toBeTruthy();
           expect(lookupQuestion(itemId(q))).toBeTruthy();
@@ -57,10 +57,19 @@ describe('教材データ', () => {
     }
   });
 
-  it('どのレッスンも6ステップの流れを持つ', () => {
+  it('どのレッスンも6ステップの流れを持つ（ボス戦は なぞ→ボス→カード）', () => {
     for (const l of allLessons) {
       const kinds = new Set(l.steps.map((s) => s.kind));
-      for (const k of ['story', 'explore', 'concept', 'usage', 'practice', 'card']) expect(kinds.has(k as any), `${l.id}:${k}`).toBe(true);
+      const need = kinds.has('boss') ? ['story', 'boss', 'card'] : ['story', 'explore', 'concept', 'usage', 'practice', 'card'];
+      for (const k of need) expect(kinds.has(k as any), `${l.id}:${k}`).toBe(true);
+    }
+  });
+
+  it('ボス戦は「HP + ライフ - 1」問以上ある（問題切れで勝てなくならない）', () => {
+    for (const l of allLessons) {
+      for (const s of l.steps) {
+        if (s.kind === 'boss') expect(s.questions.length).toBeGreaterThanOrEqual(s.boss.hp + s.lives - 1);
+      }
     }
   });
 });

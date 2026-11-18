@@ -1962,3 +1962,203 @@ strong {
     font-size: 2rem;
   }
 }
+
+/* ---------- 段階2で追加した図 ---------- */
+
+.nl-svg {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.budget-status {
+  font-weight: 800;
+  margin: 6px 0;
+}
+
+.budget-status.ok {
+  color: var(--good);
+}
+
+.budget-status.ng {
+  color: #ff8aa6;
+}
+
+.tile-stock {
+  font-size: 0.88rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.tile.mini {
+  display: inline-grid;
+  width: auto;
+  min-width: 18px;
+  height: 18px;
+  font-size: 0.65rem;
+  padding: 0 3px;
+}
+
+.venn-ops .btn {
+  padding: 4px 10px;
+}
+
+.nested-text {
+  text-align: left;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px auto;
+}
+
+.tag-p,
+.tag-q {
+  display: inline-block;
+  width: 22px;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 800;
+  color: #1b1640;
+  margin-right: 6px;
+}
+
+.tag-p {
+  background: #f15bb5;
+}
+
+.tag-q {
+  background: #00bbf9;
+}
+
+strong.good,
+.good {
+  color: var(--good);
+}
+
+strong.bad,
+.bad {
+  color: #ff8aa6;
+}
+
+.contra-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.contra-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  background: var(--panel);
+  min-height: 110px;
+  justify-content: center;
+}
+
+.contra-card.c-orig,
+.contra-card.c-contra {
+  border-color: var(--accent);
+}
+
+.contra-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent2);
+}
+
+.contra-truth {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.contra-truth.good,
+.contra-truth.bad {
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+/* ---------- ボス戦 ---------- */
+
+.boss-arena {
+  background: linear-gradient(180deg, #2b0f3a, #14112e);
+  border: 2px solid #b5179e;
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.boss-figure {
+  font-size: 3.6rem;
+  line-height: 1.1;
+  animation: bob 2s ease-in-out infinite;
+}
+
+.boss-figure.hit {
+  animation: boss-hit 0.5s;
+}
+
+.boss-name {
+  font-weight: 900;
+  color: #ff8ad0;
+}
+
+.hp-bar {
+  height: 14px;
+  background: #3a1035;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 6px 0;
+  border: 1px solid #b5179e;
+}
+
+.hp-bar div {
+  height: 100%;
+  background: linear-gradient(90deg, #f72585, #ff9f1c);
+  transition: width 0.5s;
+}
+
+.boss-status {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.boss-status .timer.low {
+  color: var(--bad);
+  animation: blink 1s infinite;
+}
+
+@keyframes boss-hit {
+  0%, 100% { transform: translateX(0); filter: none; }
+  20% { transform: translateX(-10px); filter: brightness(2); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); filter: brightness(1.6); }
+}
+
+.lesson-node.boss {
+  border-color: #b5179e;
+  background: linear-gradient(135deg, rgba(181, 23, 158, 0.18), var(--panel));
+}
+
+.lesson-node.boss .node-quest {
+  color: #ff8ad0;
+}
+
+.choice-text {
+  flex: 1;
+  min-width: 0;
+}

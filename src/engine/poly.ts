@@ -246,3 +246,21 @@ export function isTidy(raw: string): boolean {
     return false;
   }
 }
+
+/**
+ * 「かけ算の形（因数分解した形）」で書かれているか。
+ * かっこの外にたし算・ひき算が残っていなければOK（先頭のマイナスは可）。
+ * 例: (x+2)(x+3) ○ / 2x(x-1) ○ / x^2+5x+6 × / (x+1)(x+2)+1 ×
+ */
+export function isFactored(raw: string): boolean {
+  const s = normalizeInput(raw);
+  if (!s.includes('(')) return false;
+  let depth = 0;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (c === '(') depth++;
+    else if (c === ')') depth--;
+    else if ((c === '+' || c === '-') && depth === 0 && i > 0 && s[i - 1] !== '^') return false;
+  }
+  return depth === 0;
+}

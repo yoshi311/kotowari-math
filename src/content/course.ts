@@ -36,8 +36,9 @@ export const allCards: CardDef[] = allLessons.map((l) => l.card);
 const qIndex = new Map<string, { item: QuestionItem; lessonId: string }>();
 for (const l of allLessons) {
   for (const s of l.steps) {
-    if (s.kind === 'practice') {
-      for (const q of s.questions) qIndex.set(itemId(q), { item: q, lessonId: l.id });
+    if (s.kind === 'practice' || s.kind === 'boss') {
+      // 同じ生成問題が複数のレッスンで使われるときは、最初に出てきたレッスンの問題として扱う
+      for (const q of s.questions) if (!qIndex.has(itemId(q))) qIndex.set(itemId(q), { item: q, lessonId: l.id });
     }
     if (s.kind === 'explore' && s.check) qIndex.set(s.check.id, { item: s.check, lessonId: l.id });
   }

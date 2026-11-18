@@ -47,6 +47,8 @@ export interface InputQuestion extends QBase {
   answer: string;
   /** true なら「整理された形」で書くことも求める */
   tidy?: boolean;
+  /** true なら「かっこのかけ算の形（因数分解した形）」で書くことを求める */
+  factored?: boolean;
   /** 入力欄の前後に出す文字（例: "答え：", "円"） */
   before?: string;
   after?: string;
@@ -78,7 +80,16 @@ export type FigureSpec =
   | { type: 'area'; mode: 'mono' | 'binomial' | 'square' | 'diffsq'; showMistake?: boolean }
   | { type: 'likeTerms' }
   | { type: 'powerBlocks' }
-  | { type: 'mental'; base: number };
+  | { type: 'mental'; base: number }
+  | { type: 'factorTiles' }
+  | { type: 'sqrtZoom' }
+  | { type: 'absLine'; mode: 'zero' | 'two' | 'range' }
+  | { type: 'sqrtSquare' }
+  | { type: 'budget'; unit: number; base: number; limit: number }
+  | { type: 'flipLine' }
+  | { type: 'venn' }
+  | { type: 'nested' }
+  | { type: 'contra' };
 
 // ---------- ステップ ----------
 
@@ -131,7 +142,21 @@ export interface CardStep {
   lines: Line[];
 }
 
-export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep;
+/** 章末のボス戦：時間制限つき・ライフ制の共通テスト風総合問題 */
+export interface BossStep {
+  kind: 'boss';
+  title: string;
+  boss: { name: string; hp: number };
+  /** 制限時間（秒） */
+  timeLimit: number;
+  /** まちがえてよい回数 */
+  lives: number;
+  questions: QuestionItem[];
+  intro: Line[];
+  lose: Line[];
+}
+
+export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep | BossStep;
 
 export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate';
 

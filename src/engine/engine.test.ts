@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isTidy, parsePoly, polyEqual } from './poly';
+import { isFactored, isTidy, parsePoly, polyEqual } from './poly';
 import { checkInput, checkMark, markLabels } from './answerCheck';
 import { generators } from '../content/generators';
 import { dueIds, review } from './srs';
@@ -44,6 +44,17 @@ describe('isTidy', () => {
   });
 });
 
+describe('isFactored', () => {
+  it('かけ算の形かどうか', () => {
+    expect(isFactored('(x+2)(x+3)')).toBe(true);
+    expect(isFactored('x(2x-1)')).toBe(true);
+    expect(isFactored('-(x-1)^2')).toBe(true);
+    expect(isFactored('(x-4)^2')).toBe(true);
+    expect(isFactored('x^2+5x+6')).toBe(false);
+    expect(isFactored('(x+1)(x+2)+1')).toBe(false);
+  });
+});
+
 describe('checkInput', () => {
   const q: InputQuestion = {
     id: 't', level: 'calc', type: 'input', mode: 'expr', tidy: true,
@@ -84,8 +95,15 @@ describe('問題生成', () => {
     it(`${name}: 200 回生成して、答えが正しく整理された形になっている`, () => {
       for (let i = 0; i < 200; i++) {
         const q = gen('calc');
+        if (q.type === 'choice') {
+          expect(q.answer).toBeGreaterThanOrEqual(0);
+          expect(new Set(q.choices).size).toBe(q.choices.length);
+          continue;
+        }
+        if (q.type !== 'input') continue;
         expect(checkInput(q, q.answer).ok).toBe(true);
         if (q.source) expect(eq(q.source, q.answer)).toBe(true);
+        if (q.factored) expect(checkInput(q, q.source!).ok).toBe(false);
       }
     });
   }
