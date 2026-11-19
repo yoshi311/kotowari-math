@@ -174,6 +174,30 @@ function Lighthouse() {
   );
 }
 
+function Plain() {
+  // ヒストグラムのような麦畑と風車
+  const bars = [3, 5, 8, 12, 15, 13, 9, 6, 4, 2];
+  return (
+    <>
+      <Sky id="sky-plain" top="#ffb703" bottom="#ffe8a3" />
+      <circle cx="70" cy="34" r="16" fill="#fff3b0" />
+      <path d="M0 96 Q100 82 200 92 T400 88 L400 140 L0 140 Z" fill="#90a955" />
+      {bars.map((h, i) => (
+        <rect key={i} x={150 + i * 18} y={110 - h * 3} width="16" height={h * 3 + 30} fill="#e9c46a" stroke="#c9a227" strokeWidth="1" />
+      ))}
+      {/* 風車 */}
+      <polygon points="76,120 92,120 88,70 80,70" fill="#f1faee" stroke="#6c757d" />
+      <g transform="translate(84 70)">
+        {[0, 90, 180, 270].map((a) => (
+          <rect key={a} x="-3" y="-34" width="6" height="34" fill="#bc6c25" transform={`rotate(${a + 20})`} />
+        ))}
+        <circle r="4" fill="#6c757d" />
+      </g>
+      <rect y="128" width="400" height="12" fill="#606c38" />
+    </>
+  );
+}
+
 export function SceneBanner({ scene }: { scene?: SceneId }) {
   return (
     <svg className="scene-banner" viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -183,6 +207,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'valley' && <Valley />}
       {scene === 'fountain' && <Fountain />}
       {scene === 'lighthouse' && <Lighthouse />}
+      {scene === 'plain' && <Plain />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

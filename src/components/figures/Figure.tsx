@@ -6,6 +6,7 @@ import { PriceBox } from './PriceBox';
 import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, ParabolaA, ParabolaShift, QuadIneq, Roots, Throw } from './QuadFigures';
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
+import { BoxPlot, Histogram, Hypothesis, MeanBalance, Outlier, Scatter, Transform, Variance } from './StatsFigures';
 import { CosLaw, Cuboid, Measure, RightTriangle, SinLaw, TriArea, UnitCircle } from './TrigFigures';
 
 const rt = (s: string) => <RichText text={s} inline />;
@@ -75,5 +76,21 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <TriArea />;
     case 'cuboid':
       return <Cuboid />;
+    case 'meanBalance':
+      return <MeanBalance />;
+    case 'histogram':
+      return <Histogram />;
+    case 'boxPlot':
+      return <BoxPlot />;
+    case 'outlier':
+      return <Outlier />;
+    case 'variance':
+      return <Variance />;
+    case 'transform':
+      return <Transform />;
+    case 'scatter':
+      return <Scatter />;
+    case 'hypothesis':
+      return <Hypothesis />;
   }
 }

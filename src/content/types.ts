@@ -106,7 +106,15 @@ export type FigureSpec =
   | { type: 'sinLaw' }
   | { type: 'cosLaw' }
   | { type: 'triArea' }
-  | { type: 'cuboid' };
+  | { type: 'cuboid' }
+  | { type: 'meanBalance' }
+  | { type: 'histogram' }
+  | { type: 'boxPlot' }
+  | { type: 'outlier' }
+  | { type: 'variance' }
+  | { type: 'transform' }
+  | { type: 'scatter' }
+  | { type: 'hypothesis' };
 
 // ---------- ステップ ----------
 
@@ -175,7 +183,7 @@ export interface BossStep {
 
 export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep | BossStep;
 
-export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse';
+export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse' | 'plain';
 
 export interface CardDef {
   id: string;

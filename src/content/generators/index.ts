@@ -1,6 +1,7 @@
 // 数値を変えて何度でも出せる問題。復習クエストでも毎回ちがう数字で出る。
 import type { ChoiceQuestion, QLevel, Question } from '../types';
 import { fmt, paren, randInt, signed } from '../../engine/format';
+import { statGenerators } from './stats';
 
 type Gen = (level: QLevel) => Question;
 
@@ -628,6 +629,7 @@ export const generators: Record<string, Gen> = {
     };
   },
 
+  ...statGenerators,
 };
 
 export function generate(gen: string, level: QLevel): Question {

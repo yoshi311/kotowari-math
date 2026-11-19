@@ -2343,3 +2343,35 @@ strong.bad,
   height: 100%;
   transition: width 0.3s;
 }
+
+.stat-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+  font-size: 0.85rem;
+}
+
+.stat-toggle > span {
+  font-weight: 800;
+  margin-right: 4px;
+}
+
+.stat-toggle button {
+  min-height: 40px;
+  min-width: 56px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  background: transparent;
+  color: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.stat-toggle button.on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
