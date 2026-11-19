@@ -1,0 +1,117 @@
+import type { Lesson } from '../../types';
+
+export const g07: Lesson = {
+  id: 'mag-07',
+  no: 7,
+  title: '方べきの定理',
+  subtitle: '長さのかけ算がいつも同じ',
+  quest: '円い泉の測量',
+  card: {
+    id: 'card-mag-07',
+    name: '等しき積の秤',
+    term: '方べきの定理',
+    rarity: 3,
+    tool: '1 点を通って円と交わる 2 本の直線について、点から交点までの長さの積が等しいことを使って長さを求める道具',
+    formula: 'PA \\cdot PB = PC \\cdot PD = PT^2',
+    uses: ['円の半径や弦の長さの測量', '4 点が同じ円の上にあるかの判定', '数学Ⅱの円と直線の問題'],
+    color: '#9b5de5',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：泉の中に入れない',
+      scene: 'ruins',
+      lines: [
+        { who: 'npc', npcName: '考古学者のソフィア', mood: 'think', text: '広間のまん中に円い泉があるの。泉の中には入れないから、ふちの長さしか測れない。それで泉の大きさを知りたいのよ。' },
+        { who: 'zero', mood: 'think', text: '泉のふちから引いた 2 本のロープの長さで、何かわかるのかな？' },
+        { who: 'michiru', mood: 'happy', text: '1 点から円に向かって線を引くと、「2 つの長さのかけ算」がどの線でも同じになるの。それを使えば測れるわ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：長さの積',
+      lines: [{ who: 'michiru', text: '点 P を通る 2 本の線が円と交わっているわ。線の向きや P の位置を変えて、積をくらべてみて。' }],
+      figure: { type: 'power' },
+      prompts: ['線の向きを変えても、PA × PB と PC × PD は等しい？', 'P を円の中に入れても成り立つ？', 'P が円の外のとき、接線の長さ PT との関係は？'],
+      check: {
+        id: 'mag-07-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '円の 2 つの弦 AB、CD が点 P で交わるとき、成り立つのは？',
+        choices: ['$PA \\cdot PB = PC \\cdot PD$', '$PA + PB = PC + PD$', '$PA = PC$', '$PA \\cdot PC = PB \\cdot PD$'],
+        answer: 0,
+        explain: '同じ直線の上の 2 つの長さをかけたもの同士が等しい（方べきの定理）。$\\triangle PAC \\sim \\triangle PDB$ から導ける。',
+      },
+      after: [{ who: 'kai', mood: 'surprised', text: '線をどう引いても積は同じ。外なら接線の長さの 2 乗とも同じか！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：方べきの定理',
+      tool: '1 点を通って円と交わる 2 本の直線について、点から交点までの長さの積が等しいことを使って長さを求める道具',
+      formulas: ['PA \\cdot PB = PC \\cdot PD', 'PA \\cdot PB = PT^2\\quad (\\text{PT は接線})'],
+      analogy: {
+        title: 'たとえるなら「面積の同じ長方形」',
+        text: 'PA と PB をたて・横とする長方形を考えると、P を通るどの直線でつくっても面積が同じになる。円と P の位置で決まる「P の力」のようなもの。これを方べき（方冪）という。',
+      },
+      points: [
+        '**弦が円の中で交わる**とき：$PA \\cdot PB = PC \\cdot PD$。',
+        '**円の外の点**から 2 本の直線を引くとき：$PA \\cdot PB = PC \\cdot PD$（PA、PB はどちらも P から測る）。',
+        '**接線があるとき**：$PA \\cdot PB = PT^2$。',
+        '証明は相似。$\\triangle PAC \\sim \\triangle PDB$（円周角が等しい）から比を作る。',
+        '**逆**：$PA \\cdot PB = PC \\cdot PD$ なら、4 点 A、B、C、D は同じ円の上にある。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🏞️', title: '円の大きさの測量', text: '中に入れない池やトンネルの断面でも、外側から測れる長さと方べきの定理で、円の半径を計算できる。' },
+        { icon: '🌏', title: '地平線までの距離', text: '高さ h の場所から地平線までの距離 d は、地球を円とみると $d^2 = h(h + 2R)$。方べきの定理（接線）そのもの。' },
+        { icon: '📐', title: '数学Ⅱの円と直線', text: '座標平面で円と直線の交点を求める問題でも、方べきの考え方で計算が楽になることがある。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        {
+          id: 'mag-07-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '円の弦 AB、CD が点 P で交わる。$PA = 4$、$PB = 6$、$PC = 3$ のとき、$PD =$ ［ア］ である。',
+          answers: { ア: '8' },
+          hint: '$4 \\times 6 = 3 \\times PD$',
+          explain: '$PD = 24 \\div 3 = 8$。',
+        },
+        { type: 'gen', gen: 'power-chord', level: 'calc' },
+        {
+          id: 'mag-07-q2',
+          type: 'mark',
+          level: 'calc',
+          prompt: '円の外の点 P を通る 2 本の直線が、円と A、B および C、D で交わる。$PA = 3$、$AB = 5$、$PC = 4$ のとき、$PD =$ ［ア］、$CD =$ ［イ］ である。',
+          answers: { ア: '6', イ: '2' },
+          hint: '$PB = PA + AB = 8$。方べき $PA \\cdot PB = PC \\cdot PD$。',
+          kaiMistake: '$PA \\times AB = 15$ にしちゃった！ P から測った長さ同士をかけるんだ。',
+          explain: '$3 \\times 8 = 4 \\times PD$ より $PD = 6$。$CD = 6 - 4 = 2$。',
+        },
+        { type: 'gen', gen: 'power-tangent', level: 'calc' },
+        {
+          id: 'mag-07-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '円の外の点 P から引いた接線の接点を T とする。P を通る直線が円と A、B で交わり、$PA = 4$、$PB = 9$ のとき、$PT =$ ［ア］ である。',
+          answers: { ア: '6' },
+          hint: '$PT^2 = PA \\cdot PB$',
+          explain: '$PT^2 = 36$ より $PT = 6$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '考古学者のソフィア', mood: 'happy', text: 'ふちの長さだけで、泉の大きさが計算できたわ！ 方べき、すごい理術ね。' },
+        { who: 'michiru', mood: 'normal', text: '広間の天井には、2 つの円が重なった模様があるわね。2 つの円の関係を調べましょう。' },
+      ],
+    },
+  ],
+};

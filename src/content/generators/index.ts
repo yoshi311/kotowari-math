@@ -3,6 +3,7 @@ import type { ChoiceQuestion, QLevel, Question } from '../types';
 import { fmt, paren, randInt, signed } from '../../engine/format';
 import { statGenerators } from './stats';
 import { probGenerators } from './prob';
+import { geoGenerators } from './geo';
 
 type Gen = (level: QLevel) => Question;
 
@@ -632,6 +633,7 @@ export const generators: Record<string, Gen> = {
 
   ...statGenerators,
   ...probGenerators,
+  ...geoGenerators,
 };
 
 export function generate(gen: string, level: QLevel): Question {

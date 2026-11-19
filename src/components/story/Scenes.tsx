@@ -174,6 +174,29 @@ function Lighthouse() {
   );
 }
 
+function Ruins() {
+  // 円と三角形が刻まれた古代の遺跡
+  return (
+    <>
+      <Sky id="sky-ruins" top="#264653" bottom="#e9c46a" />
+      <path d="M0 112 Q120 100 220 110 T400 106 L400 140 L0 140 Z" fill="#a98467" />
+      {/* 神殿の柱 */}
+      <polygon points="230,40 330,40 280,18" fill="#d6ccc2" stroke="#8d7b68" />
+      <rect x="228" y="40" width="104" height="8" fill="#d6ccc2" stroke="#8d7b68" />
+      {[236, 260, 284, 308].map((x, i) => (
+        <rect key={x} x={x} y="48" width="12" height={i === 2 ? 40 : 66} fill="#e3d5ca" stroke="#8d7b68" />
+      ))}
+      <rect x="282" y="96" width="18" height="10" fill="#d6ccc2" transform="rotate(20 291 101)" />
+      {/* 石板に刻まれた円と三角形 */}
+      <rect x="60" y="46" width="84" height="66" rx="4" fill="#cdb4a0" stroke="#8d7b68" strokeWidth="2" />
+      <circle cx="102" cy="80" r="24" fill="none" stroke="#6d597a" strokeWidth="2" />
+      <polygon points="102,56 81,92 123,92" fill="none" stroke="#6d597a" strokeWidth="2" />
+      <circle cx="102" cy="80" r="2.5" fill="#6d597a" />
+      <rect y="128" width="400" height="12" fill="#7f5539" />
+    </>
+  );
+}
+
 function DiceTown() {
   // 夜の賭場の町。屋根の上に大きなさいころの看板
   return (
@@ -238,6 +261,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'lighthouse' && <Lighthouse />}
       {scene === 'plain' && <Plain />}
       {scene === 'dice' && <DiceTown />}
+      {scene === 'ruins' && <Ruins />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

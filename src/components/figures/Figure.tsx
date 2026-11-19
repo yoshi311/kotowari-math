@@ -6,6 +6,7 @@ import { PriceBox } from './PriceBox';
 import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, ParabolaA, ParabolaShift, QuadIneq, Roots, Throw } from './QuadFigures';
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
+import { Bisector, Ceva, Centers, InscribedAngle, Polyhedron, PowerPoint, TangentChord, TwoCircles } from './GeoFigures';
 import { CirclePerm, CondProb, DiceTable, Expectation, GridPath, Pascal, PermSlots, RepeatTrial, TreeDiagram } from './ProbFigures';
 import { BoxPlot, Histogram, Hypothesis, MeanBalance, Outlier, Scatter, Transform, Variance } from './StatsFigures';
 import { CosLaw, Cuboid, Measure, RightTriangle, SinLaw, TriArea, UnitCircle } from './TrigFigures';
@@ -111,5 +112,21 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <CondProb />;
     case 'expectation':
       return <Expectation />;
+    case 'bisector':
+      return <Bisector />;
+    case 'centers':
+      return <Centers mode={spec.mode} />;
+    case 'ceva':
+      return <Ceva />;
+    case 'inscribedAngle':
+      return <InscribedAngle />;
+    case 'tangentChord':
+      return <TangentChord />;
+    case 'power':
+      return <PowerPoint />;
+    case 'twoCircles':
+      return <TwoCircles />;
+    case 'polyhedron':
+      return <Polyhedron />;
   }
 }

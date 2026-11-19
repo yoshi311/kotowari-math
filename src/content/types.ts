@@ -123,7 +123,15 @@ export type FigureSpec =
   | { type: 'diceTable' }
   | { type: 'repeatTrial' }
   | { type: 'condProb' }
-  | { type: 'expectation' };
+  | { type: 'expectation' }
+  | { type: 'bisector' }
+  | { type: 'centers'; mode?: 'circum' | 'in' | 'centroid' | 'ortho' }
+  | { type: 'ceva' }
+  | { type: 'inscribedAngle' }
+  | { type: 'tangentChord' }
+  | { type: 'power' }
+  | { type: 'twoCircles' }
+  | { type: 'polyhedron' };
 
 // ---------- ステップ ----------
 
@@ -192,7 +200,7 @@ export interface BossStep {
 
 export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep | BossStep;
 
-export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse' | 'plain' | 'dice';
+export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse' | 'plain' | 'dice' | 'ruins';
 
 export interface CardDef {
   id: string;
