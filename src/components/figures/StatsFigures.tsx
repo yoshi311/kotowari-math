@@ -12,9 +12,9 @@ const GOLD = '#ffd166';
 const GREEN = '#06d6a0';
 const PURPLE = '#9b5de5';
 
-function Label({ x, y, children, color = '#fff', size = 12, anchor = 'middle' }: { x: number; y: number; children: React.ReactNode; color?: string; size?: number; anchor?: 'start' | 'middle' | 'end' }) {
+export function Label({ x, y, children, color = '#fff', size = 12, anchor = 'middle' }: { x: number; y: number; children: React.ReactNode; color?: string; size?: number; anchor?: 'start' | 'middle' | 'end' }) {
   return (
-    <text x={x} y={y} fill={color} fontSize={size} fontWeight={800} textAnchor={anchor} dominantBaseline="central" className="plane-label">
+    <text x={x} y={y} fill={color} fontSize={size} fontWeight={800} textAnchor={anchor} dominantBaseline="central" className={color === "#1b1640" ? undefined : "plane-label"}>
       {children}
     </text>
   );
@@ -55,7 +55,7 @@ function stack(xs: number[]): { v: number; k: number; i: number }[] {
   });
 }
 
-function Toggle<T extends string | number>({ options, value, onChange, label }: { options: { v: T; text: string }[]; value: T; onChange: (v: T) => void; label: string }) {
+export function Toggle<T extends string | number>({ options, value, onChange, label }: { options: { v: T; text: string }[]; value: T; onChange: (v: T) => void; label: string }) {
   return (
     <div className="stat-toggle" role="group" aria-label={label}>
       <span>{label}</span>

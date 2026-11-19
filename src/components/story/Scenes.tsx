@@ -174,6 +174,35 @@ function Lighthouse() {
   );
 }
 
+function DiceTown() {
+  // 夜の賭場の町。屋根の上に大きなさいころの看板
+  return (
+    <>
+      <Sky id="sky-dice" top="#2b1055" bottom="#7597de" />
+      {[[30, 60, 70], [110, 44, 60], [180, 70, 80], [270, 50, 64], [340, 66, 60]].map(([x, h, w], i) => (
+        <g key={i}>
+          <rect x={x - 20} y={140 - h - 20} width={w} height={h + 20} fill={['#3d2c8d', '#5b2a86', '#432371', '#6a4c93', '#3d2c8d'][i]} />
+          {[0, 1].map((r) =>
+            [0, 1, 2].map((c) => <rect key={`${r}${c}`} x={x - 12 + c * (w / 3.2)} y={140 - h - 8 + r * 20} width="8" height="10" fill="#ffd166" opacity={(i + r + c) % 3 ? 0.9 : 0.3} />),
+          )}
+        </g>
+      ))}
+      {/* さいころの看板 */}
+      <g transform="translate(170 18) rotate(-12)">
+        <rect width="44" height="44" rx="8" fill="#f8f9fa" stroke="#e63946" strokeWidth="3" />
+        {[[11, 11], [33, 11], [22, 22], [11, 33], [33, 33]].map(([cx, cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r="4.5" fill={i === 2 ? '#e63946' : '#1b1640'} />
+        ))}
+      </g>
+      <g transform="translate(232 36) rotate(18)">
+        <rect width="30" height="30" rx="6" fill="#f8f9fa" stroke="#e63946" strokeWidth="2" />
+        <circle cx="15" cy="15" r="5" fill="#e63946" />
+      </g>
+      <rect y="132" width="400" height="8" fill="#22223b" />
+    </>
+  );
+}
+
 function Plain() {
   // ヒストグラムのような麦畑と風車
   const bars = [3, 5, 8, 12, 15, 13, 9, 6, 4, 2];
@@ -208,6 +237,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'fountain' && <Fountain />}
       {scene === 'lighthouse' && <Lighthouse />}
       {scene === 'plain' && <Plain />}
+      {scene === 'dice' && <DiceTown />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

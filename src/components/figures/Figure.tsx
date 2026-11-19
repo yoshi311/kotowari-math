@@ -6,6 +6,7 @@ import { PriceBox } from './PriceBox';
 import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, ParabolaA, ParabolaShift, QuadIneq, Roots, Throw } from './QuadFigures';
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
+import { CirclePerm, CondProb, DiceTable, Expectation, GridPath, Pascal, PermSlots, RepeatTrial, TreeDiagram } from './ProbFigures';
 import { BoxPlot, Histogram, Hypothesis, MeanBalance, Outlier, Scatter, Transform, Variance } from './StatsFigures';
 import { CosLaw, Cuboid, Measure, RightTriangle, SinLaw, TriArea, UnitCircle } from './TrigFigures';
 
@@ -92,5 +93,23 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <Scatter />;
     case 'hypothesis':
       return <Hypothesis />;
+    case 'treeDiagram':
+      return <TreeDiagram />;
+    case 'permSlots':
+      return <PermSlots />;
+    case 'circlePerm':
+      return <CirclePerm />;
+    case 'pascal':
+      return <Pascal />;
+    case 'gridPath':
+      return <GridPath />;
+    case 'diceTable':
+      return <DiceTable />;
+    case 'repeatTrial':
+      return <RepeatTrial />;
+    case 'condProb':
+      return <CondProb />;
+    case 'expectation':
+      return <Expectation />;
   }
 }

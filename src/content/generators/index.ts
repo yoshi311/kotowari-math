@@ -2,6 +2,7 @@
 import type { ChoiceQuestion, QLevel, Question } from '../types';
 import { fmt, paren, randInt, signed } from '../../engine/format';
 import { statGenerators } from './stats';
+import { probGenerators } from './prob';
 
 type Gen = (level: QLevel) => Question;
 
@@ -630,6 +631,7 @@ export const generators: Record<string, Gen> = {
   },
 
   ...statGenerators,
+  ...probGenerators,
 };
 
 export function generate(gen: string, level: QLevel): Question {
