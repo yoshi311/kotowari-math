@@ -40,6 +40,8 @@ describe('教材データ', () => {
         expect(labels.length).toBeGreaterThan(0);
         expect([...labels].sort()).toEqual(Object.keys(q.answers).sort());
         for (const v of Object.values(q.answers)) expect(v).toMatch(/^[0-9-]$/);
+        // マーク欄は数式（$...$）の中に置かない（中に置くと箱として描けない）
+        for (const m of q.prompt.matchAll(/\$([^$]+)\$/g)) expect(m[1]).not.toMatch(/［/);
       }
       expect(q.explain.length).toBeGreaterThan(0);
     });

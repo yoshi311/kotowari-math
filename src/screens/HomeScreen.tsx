@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { go } from '../app/router';
 import { futureRegions, isUnlocked, units } from '../content/course';
 import { DAILY_GOAL, today, useProgress } from '../engine/progress';
@@ -23,7 +24,13 @@ export function HomeScreen() {
   const due = dueIds(srs).length;
   const todayXp = daily.date === today() ? daily.xp : 0;
 
-  const unit = units[0];
+  // はじめは「まだクリアしていない依頼がある最初の地方」を開く
+  const [ui, setUi] = useState(() => {
+    const i = units.findIndex((u) => u.lessons.some((l) => !lessons[l.id]));
+    return i === -1 ? units.length - 1 : i;
+  });
+  const unit = units[ui];
+  const nextUnit = units[ui + 1];
   const total = unit.lessons.length + unit.upcoming.length;
   const cleared = unit.lessons.filter((l) => lessons[l.id]).length;
   const nextLesson = unit.lessons.find((l) => !lessons[l.id]);
@@ -32,12 +39,28 @@ export function HomeScreen() {
     ? `${name}、復習の時間だよ！ ${due} 問が「そろそろ忘れそう」になってる。今やると一気に定着するよ。`
     : nextLesson
       ? `次の依頼は「${nextLesson.quest}」だよ。行ってみよう！`
-      : unit.upcoming.length === 0
+      : nextUnit
+        ? `${unit.region}に灯がもどったよ！ 次は「${nextUnit.region}」へ行こう！`
+        : unit.upcoming.length === 0
         ? `${unit.region}に灯がもどったよ！ 次の地方は準備中。星3つ集めや復習クエストで、理術をみがいておこう！`
         : '今ある依頼はぜんぶクリア！ 星3つを目指して、もう一度挑戦するのもアリだね。';
 
   return (
     <div className="home">
+      {units.length > 1 && (
+        <div className="region-tabs" role="tablist">
+          {units.map((u, i) => {
+            const open = isUnlocked(u.lessons[0].id, lessons);
+            const done = u.lessons.every((l) => lessons[l.id]);
+            return (
+              <button key={u.id} role="tab" aria-selected={i === ui} className={`region-tab ${i === ui ? 'active' : ''}`} disabled={!open} onClick={() => setUi(i)}>
+                {open ? (done ? '🏮 ' : '') : '🔒 '}
+                {u.region}
+              </button>
+            );
+          })}
+        </div>
+      )}
       <section className="region-card">
         <div className="region-head">
           <span className="subject-tag">{unit.subject}</span>
@@ -46,7 +69,7 @@ export function HomeScreen() {
         </div>
         <Village lit={cleared} total={total} />
         <div className="restore">
-          村の復興度
+          復興度
           <div className="restore-bar">
             <div style={{ width: `${(cleared / total) * 100}%` }} />
           </div>
@@ -54,7 +77,13 @@ export function HomeScreen() {
         </div>
       </section>
 
-      <div className="zero-tip" onClick={() => due > 0 && go('/review')}>
+      <div
+        className="zero-tip"
+        onClick={() => {
+          if (due > 0) go('/review');
+          else if (!nextLesson && nextUnit) setUi(ui + 1);
+        }}
+      >
         <CharacterSvg who="zero" mood={due > 0 ? 'surprised' : 'happy'} size={52} />
         <div className="bubble small">{tip}</div>
       </div>

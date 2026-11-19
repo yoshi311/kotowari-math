@@ -89,7 +89,17 @@ export type FigureSpec =
   | { type: 'flipLine' }
   | { type: 'venn' }
   | { type: 'nested' }
-  | { type: 'contra' };
+  | { type: 'contra' }
+  | { type: 'funcMachine' }
+  | { type: 'parabolaA' }
+  | { type: 'parabolaShift' }
+  | { type: 'completeSquare' }
+  | { type: 'domainMaxMin' }
+  | { type: 'throw' }
+  | { type: 'roots' }
+  | { type: 'discriminant' }
+  | { type: 'quadIneq' }
+  | { type: 'axisMove' };
 
 // ---------- ステップ ----------
 
@@ -158,7 +168,7 @@ export interface BossStep {
 
 export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep | BossStep;
 
-export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate';
+export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain';
 
 export interface CardDef {
   id: string;

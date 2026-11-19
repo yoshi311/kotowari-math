@@ -109,12 +109,54 @@ function Night() {
   );
 }
 
+function Valley() {
+  return (
+    <>
+      <Sky id="sky-valley" top="#3a6ea5" bottom="#ffcf99" />
+      {/* 渓谷の崖 */}
+      <path d="M0 40 L60 50 L90 140 L0 140 Z" fill="#8d5a3b" />
+      <path d="M400 35 L330 48 L300 140 L400 140 Z" fill="#8d5a3b" />
+      <path d="M0 60 L50 66 L75 140 L0 140 Z" fill="#6d4128" />
+      <path d="M400 58 L345 64 L320 140 L400 140 Z" fill="#6d4128" />
+      {/* 川 */}
+      <path d="M90 140 Q200 118 300 140 Z" fill="#48cae4" />
+      {/* 放物線の吊り橋 */}
+      <path d="M60 50 Q200 150 330 48" fill="none" stroke="#2b2d42" strokeWidth="3" />
+      <line x1="60" y1="62" x2="330" y2="60" stroke="#6d4c41" strokeWidth="5" />
+      {[100, 140, 180, 220, 260, 300].map((x) => {
+        const t = (x - 60) / 270;
+        const y = (1 - t) * (1 - t) * 50 + 2 * (1 - t) * t * 150 + t * t * 48;
+        return <line key={x} x1={x} y1={61} x2={x} y2={Math.min(y, 140)} stroke="#2b2d42" strokeWidth="1.2" opacity="0.4" />;
+      })}
+      {/* 霧の中の竜の影 */}
+      <path d="M200 30 q12 -14 24 0 q-6 4 -12 2 q-6 2 -12 -2 Z" fill="#2b2d42" opacity="0.35" />
+    </>
+  );
+}
+
+function Fountain() {
+  return (
+    <>
+      <Sky id="sky-fountain" top="#90e0ef" bottom="#e0fbfc" />
+      <rect y="112" width="400" height="28" fill="#a3b18a" />
+      <ellipse cx="200" cy="120" rx="80" ry="12" fill="#48cae4" stroke="#6c757d" strokeWidth="3" />
+      {/* 放物線の水の線 */}
+      {[-60, -35, 35, 60].map((d, i) => (
+        <path key={i} d={`M200 112 Q${200 + d / 2} ${20 + Math.abs(d) / 2} ${200 + d} 118`} fill="none" stroke="#0096c7" strokeWidth="3" opacity="0.8" />
+      ))}
+      <rect x="194" y="104" width="12" height="12" fill="#6c757d" />
+    </>
+  );
+}
+
 export function SceneBanner({ scene }: { scene?: SceneId }) {
   return (
     <svg className="scene-banner" viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       {scene === 'market' && <Market />}
       {scene === 'workshop' && <Workshop />}
       {scene === 'plaza' && <Plaza />}
+      {scene === 'valley' && <Valley />}
+      {scene === 'fountain' && <Fountain />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

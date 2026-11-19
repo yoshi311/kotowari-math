@@ -3,6 +3,7 @@ import { RichText } from '../RichText';
 import { AreaTiles } from './AreaTiles';
 import { AbsLine, Budget, FlipLine, SqrtZoom } from './NumberFigures';
 import { PriceBox } from './PriceBox';
+import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, ParabolaA, ParabolaShift, QuadIneq, Roots, Throw } from './QuadFigures';
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
 
@@ -39,5 +40,25 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <Nested renderText={rt} />;
     case 'contra':
       return <Contra renderText={rt} />;
+    case 'funcMachine':
+      return <FuncMachine />;
+    case 'parabolaA':
+      return <ParabolaA />;
+    case 'parabolaShift':
+      return <ParabolaShift />;
+    case 'completeSquare':
+      return <CompleteSquare />;
+    case 'domainMaxMin':
+      return <DomainMaxMin />;
+    case 'throw':
+      return <Throw />;
+    case 'roots':
+      return <Roots />;
+    case 'discriminant':
+      return <Discriminant />;
+    case 'quadIneq':
+      return <QuadIneq />;
+    case 'axisMove':
+      return <AxisMove />;
   }
 }

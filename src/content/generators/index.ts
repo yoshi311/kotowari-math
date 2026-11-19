@@ -320,6 +320,184 @@ export const generators: Record<string, Gen> = {
       explain: `$${b}$ を右辺に移して $${fmt([[a, 'x']])} ${sign} ${c - b}$。両辺を $${a}$ でわると${a < 0 ? '（**負の数でわるので向きが逆になる**）' : ''}、$x ${resGt ? '>' : '<'} ${k}$`,
     };
   },
+
+  // ---------- 2次関数 ----------
+
+  /** f(x) = ax^2 + bx + c の f(k) */
+  'func-value': (level) => {
+    const a = randInt(-3, 3, { nonZero: true });
+    const b = randInt(-5, 5);
+    const c = randInt(-6, 6);
+    const k = randInt(-3, 3, { nonZero: true });
+    const expr = fmt([[a, 'x^2'], [b, 'x'], [c, '']]);
+    const ans = a * k * k + b * k + c;
+    return {
+      ...base('func-value', level),
+      mode: 'number',
+      prompt: `$f(x) = ${expr}$ のとき、$f(${k})$ の値を求めよう。`,
+      answer: String(ans),
+      before: '値：',
+      hint: `$f(${k})$ は「$x$ に $${k}$ を入れたときの値」。${k < 0 ? 'マイナスはかっこをつけて入れよう。' : ''}`,
+      kaiMistake: k < 0 ? `$x^2$ に $${k}$ を入れて、$(${k})^2$ を $-${k * k}$ にしちゃった！` : undefined,
+      explain: `$f(${k}) = ${a === 1 ? '' : a === -1 ? '-' : a}${paren(k)}^2 ${b === 0 ? '' : `${signed(b)} \\times ${paren(k)}`} ${c === 0 ? '' : signed(c)} = ${ans}$`,
+    };
+  },
+
+  /** y = a(x - p)^2 + q の頂点 */
+  'shift-vertex': (level): ChoiceQuestion => {
+    const a = [1, 2, -1, -2, 3][randInt(0, 4)];
+    const p = randInt(-5, 5, { nonZero: true });
+    let q: number;
+    do q = randInt(-6, 6, { nonZero: true });
+    while (Math.abs(q) === Math.abs(p));
+    const aa = a === 1 ? '' : a === -1 ? '-' : String(a);
+    const tex = `y = ${aa}(x ${p > 0 ? '-' : '+'} ${Math.abs(p)})^2 ${signed(q)}`;
+    const show = (x: number, y: number) => `$(${x},\\ ${y})$`;
+    const { choices, answer } = shuffleChoices(show(p, q), [show(-p, q), show(p, -q), show(-p, -q)]);
+    return {
+      id: 'gen:shift-vertex',
+      level,
+      type: 'choice',
+      prompt: `放物線 $${tex}$ の頂点の座標は？`,
+      choices,
+      answer,
+      hint: '$y = a(x - p)^2 + q$ の頂点は $(p,\\ q)$。かっこの中の符号は**逆**になるよ。',
+      kaiMistake: `$(x ${p > 0 ? '-' : '+'} ${Math.abs(p)})$ を見て、頂点の $x$ 座標を $${-p}$ にしちゃった！`,
+      explain: `$(x ${p > 0 ? '-' : '+'} ${Math.abs(p)})^2$ は $x = ${p}$ のとき 0 になる。だから頂点は $(${p},\\ ${q})$。`,
+    };
+  },
+
+  /** y = x^2 + bx + c を平方完成して頂点 */
+  'complete-square': (level): ChoiceQuestion => {
+    const h = randInt(-5, 5, { nonZero: true });
+    const k = randInt(-8, 8, { exclude: [h, -h] });
+    const b = 2 * h;
+    const c = h * h + k;
+    const expr = fmt([[1, 'x^2'], [b, 'x'], [c, '']]);
+    const show = (x: number, y: number) => `$(${x},\\ ${y})$`;
+    const wrongs = [show(h, k), show(-h, c), show(h, -k)].filter((w) => w !== show(-h, k));
+    const { choices, answer } = shuffleChoices(show(-h, k), [...new Set(wrongs)]);
+    return {
+      id: 'gen:complete-square',
+      level,
+      type: 'choice',
+      prompt: `放物線 $y = ${expr}$ の頂点の座標は？`,
+      choices,
+      answer,
+      hint: `$x$ の係数 $${b}$ の半分は $${h}$。$(x ${signed(h)})^2$ を作って、増えた $${h * h}$ を引こう。`,
+      explain: `$y = (x ${signed(h)})^2 - ${h * h} ${signed(c)} = (x ${signed(h)})^2 ${k === 0 ? '' : signed(k)}$。頂点は $(${-h},\\ ${k})$。`,
+    };
+  },
+
+  /** y = x^2 + bx + c の最小値 */
+  'cs-min': (level) => {
+    const h = randInt(-5, 5, { nonZero: true });
+    const k = randInt(-9, 9);
+    const b = 2 * h;
+    const c = h * h + k;
+    const expr = fmt([[1, 'x^2'], [b, 'x'], [c, '']]);
+    return {
+      ...base('cs-min', level),
+      mode: 'number',
+      prompt: `2次関数 $y = ${expr}$ の最小値を求めよう。`,
+      answer: String(k),
+      before: '最小値：',
+      hint: '平方完成して、頂点の $y$ 座標を求めよう。下に凸なので、頂点がいちばん低い点。',
+      explain: `$y = (x ${signed(h)})^2 ${k === 0 ? '' : signed(k)}$。$x = ${-h}$ のとき最小値 $${k}$。`,
+    };
+  },
+
+  /** y = (x - p)^2 + q の、定義域つきの最大値・最小値 */
+  'max-min-domain': (level) => {
+    const p = randInt(-2, 3);
+    const q = randInt(-4, 4);
+    const s = randInt(-3, 2);
+    const e = s + randInt(2, 4);
+    const f = (x: number) => (x - p) ** 2 + q;
+    const wantMax = Math.random() < 0.5;
+    const inside = p >= s && p <= e;
+    const min = inside ? q : Math.min(f(s), f(e));
+    const max = Math.max(f(s), f(e));
+    const ans = wantMax ? max : min;
+    const inner = p === 0 ? 'x^2' : `(x ${p > 0 ? '-' : '+'} ${Math.abs(p)})^2`;
+    const word = wantMax ? '最大値' : '最小値';
+    return {
+      ...base('max-min-domain', level),
+      mode: 'number',
+      prompt: `2次関数 $y = ${inner} ${q === 0 ? '' : signed(q)}$（$${s} \\le x \\le ${e}$）の**${word}**を求めよう。`,
+      answer: String(ans),
+      before: `${word}：`,
+      hint: `軸は $x = ${p}$。定義域の両はしと頂点のうち、どこがいちばん高い（低い）？ グラフをかいてみよう。`,
+      kaiMistake: wantMax ? '頂点のところが最大だと思っちゃった！ 下に凸のグラフだから、頂点は最小のほうだ…。' : undefined,
+      explain: `軸 $x = ${p}$ は定義域の${inside ? '中' : '外'}。$x = ${s}$ のとき $${f(s)}$、$x = ${e}$ のとき $${f(e)}$${inside ? `、頂点の値は $${q}$` : ''}。よって${word}は $${ans}$。`,
+    };
+  },
+
+  /** x^2 + (a+b)x + ab = 0 を因数分解で解く */
+  'solve-factor': (level): ChoiceQuestion => {
+    const a = randInt(-7, 7, { nonZero: true });
+    const b = randInt(-7, 7, { nonZero: true, exclude: [a, -a] });
+    const expr = fmt([[1, 'x^2'], [a + b, 'x'], [a * b, '']]);
+    const show = (x: number, y: number) => `$x = ${Math.min(x, y)},\\ ${Math.max(x, y)}$`;
+    const { choices, answer } = shuffleChoices(show(-a, -b), [show(a, b), show(-a, b), show(a, -b)]);
+    return {
+      id: 'gen:solve-factor',
+      level,
+      type: 'choice',
+      prompt: `2次方程式 $${expr} = 0$ を解こう。`,
+      choices,
+      answer,
+      hint: `因数分解すると $(x ${signed(a)})(x ${signed(b)}) = 0$。かけて 0 なら、どちらかが 0。`,
+      kaiMistake: `$(x ${signed(a)})(x ${signed(b)}) = 0$ から、そのまま $x = ${a},\\ ${b}$ と答えちゃった！ 符号が逆だ…。`,
+      explain: `$(x ${signed(a)})(x ${signed(b)}) = 0$ より $x ${signed(a)} = 0$ または $x ${signed(b)} = 0$。よって $x = ${-a},\\ ${-b}$。`,
+    };
+  },
+
+  /** 判別式で共有点の個数 */
+  'disc-count': (level): ChoiceQuestion => {
+    const kind = randInt(0, 2); // 0: D>0, 1: D=0, 2: D<0
+    const h = randInt(-4, 4, { nonZero: true });
+    const b = 2 * h;
+    const c = kind === 1 ? h * h : kind === 0 ? h * h - randInt(1, 6) : h * h + randInt(1, 6);
+    const D = b * b - 4 * c;
+    const expr = fmt([[1, 'x^2'], [b, 'x'], [c, '']]);
+    return {
+      id: 'gen:disc-count',
+      level,
+      type: 'choice',
+      prompt: `放物線 $y = ${expr}$ と $x$ 軸の共有点の個数は？`,
+      choices: ['2 個', '1 個', '0 個'],
+      answer: kind,
+      hint: '判別式 $D = b^2 - 4ac$ の符号を調べよう。',
+      explain: `$D = ${paren(b)}^2 - 4 \\times 1 \\times ${paren(c)} = ${D}$。${D > 0 ? '$D > 0$ なので 2 個' : D === 0 ? '$D = 0$ なので 1 個（接する）' : '$D < 0$ なので 0 個（交わらない）'}。`,
+    };
+  },
+
+  /** (x - α)(x - β) > 0 / < 0 */
+  'quad-ineq': (level): ChoiceQuestion => {
+    const al = randInt(-6, 4);
+    let be: number;
+    do be = randInt(al + 1, 7);
+    while (be === -al);
+    const pos = Math.random() < 0.5;
+    const expr = fmt([[1, 'x^2'], [-(al + be), 'x'], [al * be, '']]);
+    const inside = (x: number, y: number) => `$${x} < x < ${y}$`;
+    const outside = (x: number, y: number) => `$x < ${x},\\ ${y} < x$`;
+    const correct = pos ? outside(al, be) : inside(al, be);
+    const wrongs = pos ? [inside(al, be), outside(-be, -al), inside(-be, -al)] : [outside(al, be), inside(-be, -al), outside(-be, -al)];
+    const { choices, answer } = shuffleChoices(correct, wrongs);
+    return {
+      id: 'gen:quad-ineq',
+      level,
+      type: 'choice',
+      prompt: `2次不等式 $${expr} ${pos ? '>' : '<'} 0$ を解こう。`,
+      choices,
+      answer,
+      hint: `左辺を因数分解すると $(x ${signed(-al)})(x ${signed(-be)})$。グラフが $x$ 軸より${pos ? '上' : '下'}になる範囲は？`,
+      explain: `$(x ${signed(-al)})(x ${signed(-be)}) ${pos ? '>' : '<'} 0$。グラフは $x = ${al},\\ ${be}$ で $x$ 軸と交わる下に凸の放物線なので、${pos ? '外側' : 'あいだ'}が答え：${correct}`,
+    };
+  },
+
 };
 
 export function generate(gen: string, level: QLevel): Question {

@@ -1,12 +1,13 @@
 // コース全体の目次と、問題の検索（復習クエスト用）
 import { generate } from './generators';
+import { unitNijiKansuu } from './math1/niji-kansuu';
 import { unitSuuToShiki } from './math1/suu-to-shiki';
 import type { CardDef, Lesson, Question, QuestionItem, Unit } from './types';
 
-export const units: Unit[] = [unitSuuToShiki];
+export const units: Unit[] = [unitSuuToShiki, unitNijiKansuu];
 
 /** まだ作っていない地方（ワールドマップでの予告） */
-export const futureRegions: { subject: string; title: string; region: string }[] = [
+const plannedRegions: { subject: string; title: string; region: string }[] = [
   { subject: '数学Ⅰ', title: '2次関数', region: 'パラボラ渓谷' },
   { subject: '数学Ⅰ', title: '図形と計量', region: 'サイン灯台' },
   { subject: '数学Ⅰ', title: 'データの分析', region: 'ヒストグラム平原' },
@@ -19,6 +20,9 @@ export const futureRegions: { subject: string; title: string; region: string }[]
   { subject: '数学B', title: '数列・統計的な推測', region: '連なる星の天文台' },
   { subject: '数学C', title: 'ベクトル・平面上の曲線と複素数平面', region: '虚空の天空城' },
 ];
+
+/** まだ作っていない地方（できた地方は自動で外れる） */
+export const futureRegions = plannedRegions.filter((r) => !units.some((u) => u.region === r.region));
 
 export const allLessons: Lesson[] = units.flatMap((u) => u.lessons);
 
