@@ -1,0 +1,148 @@
+import type { Lesson } from '../../types';
+
+export const t06: Lesson = {
+  id: 'm1t-06',
+  no: 6,
+  title: '余弦定理',
+  subtitle: 'どんな三角形でも使える三平方の定理',
+  quest: '2 つの島をつなぐ航路',
+  card: {
+    id: 'card-m1t-06',
+    name: '補正の羅針',
+    term: '余弦定理',
+    rarity: 3,
+    tool: '「2 辺とそのあいだの角」から残りの辺を、「3 辺」から角を求める道具',
+    formula: 'c^2 = a^2 + b^2 - 2ab\\cos C,\\quad \\cos C = \\dfrac{a^2 + b^2 - c^2}{2ab}',
+    uses: ['島や町のあいだの距離', 'ロボットアームの関節の角度', 'GPS の位置計算'],
+    color: '#06d6a0',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：島から島への距離',
+      scene: 'lighthouse',
+      lines: [
+        { who: 'npc', npcName: '船乗りのトマ', mood: 'normal', text: 'やあ、うわさの理術師さんだね！ 灯台から「東の島」まで 8km、「南の島」まで 5km。灯台から見た 2 つの島のあいだの角は 60° なんだ。' },
+        { who: 'npc', npcName: '船乗りのトマ', mood: 'think', text: '島から島へ、まっすぐ船を出したいんだけど、距離は何km になる？' },
+        { who: 'kai', mood: 'normal', text: '2 辺とあいだの角か。直角なら三平方の定理で一発なんだが…。' },
+        { who: 'michiru', mood: 'happy', text: 'その三平方の定理を、どんな角でも使えるようにしたのが**余弦定理**よ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：三平方の定理からのずれ',
+      lines: [{ who: 'michiru', text: '2 辺 a、b とあいだの角 C を変えて、$c^2$ と $a^2 + b^2$ をくらべてみて。' }],
+      figure: { type: 'cosLaw' },
+      prompts: ['角 C を 90° にすると、$c^2$ と $a^2 + b^2$ の関係は？', '角 C を 90° より小さく、大きくすると、どうなる？'],
+      check: {
+        id: 'm1t-06-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '余弦定理 $c^2 = a^2 + b^2 - 2ab\\cos C$ で、$C = 90^\\circ$ のときどうなる？',
+        choices: ['$c^2 = a^2 + b^2$（三平方の定理）', '$c^2 = a^2 + b^2 - 2ab$', '$c = a + b$', '$c^2 = 2ab$'],
+        answer: 0,
+        explain: '$\\cos 90^\\circ = 0$ なので、補正の項 $2ab\\cos C$ が消えて三平方の定理になる。余弦定理は三平方の定理を広げたもの。',
+      },
+      after: [
+        { who: 'zero', mood: 'surprised', text: '角がせまいと $c^2$ は小さく、広いと大きくなる。$2ab\\cos C$ が、そのずれを直してくれてるんだ！' },
+      ],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：余弦定理',
+      tool: '「2 辺とそのあいだの角」から残りの辺を、「3 辺」から角を求める道具',
+      analogy: {
+        title: 'たとえるなら「三平方の定理の補正つきバージョン」',
+        text: '三平方の定理は、直角のときだけ使える特別な道具。角が 90° より小さいと向かいの辺は短く、大きいと長くなる。そのずれをぴったり直すのが $-2ab\\cos C$ という「補正」。鈍角では cos がマイナスなので、補正で長くなる。',
+      },
+      formulas: [
+        'a^2 = b^2 + c^2 - 2bc\\cos A',
+        'b^2 = c^2 + a^2 - 2ca\\cos B',
+        'c^2 = a^2 + b^2 - 2ab\\cos C',
+        '\\cos A = \\dfrac{b^2 + c^2 - a^2}{2bc}',
+      ],
+      points: [
+        '**使うとき**：①「2 辺とそのあいだの角」から残りの辺 ②「3 辺」から角。',
+        '求めたい辺の**向かいの角**を使う。$c^2$ には角 C。',
+        '3 辺から角を出すときは $\\cos$ の形に変形して使う。cos がマイナスなら鈍角。',
+        '**三角形の形の判定**：いちばん長い辺を $c$ として、$c^2 < a^2 + b^2$ なら鋭角三角形、$=$ なら直角、$>$ なら鈍角三角形。',
+        '正弦定理とのつかいわけ：「1 辺と 2 角・外接円」なら正弦定理、「2 辺とあいだの角・3 辺」なら余弦定理。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        {
+          icon: '⛴️',
+          title: '島や町のあいだの距離',
+          text: 'ある地点から 2 つの目的地までの距離と方角がわかれば、目的地どうしの距離が計算できる。船や飛行機の航路の計画に使われる。',
+          formula: 'c^2 = 8^2 + 5^2 - 2 \\cdot 8 \\cdot 5 \\cos 60^\\circ',
+        },
+        {
+          icon: '🦾',
+          title: 'ロボットアームの関節',
+          text: '腕の長さ 2 本と、届かせたい点までの距離がわかれば、3 辺から関節をどれだけ曲げればよいか（角度）がわかる。産業ロボットや義手の制御に使われている。',
+        },
+        {
+          icon: '⚾',
+          title: '野球のグラウンド',
+          text: 'ホームから外野の選手までの距離と角度がわかれば、選手から各ベースまでの距離が計算できる。スポーツの戦術分析にも登場する。',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'cos-law-sq', level: 'calc' },
+        {
+          id: 'm1t-06-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\triangle ABC$ で $a = 3$、$b = 5$、$C = 120^\\circ$ のとき、$c =$ ［ア］',
+          answers: { ア: '7' },
+          hint: '$\\cos 120^\\circ = -\\dfrac{1}{2}$。マイナスとマイナスでプラスになる。',
+          kaiMistake: '$\\cos 120^\\circ$ をプラスにして $c^2 = 9 + 25 - 15 = 19$ にしちゃった！',
+          explain: '$c^2 = 9 + 25 - 2 \\times 3 \\times 5 \\times \\left(-\\dfrac{1}{2}\\right) = 34 + 15 = 49$。$c = 7$。',
+        },
+        {
+          id: 'm1t-06-q2',
+          type: 'mark',
+          level: 'calc',
+          prompt: '3 辺が $a = 7$、$b = 5$、$c = 3$ の $\\triangle ABC$ で、$\\cos A = -$［ア］／［イ］ なので、$A =$ ［ウエオ］°',
+          answers: { ア: '1', イ: '2', ウ: '1', エ: '2', オ: '0' },
+          hint: '$\\cos A = \\dfrac{b^2 + c^2 - a^2}{2bc}$',
+          explain: '$\\cos A = \\dfrac{25 + 9 - 49}{2 \\times 5 \\times 3} = \\dfrac{-15}{30} = -\\dfrac{1}{2}$。$A = 120^\\circ$。',
+        },
+        {
+          id: 'm1t-06-q3',
+          type: 'choice',
+          level: 'calc',
+          prompt: '3 辺の長さが 4、5、7 の三角形は？',
+          choices: ['鋭角三角形', '直角三角形', '鈍角三角形', '三角形はできない'],
+          answer: 2,
+          hint: 'いちばん長い辺 7 の 2乗と、ほかの 2 辺の 2乗の和をくらべよう。',
+          explain: '$7^2 = 49$、$4^2 + 5^2 = 41$。$49 > 41$ なので、7 の向かいの角は鈍角。鈍角三角形。',
+        },
+        {
+          id: 'm1t-06-q4',
+          type: 'mark',
+          level: 'exam',
+          prompt: '灯台から東の島まで 8km、南の島まで 5km で、灯台から見た 2 つの島のあいだの角は $60^\\circ$ である。2 つの島のあいだの距離は ［ア］ km である。',
+          answers: { ア: '7' },
+          hint: '$c^2 = 8^2 + 5^2 - 2 \\times 8 \\times 5 \\times \\cos 60^\\circ$',
+          explain: '$c^2 = 64 + 25 - 40 = 49$ より 7km。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '船乗りのトマ', mood: 'happy', text: '島から島まで、まっすぐ 7km！ これで最短の航路が引けるぞ。ありがとう！' },
+        { who: 'kai', mood: 'happy', text: '正弦定理と余弦定理。この 2 つがあれば、どんな三角形もこわくないな。' },
+        { who: 'michiru', mood: 'normal', text: '辺と角がわかれば、三角形の「広さ」も求められるわ。' },
+      ],
+    },
+  ],
+};

@@ -12,6 +12,13 @@ function shuffleChoices(correct: string, wrongs: string[]): { choices: string[];
   return { choices: all.map((x) => x.c), answer: all.findIndex((x) => x.c === correct) };
 }
 
+/** 有名な角の三角比（TeX） */
+const TRIG: Record<'sin' | 'cos' | 'tan', Record<number, string>> = {
+  sin: { 30: '\\dfrac{1}{2}', 45: '\\dfrac{\\sqrt{2}}{2}', 60: '\\dfrac{\\sqrt{3}}{2}', 120: '\\dfrac{\\sqrt{3}}{2}', 135: '\\dfrac{\\sqrt{2}}{2}', 150: '\\dfrac{1}{2}' },
+  cos: { 30: '\\dfrac{\\sqrt{3}}{2}', 45: '\\dfrac{\\sqrt{2}}{2}', 60: '\\dfrac{1}{2}', 120: '-\\dfrac{1}{2}', 135: '-\\dfrac{\\sqrt{2}}{2}', 150: '-\\dfrac{\\sqrt{3}}{2}' },
+  tan: { 30: '\\dfrac{1}{\\sqrt{3}}', 45: '1', 60: '\\sqrt{3}', 120: '-\\sqrt{3}', 135: '-1', 150: '-\\dfrac{1}{\\sqrt{3}}' },
+};
+
 const gcd = (a: number, b: number): number => (b === 0 ? Math.abs(a) : gcd(b, a % b));
 
 export const generators: Record<string, Gen> = {
@@ -495,6 +502,129 @@ export const generators: Record<string, Gen> = {
       answer,
       hint: `左辺を因数分解すると $(x ${signed(-al)})(x ${signed(-be)})$。グラフが $x$ 軸より${pos ? '上' : '下'}になる範囲は？`,
       explain: `$(x ${signed(-al)})(x ${signed(-be)}) ${pos ? '>' : '<'} 0$。グラフは $x = ${al},\\ ${be}$ で $x$ 軸と交わる下に凸の放物線なので、${pos ? '外側' : 'あいだ'}が答え：${correct}`,
+    };
+  },
+
+
+  // ---------- 図形と計量 ----------
+
+  /** 有名な角の三角比の値 */
+  'trig-value': (level): ChoiceQuestion => {
+    const fn = (['sin', 'cos', 'tan'] as const)[randInt(0, 2)];
+    const angles = fn === 'tan' ? [30, 45, 60, 120, 135, 150] : [30, 45, 60, 120, 135, 150];
+    const deg = angles[randInt(0, angles.length - 1)];
+    const correct = `$${TRIG[fn][deg]}$`;
+    // まちがいの候補は sin・cos・tan すべての値から選ぶ（sin だけだと 3 種類しかなく足りない）
+    const pool = [...new Set([...Object.values(TRIG.sin), ...Object.values(TRIG.cos), ...Object.values(TRIG.tan)])]
+      .map((v) => `$${v}$`)
+      .filter((v) => v !== correct);
+    const wrongs: string[] = [];
+    while (wrongs.length < 3) {
+      const w = pool[randInt(0, pool.length - 1)];
+      if (!wrongs.includes(w)) wrongs.push(w);
+    }
+    const { choices, answer } = shuffleChoices(correct, wrongs);
+    return {
+      id: 'gen:trig-value',
+      level,
+      type: 'choice',
+      prompt: `$\\${fn} ${deg}^\\circ$ の値は？`,
+      choices,
+      answer,
+      hint: deg > 90
+        ? `単位円で考えよう。$${deg}^\\circ$ の点は左側にあるので、cos と tan はマイナス。$180^\\circ - ${deg}^\\circ = ${180 - deg}^\\circ$ と同じ高さ。`
+        : '30°・45°・60° の三角定規の辺の比（$1 : 2 : \\sqrt{3}$、$1 : 1 : \\sqrt{2}$）を思い出そう。',
+      kaiMistake: deg > 90 && fn !== 'sin' ? `$${180 - deg}^\\circ$ と同じ値にして、マイナスをつけ忘れた！` : undefined,
+      explain: `$\\${fn} ${deg}^\\circ = ${TRIG[fn][deg]}$${deg > 90 ? `（$180^\\circ - \\theta$ の公式：$\\sin$ はそのまま、$\\cos$・$\\tan$ は符号が逆）` : ''}`,
+    };
+  },
+
+  /** 30°・60° の直角三角形の辺 */
+  'right-tri-side': (level) => {
+    const k = randInt(2, 9);
+    const use30 = Math.random() < 0.5;
+    return {
+      ...base('right-tri-side', level),
+      mode: 'number',
+      prompt: use30
+        ? `斜辺の長さが $${2 * k}$、1つの角が $30^\\circ$ の直角三角形で、$30^\\circ$ の角に向かい合う辺（高さ）の長さは？`
+        : `斜辺の長さが $${2 * k}$、1つの角が $60^\\circ$ の直角三角形で、$60^\\circ$ の角のとなりの辺（底辺）の長さは？`,
+      answer: String(k),
+      before: '長さ：',
+      hint: use30 ? '高さ ＝ 斜辺 × $\\sin 30^\\circ$' : '底辺 ＝ 斜辺 × $\\cos 60^\\circ$',
+      explain: use30
+        ? `$${2 * k} \\times \\sin 30^\\circ = ${2 * k} \\times \\dfrac{1}{2} = ${k}$`
+        : `$${2 * k} \\times \\cos 60^\\circ = ${2 * k} \\times \\dfrac{1}{2} = ${k}$`,
+    };
+  },
+
+  /** 距離と仰角から高さ（tan の近似値を使う） */
+  'height-tan': (level) => {
+    const table: Record<number, number> = { 20: 0.36, 25: 0.47, 30: 0.58, 35: 0.7, 40: 0.84 };
+    const deg = [20, 25, 30, 35, 40][randInt(0, 4)];
+    const d = randInt(1, 6) * 50;
+    const h = Math.round(d * table[deg] * 100) / 100;
+    return {
+      ...base('height-tan', level),
+      mode: 'number',
+      prompt: `塔から $${d}$ m はなれた地点で、塔の先を見上げる角（仰角）は $${deg}^\\circ$ だった。$\\tan ${deg}^\\circ = ${table[deg]}$ として、塔の高さを求めよう（目の高さは考えない）。`,
+      answer: String(h),
+      before: '高さ：',
+      after: 'm',
+      hint: '高さ ÷ 距離 ＝ tan（仰角）。だから 高さ ＝ 距離 × tan。',
+      explain: `$${d} \\times \\tan ${deg}^\\circ = ${d} \\times ${table[deg]} = ${h}$ m`,
+    };
+  },
+
+  /** 余弦定理で c^2 */
+  'cos-law-sq': (level) => {
+    const a = randInt(2, 8);
+    const b = randInt(2, 8);
+    const C = Math.random() < 0.5 ? 60 : 120;
+    const ans = C === 60 ? a * a + b * b - a * b : a * a + b * b + a * b;
+    return {
+      ...base('cos-law-sq', level),
+      mode: 'number',
+      prompt: `$\\triangle ABC$ で $a = ${a}$、$b = ${b}$、$C = ${C}^\\circ$ のとき、$c^2$ の値を求めよう。`,
+      answer: String(ans),
+      before: '$c^2$ ＝',
+      hint: `$c^2 = a^2 + b^2 - 2ab\\cos C$。$\\cos ${C}^\\circ = ${C === 60 ? '\\dfrac{1}{2}' : '-\\dfrac{1}{2}'}$`,
+      kaiMistake: C === 120 ? '$\\cos 120^\\circ$ をプラスの $\\dfrac{1}{2}$ にして、引き算しちゃった！' : undefined,
+      explain: `$c^2 = ${a * a} + ${b * b} - 2 \\times ${a} \\times ${b} \\times \\left(${C === 60 ? '\\dfrac{1}{2}' : '-\\dfrac{1}{2}'}\\right) = ${ans}$`,
+    };
+  },
+
+  /** 2辺とはさむ角から面積 */
+  'area-sin': (level) => {
+    const a = randInt(1, 6) * 2;
+    const b = randInt(1, 6) * 2;
+    const C = Math.random() < 0.5 ? 30 : 150;
+    const S = (a * b) / 4;
+    return {
+      ...base('area-sin', level),
+      mode: 'number',
+      prompt: `$\\triangle ABC$ で $a = ${a}$、$b = ${b}$、$C = ${C}^\\circ$ のとき、面積 $S$ を求めよう。`,
+      answer: String(S),
+      before: '$S$ ＝',
+      hint: `$S = \\dfrac{1}{2}ab\\sin C$。$\\sin ${C}^\\circ = \\dfrac{1}{2}$`,
+      explain: `$S = \\dfrac{1}{2} \\times ${a} \\times ${b} \\times \\sin ${C}^\\circ = \\dfrac{1}{2} \\times ${a * b} \\times \\dfrac{1}{2} = ${S}$`,
+    };
+  },
+
+  /** 正弦定理で外接円の半径 */
+  'sin-law-R': (level) => {
+    const A = [30, 150, 90][randInt(0, 2)];
+    const a = A === 90 ? randInt(1, 8) * 2 : randInt(2, 12);
+    const R = A === 90 ? a / 2 : a;
+    return {
+      ...base('sin-law-R', level),
+      mode: 'number',
+      prompt: `$\\triangle ABC$ で $a = ${a}$、$A = ${A}^\\circ$ のとき、外接円の半径 $R$ を求めよう。`,
+      answer: String(R),
+      before: '$R$ ＝',
+      hint: `正弦定理 $\\dfrac{a}{\\sin A} = 2R$。$\\sin ${A}^\\circ = ${A === 90 ? '1' : '\\dfrac{1}{2}'}$`,
+      kaiMistake: '$\\dfrac{a}{\\sin A}$ をそのまま $R$ にしちゃった！ それは直径 $2R$ だ…。',
+      explain: `$2R = \\dfrac{${a}}{\\sin ${A}^\\circ} = ${A === 90 ? a : 2 * a}$ より $R = ${R}$`,
     };
   },
 

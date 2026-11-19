@@ -2,9 +2,10 @@
 import { generate } from './generators';
 import { unitNijiKansuu } from './math1/niji-kansuu';
 import { unitSuuToShiki } from './math1/suu-to-shiki';
+import { unitZukeiKeiryou } from './math1/zukei-keiryou';
 import type { CardDef, Lesson, Question, QuestionItem, Unit } from './types';
 
-export const units: Unit[] = [unitSuuToShiki, unitNijiKansuu];
+export const units: Unit[] = [unitSuuToShiki, unitNijiKansuu, unitZukeiKeiryou];
 
 /** まだ作っていない地方（ワールドマップでの予告） */
 const plannedRegions: { subject: string; title: string; region: string }[] = [

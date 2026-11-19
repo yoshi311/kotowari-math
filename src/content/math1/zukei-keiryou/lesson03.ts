@@ -1,0 +1,148 @@
+import type { Lesson } from '../../types';
+
+export const t03: Lesson = {
+  id: 'm1t-03',
+  no: 3,
+  title: '三角比の相互関係',
+  subtitle: '1 つわかれば、残りもわかる',
+  quest: '嵐で折れた支柱',
+  card: {
+    id: 'card-m1t-03',
+    name: '三兄弟の絆',
+    term: '三角比の相互関係',
+    rarity: 2,
+    tool: 'sin・cos・tan のうち 1 つがわかったとき、残りの 2 つを求める道具',
+    formula: '\\sin^2\\theta + \\cos^2\\theta = 1,\\quad \\tan\\theta = \\dfrac{\\sin\\theta}{\\cos\\theta},\\quad 1 + \\tan^2\\theta = \\dfrac{1}{\\cos^2\\theta}',
+    uses: ['斜面の上の力の分解', 'コンピュータの三角比の計算', '航海・測量の計算'],
+    color: '#4ecdc4',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：わかっているのは 1 つだけ',
+      scene: 'lighthouse',
+      lines: [
+        { who: 'narrator', text: 'その夜、嵐が岬をおそった。朝になると、灯台の窓を支える斜めの支柱が 1 本折れていた。' },
+        { who: 'npc', npcName: '灯台守のナギ', mood: 'sad', text: '古い設計図には「$\\sin\\theta = \\dfrac{3}{5}$」としか書いてないんだ。支柱の横の長さを出すには $\\cos$ が必要なのに…。' },
+        { who: 'kai', mood: 'normal', text: '$\\sin$ と $\\cos$ は別ものだろ？ $\\sin$ だけじゃ、どうしようもないんじゃないか？' },
+        { who: 'michiru', mood: 'happy', text: 'いいえ、sin・cos・tan は 1 つの直角三角形から生まれた三兄弟。1 人わかれば、残りの 2 人もわかるのよ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：いつも 1 になるもの',
+      lines: [{ who: 'michiru', text: '角 θ を変えながら、$\\sin^2\\theta + \\cos^2\\theta$ の値を見てみて。' }],
+      figure: { type: 'rightTriangle' },
+      prompts: ['角 θ をいろいろ変えても、$\\sin^2\\theta + \\cos^2\\theta$ はいくつ？', '$\\tan\\theta$ と $\\sin\\theta \\div \\cos\\theta$ をくらべてみよう。'],
+      check: {
+        id: 'm1t-03-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\sin^2\\theta + \\cos^2\\theta = 1$ が、どんな角でも成り立つのはなぜ？',
+        choices: [
+          '斜辺を 1 とした直角三角形で、三平方の定理（高さ² ＋ 底辺² ＝ 斜辺²）が成り立つから',
+          '$\\sin$ と $\\cos$ はいつも同じ値だから',
+          '角が 45° のときだけ成り立つから',
+          '偶然そうなっているから',
+        ],
+        answer: 0,
+        explain: '斜辺を 1 にすると、高さは $\\sin\\theta$、底辺は $\\cos\\theta$。三平方の定理から $\\sin^2\\theta + \\cos^2\\theta = 1^2 = 1$。',
+      },
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：三角比の相互関係',
+      tool: 'sin・cos・tan のうち 1 つがわかったとき、残りの 2 つを求める道具',
+      analogy: {
+        title: 'たとえるなら「三兄弟の絆」',
+        text: 'sin・cos・tan は、同じ直角三角形の辺から生まれた三兄弟。三平方の定理という「絆」でつながっているから、1 人の居場所がわかれば、残りの 2 人の居場所もわかる。',
+      },
+      formulas: [
+        '\\sin^2\\theta + \\cos^2\\theta = 1',
+        '\\tan\\theta = \\dfrac{\\sin\\theta}{\\cos\\theta}',
+        '1 + \\tan^2\\theta = \\dfrac{1}{\\cos^2\\theta}',
+        '\\sin(90^\\circ - \\theta) = \\cos\\theta,\\ \\cos(90^\\circ - \\theta) = \\sin\\theta,\\ \\tan(90^\\circ - \\theta) = \\dfrac{1}{\\tan\\theta}',
+      ],
+      points: [
+        '$\\sin^2\\theta$ は $(\\sin\\theta)^2$ のこと。',
+        '$\\sin$ がわかれば → ① $\\sin^2 + \\cos^2 = 1$ で $\\cos$ → ② $\\tan = \\dfrac{\\sin}{\\cos}$。',
+        '$\\tan$ がわかれば → $1 + \\tan^2 = \\dfrac{1}{\\cos^2}$ で $\\cos$ → $\\sin = \\tan \\times \\cos$。',
+        '鋭角（0° より大きく 90° より小さい）なら、sin・cos・tan はすべて正。√ をとるときは正のほうを選ぶ。',
+        '$90^\\circ - \\theta$ は、直角三角形のもう一方の角。見る角を変えると、高さと底辺が入れかわる。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        {
+          icon: '⛷️',
+          title: '斜面の上の力',
+          text: '斜面に置いた物にかかる重力は、「斜面をすべらせる力（$\\sin$）」と「斜面をおす力（$\\cos$）」に分けて考える。スキーやすべり台の物理は三角比でできている。',
+        },
+        {
+          icon: '🖥️',
+          title: 'コンピュータの計算',
+          text: '電卓やコンピュータは、sin を計算したら cos は相互関係で求めるなど、計算の手間をへらす工夫をしている。',
+        },
+        {
+          icon: '🧭',
+          title: '航海の計算',
+          text: '船の進む方角と距離から、東西・南北にどれだけ進んだかを sin・cos で計算する。相互関係を使うと、わかっている値から残りがすぐ出せる。',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        {
+          id: 'm1t-03-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\theta$ は鋭角で $\\sin\\theta = \\dfrac{3}{5}$ のとき、\n$\\cos\\theta =$ ［ア］／［イ］、$\\tan\\theta =$ ［ウ］／［エ］',
+          answers: { ア: '4', イ: '5', ウ: '3', エ: '4' },
+          hint: '$\\cos^2\\theta = 1 - \\sin^2\\theta = 1 - \\dfrac{9}{25}$',
+          explain: '$\\cos^2\\theta = \\dfrac{16}{25}$、鋭角なので $\\cos\\theta = \\dfrac{4}{5}$。$\\tan\\theta = \\dfrac{3}{5} \\div \\dfrac{4}{5} = \\dfrac{3}{4}$。',
+        },
+        {
+          id: 'm1t-03-q2',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\theta$ は鋭角で $\\cos\\theta = \\dfrac{1}{3}$ のとき、\n$\\sin\\theta =$ ［ア］$\\sqrt{\\phantom{0}}$［イ］／［ウ］、$\\tan\\theta =$ ［エ］$\\sqrt{\\phantom{0}}$［オ］',
+          answers: { ア: '2', イ: '2', ウ: '3', エ: '2', オ: '2' },
+          hint: '$\\sin^2\\theta = 1 - \\dfrac{1}{9} = \\dfrac{8}{9}$。$\\sqrt{8} = 2\\sqrt{2}$',
+          kaiMistake: '$\\sin\\theta = 1 - \\dfrac{1}{3}$ にしちゃった！ 2乗どうしの関係なのに…。',
+          explain: '$\\sin\\theta = \\dfrac{\\sqrt{8}}{3} = \\dfrac{2\\sqrt{2}}{3}$。$\\tan\\theta = \\dfrac{2\\sqrt{2}}{3} \\div \\dfrac{1}{3} = 2\\sqrt{2}$。',
+        },
+        {
+          id: 'm1t-03-q3',
+          type: 'choice',
+          level: 'calc',
+          prompt: '$\\sin(90^\\circ - \\theta)$ と等しいものは？',
+          choices: ['$\\sin\\theta$', '$\\cos\\theta$', '$\\tan\\theta$', '$-\\sin\\theta$'],
+          answer: 1,
+          hint: '直角三角形のもう一方の角から見ると、「高さ」と「底辺」が入れかわる。',
+          explain: '角 $90^\\circ - \\theta$ から見た高さは、角 θ から見た底辺。だから $\\sin(90^\\circ - \\theta) = \\cos\\theta$。たとえば $\\sin 60^\\circ = \\cos 30^\\circ$。',
+        },
+        {
+          id: 'm1t-03-q4',
+          type: 'mark',
+          level: 'exam',
+          prompt: '$\\theta$ は鋭角で $\\tan\\theta = 2$ のとき、$1 + \\tan^2\\theta = \\dfrac{1}{\\cos^2\\theta}$ より\n$\\cos\\theta = \\sqrt{\\phantom{0}}$［ア］／［イ］',
+          answers: { ア: '5', イ: '5' },
+          hint: '$\\dfrac{1}{\\cos^2\\theta} = 1 + 4 = 5$。$\\cos\\theta = \\dfrac{1}{\\sqrt{5}}$ を有理化しよう。',
+          explain: '$\\cos^2\\theta = \\dfrac{1}{5}$、鋭角なので $\\cos\\theta = \\dfrac{1}{\\sqrt{5}} = \\dfrac{\\sqrt{5}}{5}$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '灯台守のナギ', mood: 'happy', text: '$\\cos\\theta = \\dfrac{4}{5}$ か！ これで支柱の長さがわかる。すぐに作り直すよ。' },
+        { who: 'kai', mood: 'happy', text: '三平方の定理が、三角比の兄弟をつないでたのか。' },
+        { who: 'michiru', mood: 'think', text: 'ところで、灯台の光は 90° より大きい方向にも回るわね。そのときの三角比は…？' },
+      ],
+    },
+  ],
+};

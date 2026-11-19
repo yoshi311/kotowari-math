@@ -1,0 +1,155 @@
+import type { Lesson } from '../../types';
+
+export const t01: Lesson = {
+  id: 'm1t-01',
+  no: 1,
+  title: '三角比',
+  subtitle: '角が決まれば、辺の比が決まる',
+  quest: '灯台へ続く坂道',
+  card: {
+    id: 'card-m1t-01',
+    name: '角の指紋',
+    term: '三角比（sin・cos・tan）',
+    rarity: 2,
+    tool: '直角三角形の「角」から「辺の長さの比」を求め、測れない長さを計算する道具',
+    formula: '\\sin\\theta = \\dfrac{\\text{高さ}}{\\text{斜辺}},\\ \\cos\\theta = \\dfrac{\\text{底辺}}{\\text{斜辺}},\\ \\tan\\theta = \\dfrac{\\text{高さ}}{\\text{底辺}}',
+    uses: ['坂道やスロープの傾き', '建物や山の高さの測量', 'ゲームのキャラのななめ移動'],
+    color: '#ffd166',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：坂道で何m のぼった？',
+      scene: 'lighthouse',
+      lines: [
+        { who: 'narrator', text: '渓谷をこえると、潮の香りがした。岬の先に、光を失った「サイン灯台」が立っている。' },
+        { who: 'npc', npcName: '灯台守のナギ', mood: 'normal', text: 'よく来たね、旅の人。この灯台は、角度と長さの理術で建てられたんだよ。でも灯が消えてから、だれも計算ができなくなってしまった。' },
+        { who: 'npc', npcName: '灯台守のナギ', mood: 'think', text: 'たとえばこの坂道。角度は 30°、歩く長さは 100m。さて、どれだけ高くのぼったことになるかね？' },
+        { who: 'kai', mood: 'normal', text: '高さを直接測るのは無理だな。坂の途中に、ものさしを立てられないし。' },
+        { who: 'michiru', mood: 'happy', text: '角度と長さがわかれば、高さは計算できるわ。直角三角形の**辺の比**の理術、**三角比**よ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：大きさを変えても変わらないもの',
+      lines: [{ who: 'michiru', text: '直角三角形の角 θ と大きさを変えてみて。下の 3 つの比に注目よ。' }],
+      figure: { type: 'rightTriangle' },
+      prompts: [
+        '「三角形の大きさ」だけを変えてみよう。3 つの比は変わる？',
+        '角 θ を 30° にしてみよう。$\\sin\\theta$ はいくつ？',
+        '角 θ を大きくすると、$\\sin\\theta$ と $\\cos\\theta$ はどうなる？',
+      ],
+      check: {
+        id: 'm1t-01-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '直角三角形で、角 θ を変えずに三角形を 2 倍に大きくすると、$\\sin\\theta$ はどうなる？',
+        choices: ['2 倍になる', '4 倍になる', '変わらない', '半分になる'],
+        answer: 2,
+        explain: '高さも斜辺も 2 倍になるので、その比 $\\dfrac{\\text{高さ}}{\\text{斜辺}}$ は変わらない（相似な三角形）。三角比は「角だけ」で決まる。',
+      },
+      after: [
+        { who: 'zero', mood: 'surprised', text: '30° のとき、$\\sin$ はいつも $0.5$！ 坂道なら、高さは $100 \\times 0.5 = 50$ m だ！' },
+      ],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：三角比',
+      tool: '直角三角形の「角」から「辺の長さの比」を求め、測れない長さを計算する道具',
+      analogy: {
+        title: 'たとえるなら「角の指紋」',
+        text: '人の指紋がその人だけのものであるように、角度ごとに「辺の比」が決まっている。30° の指紋は「高さ：斜辺 = 1：2」。指紋（比）がわかれば、三角形の大きさに関係なく、1 つの辺から他の辺が計算できる。',
+      },
+      formulas: [
+        '\\sin\\theta = \\dfrac{\\text{高さ}}{\\text{斜辺}},\\quad \\cos\\theta = \\dfrac{\\text{底辺}}{\\text{斜辺}},\\quad \\tan\\theta = \\dfrac{\\text{高さ}}{\\text{底辺}}',
+        '\\sin 30^\\circ = \\dfrac{1}{2},\\ \\cos 30^\\circ = \\dfrac{\\sqrt{3}}{2},\\ \\tan 30^\\circ = \\dfrac{1}{\\sqrt{3}}',
+        '\\sin 45^\\circ = \\cos 45^\\circ = \\dfrac{1}{\\sqrt{2}},\\ \\tan 45^\\circ = 1',
+        '\\sin 60^\\circ = \\dfrac{\\sqrt{3}}{2},\\ \\cos 60^\\circ = \\dfrac{1}{2},\\ \\tan 60^\\circ = \\sqrt{3}',
+      ],
+      points: [
+        '直角三角形の、直角でない角 θ について考える。斜辺は直角の向かい側。',
+        '覚え方：筆記体の **s**（sin）・**c**（cos）・**t**（tan）を三角形に重ねて書く順番で、分母→分子を読む。',
+        '30°・45°・60° の値は、三角定規の辺の比（$1 : 2 : \\sqrt{3}$ と $1 : 1 : \\sqrt{2}$）から出せる。',
+        '使い方：高さ ＝ 斜辺 × $\\sin\\theta$、底辺 ＝ 斜辺 × $\\cos\\theta$、高さ ＝ 底辺 × $\\tan\\theta$。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        {
+          icon: '🚧',
+          title: '坂道の傾きの標識',
+          text: '道路の「勾配 10%」の標識は、100m 進むと 10m のぼる（$\\tan\\theta = 0.1$）という意味。車いす用のスロープは、法律で勾配が決められている。',
+        },
+        {
+          icon: '🏔️',
+          title: '山や建物の高さの測量',
+          text: '富士山やエベレストの高さも、のぼらずに角度と距離から計算された。三角比は、何千年も前から測量に使われている。',
+        },
+        {
+          icon: '🎮',
+          title: 'ゲームのななめ移動',
+          text: 'キャラクターが速さ $v$ で角度 θ の方向へ進むとき、横に $v\\cos\\theta$、たてに $v\\sin\\theta$ 動かす。ゲームの移動は三角比で計算されている。',
+          formula: '(v\\cos\\theta,\\ v\\sin\\theta)',
+        },
+        {
+          icon: '☀️',
+          title: '太陽光パネルの角度',
+          text: '太陽の高さ（角度）によって、パネルが受ける光の量は $\\sin$ で変わる。季節に合わせて、いちばん効率のよい角度が計算されている。',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        {
+          id: 'm1t-01-q1',
+          type: 'choice',
+          level: 'meaning',
+          prompt: '直角三角形で、$\\tan\\theta$ が表している比は？',
+          choices: ['高さ ÷ 斜辺', '底辺 ÷ 斜辺', '高さ ÷ 底辺', '斜辺 ÷ 高さ'],
+          answer: 2,
+          explain: '$\\tan\\theta = \\dfrac{\\text{高さ}}{\\text{底辺}}$。「横に 1 進むと、たてに何進むか」で、坂の傾きそのもの。',
+        },
+        { type: 'gen', gen: 'right-tri-side', level: 'calc' },
+        {
+          id: 'm1t-01-q2',
+          type: 'mark',
+          level: 'calc',
+          prompt: '3 辺が 3、4、5 の直角三角形で、長さ 3 の辺に向かい合う角を A とすると\n$\\sin A =$ ［ア］／［イ］、$\\cos A =$ ［ウ］／［エ］、$\\tan A =$ ［オ］／［カ］',
+          answers: { ア: '3', イ: '5', ウ: '4', エ: '5', オ: '3', カ: '4' },
+          hint: '斜辺はいちばん長い 5。A の向かいの「高さ」は 3、となりの「底辺」は 4。',
+          explain: '$\\sin A = \\dfrac{3}{5}$、$\\cos A = \\dfrac{4}{5}$、$\\tan A = \\dfrac{3}{4}$',
+        },
+        {
+          id: 'm1t-01-q3',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\sin 60^\\circ = \\sqrt{\\phantom{0}}$［ア］／［イ］、$\\tan 60^\\circ = \\sqrt{\\phantom{0}}$［ウ］',
+          answers: { ア: '3', イ: '2', ウ: '3' },
+          hint: '30°・60°・90° の三角定規の辺の比は $1 : 2 : \\sqrt{3}$（短い辺：斜辺：長い辺）。',
+          explain: '60° の向かいの辺が $\\sqrt{3}$、斜辺が 2、となりの辺が 1。$\\sin 60^\\circ = \\dfrac{\\sqrt{3}}{2}$、$\\tan 60^\\circ = \\dfrac{\\sqrt{3}}{1} = \\sqrt{3}$。',
+        },
+        {
+          id: 'm1t-01-q4',
+          type: 'mark',
+          level: 'exam',
+          prompt: '傾きの角が $30^\\circ$ の坂道を 100m 歩いた。のぼった高さは ［アイ］ m、進んだ水平距離は ［ウエ］$\\sqrt{\\phantom{0}}$［オ］ m である。',
+          answers: { ア: '5', イ: '0', ウ: '5', エ: '0', オ: '3' },
+          hint: '高さ ＝ 100 × $\\sin 30^\\circ$、水平距離 ＝ 100 × $\\cos 30^\\circ$',
+          explain: '高さ $100 \\times \\dfrac{1}{2} = 50$ m、水平距離 $100 \\times \\dfrac{\\sqrt{3}}{2} = 50\\sqrt{3} \\fallingdotseq 86.6$ m。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '灯台守のナギ', mood: 'happy', text: '50m！ 正解だよ。灯台の土台は、ちょうど海から 50m の高さにあるんだ。' },
+        { who: 'kai', mood: 'happy', text: '角度がわかれば、ものさしを当てなくても長さがわかる…。これはすごい理術だな。' },
+        { who: 'michiru', mood: 'normal', text: '次は、この理術で灯台そのものの高さを測りましょう。' },
+      ],
+    },
+  ],
+};

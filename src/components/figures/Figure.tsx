@@ -6,6 +6,7 @@ import { PriceBox } from './PriceBox';
 import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, ParabolaA, ParabolaShift, QuadIneq, Roots, Throw } from './QuadFigures';
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
+import { CosLaw, Cuboid, Measure, RightTriangle, SinLaw, TriArea, UnitCircle } from './TrigFigures';
 
 const rt = (s: string) => <RichText text={s} inline />;
 
@@ -60,5 +61,19 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <QuadIneq />;
     case 'axisMove':
       return <AxisMove />;
+    case 'rightTriangle':
+      return <RightTriangle />;
+    case 'measure':
+      return <Measure />;
+    case 'unitCircle':
+      return <UnitCircle />;
+    case 'sinLaw':
+      return <SinLaw />;
+    case 'cosLaw':
+      return <CosLaw />;
+    case 'triArea':
+      return <TriArea />;
+    case 'cuboid':
+      return <Cuboid />;
   }
 }

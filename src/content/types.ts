@@ -99,7 +99,14 @@ export type FigureSpec =
   | { type: 'roots' }
   | { type: 'discriminant' }
   | { type: 'quadIneq' }
-  | { type: 'axisMove' };
+  | { type: 'axisMove' }
+  | { type: 'rightTriangle' }
+  | { type: 'measure' }
+  | { type: 'unitCircle' }
+  | { type: 'sinLaw' }
+  | { type: 'cosLaw' }
+  | { type: 'triArea' }
+  | { type: 'cuboid' };
 
 // ---------- ステップ ----------
 
@@ -168,7 +175,7 @@ export interface BossStep {
 
 export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep | BossStep;
 
-export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain';
+export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse';
 
 export interface CardDef {
   id: string;

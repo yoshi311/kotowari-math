@@ -149,6 +149,31 @@ function Fountain() {
   );
 }
 
+function Lighthouse() {
+  return (
+    <>
+      <Sky id="sky-lh" top="#14213d" bottom="#3d5a80" />
+      {/* 海 */}
+      <rect y="100" width="400" height="40" fill="#1d3557" />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <path key={i} d={`M${i * 90 - 20} ${112 + (i % 2) * 10} q20 -6 40 0 t40 0`} fill="none" stroke="#a8dadc" strokeWidth="1.5" opacity="0.5" />
+      ))}
+      {/* 岬 */}
+      <path d="M240 140 L260 96 Q300 80 340 92 L400 100 L400 140 Z" fill="#4a4e69" />
+      {/* 灯台 */}
+      <polygon points="296,92 316,92 312,30 300,30" fill="#f8f9fa" />
+      <rect x="298" y="50" width="16" height="7" fill="#e63946" />
+      <rect x="298" y="70" width="16" height="7" fill="#e63946" />
+      <rect x="297" y="20" width="18" height="10" fill="#ffd166" />
+      <path d="M306 25 L120 0 L120 45 Z" fill="#ffd166" opacity="0.12" />
+      {/* 船 */}
+      <path d="M60 104 L100 104 L94 112 L66 112 Z" fill="#e9c46a" />
+      <line x1="80" y1="104" x2="80" y2="84" stroke="#e9c46a" strokeWidth="2" />
+      <path d="M80 86 L94 100 L80 100 Z" fill="#f1faee" />
+    </>
+  );
+}
+
 export function SceneBanner({ scene }: { scene?: SceneId }) {
   return (
     <svg className="scene-banner" viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -157,6 +182,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'plaza' && <Plaza />}
       {scene === 'valley' && <Valley />}
       {scene === 'fountain' && <Fountain />}
+      {scene === 'lighthouse' && <Lighthouse />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );
