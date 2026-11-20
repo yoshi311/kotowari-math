@@ -174,6 +174,35 @@ function Lighthouse() {
   );
 }
 
+function Fort() {
+  // 方眼の石垣と、座標軸の旗が立つ砦
+  return (
+    <>
+      <Sky id="sky-fort" top="#1d3557" bottom="#a8dadc" />
+      <rect x="60" y="50" width="280" height="90" fill="#6c757d" />
+      {Array.from({ length: 14 }, (_, i) => (
+        <line key={`v${i}`} x1={60 + i * 20} y1="50" x2={60 + i * 20} y2="140" stroke="#495057" strokeWidth="1" />
+      ))}
+      {Array.from({ length: 5 }, (_, j) => (
+        <line key={`h${j}`} x1="60" y1={50 + j * 20} x2="340" y2={50 + j * 20} stroke="#495057" strokeWidth="1" />
+      ))}
+      {[60, 100, 140, 180, 220, 260, 300].map((x) => (
+        <rect key={x} x={x} y="38" width="20" height="12" fill="#6c757d" />
+      ))}
+      <rect x="180" y="96" width="40" height="44" rx="20" fill="#343a40" />
+      {/* 座標軸の旗 */}
+      <line x1="90" y1="38" x2="90" y2="6" stroke="#dee2e6" strokeWidth="2" />
+      <path d="M90 8 L114 14 L90 20 Z" fill="#00bbf9" />
+      <line x1="310" y1="38" x2="310" y2="6" stroke="#dee2e6" strokeWidth="2" />
+      <path d="M310 8 L334 14 L310 20 Z" fill="#f15bb5" />
+      {/* 石垣にえがかれた放物線と円 */}
+      <path d="M240 70 Q270 130 300 70" fill="none" stroke="#ffd166" strokeWidth="2" opacity="0.8" />
+      <circle cx="110" cy="90" r="18" fill="none" stroke="#06d6a0" strokeWidth="2" opacity="0.8" />
+      <rect y="132" width="400" height="8" fill="#3a5a40" />
+    </>
+  );
+}
+
 function Ruins() {
   // 円と三角形が刻まれた古代の遺跡
   return (
@@ -262,6 +291,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'plain' && <Plain />}
       {scene === 'dice' && <DiceTown />}
       {scene === 'ruins' && <Ruins />}
+      {scene === 'fort' && <Fort />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

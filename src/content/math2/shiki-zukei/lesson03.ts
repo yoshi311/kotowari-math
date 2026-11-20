@@ -1,0 +1,117 @@
+import type { Lesson } from '../../types';
+
+export const z03: Lesson = {
+  id: 'm2a-03',
+  no: 3,
+  title: '複素数と 2 次方程式',
+  subtitle: '2 乗して −1 になる数',
+  quest: '解けないはずの方程式',
+  card: {
+    id: 'card-m2a-03',
+    name: '虚空の鍵',
+    term: '複素数・虚数解',
+    rarity: 2,
+    tool: 'i² = −1 となる虚数単位 i を使って数の世界を広げ、どんな 2 次方程式にも解があるようにする道具',
+    formula: 'i^2 = -1,\\quad x = \\dfrac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}',
+    uses: ['交流電気の計算（電気工学）', '信号処理・音声や画像の圧縮', '量子力学'],
+    color: '#f15bb5',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：解のない方程式？',
+      scene: 'fort',
+      lines: [
+        { who: 'npc', npcName: '砦の測量士メル', mood: 'think', text: '砦の古い記録に「$x^2 - 2x + 5 = 0$ の解を答えよ」という問題があるの。でも解の公式を使うと $\\sqrt{-16}$ が出てきて…。' },
+        { who: 'kai', mood: 'normal', text: '2 乗してマイナスになる数なんてないだろ。だから「解なし」で終わりじゃないのか？' },
+        { who: 'michiru', mood: 'happy', text: '実数の世界ではね。でも「2 乗すると −1 になる数」を新しくつくると、数の世界が広がるの。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：グラフと虚数解',
+      lines: [{ who: 'michiru', text: '$y = x^2 + bx + c$ のグラフよ。グラフが x 軸から離れると、解はどうなるかしら。' }],
+      figure: { type: 'complexRoots' },
+      prompts: ['グラフが x 軸と交わらないとき、判別式 D の符号は？', '虚数解の「実部」は、グラフのどこと同じ？'],
+      check: {
+        id: 'm2a-03-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '判別式 $D < 0$ の 2 次方程式の解は？',
+        choices: ['異なる 2 つの虚数解（たがいに共役）', '実数の重解', '異なる 2 つの実数解', '解はまったくない'],
+        answer: 0,
+        explain: '$D < 0$ のとき、解の公式の √ の中が負になる。$\\sqrt{-k} = \\sqrt{k}\\,i$ を使うと、$p + qi$ と $p - qi$ の 2 つの虚数解（共役な複素数）が得られる。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: '実部はいつも頂点の x 座標と同じ！ グラフが上に離れるほど、虚部が大きくなるんだね。' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：複素数',
+      tool: 'i² = −1 となる虚数単位 i を使って数の世界を広げ、どんな 2 次方程式にも解があるようにする道具',
+      formulas: ['i^2 = -1,\\quad \\sqrt{-k} = \\sqrt{k}\\,i\\ (k > 0)', 'a + bi\\ (a, b \\text{ は実数})', 'D = b^2 - 4ac < 0 \\iff \\text{異なる 2 つの虚数解}'],
+      analogy: {
+        title: 'たとえるなら「数直線にたての方向を足す」',
+        text: '実数は 1 本の数直線の上の数。i は、その数直線からたてにとび出した方向の目もり。実部（よこ）と虚部（たて）の 2 つで 1 つの数を表すので、数の世界が「線」から「平面」に広がる。',
+      },
+      points: [
+        '**複素数** $a + bi$：a を実部、b を虚部という。$b \\ne 0$ のものを虚数という。',
+        '計算は文字式と同じで、$i^2$ が出たら $-1$ におきかえる。',
+        '**共役な複素数**：$a + bi$ と $a - bi$。かけると $a^2 + b^2$（実数）になる。分母の i を消すときに使う。',
+        '**判別式**：$D > 0$ 異なる 2 つの実数解、$D = 0$ 重解、$D < 0$ 異なる 2 つの虚数解。',
+        '注意：$\\sqrt{-2}\\sqrt{-3} = \\sqrt{2}i \\cdot \\sqrt{3}i = -\\sqrt{6}$（$\\sqrt{6}$ ではない）。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '⚡', title: '交流電気', text: 'コンセントの電気は向きが波のように変わる交流。電気工学では、電圧や電流を複素数で表して計算する。' },
+        { icon: '🎵', title: '音や画像の圧縮', text: '音楽や写真のデータを「波の重ね合わせ」に分解するフーリエ変換は、複素数を使って計算される。MP3 や JPEG の土台。' },
+        { icon: '⚛️', title: '量子力学', text: '電子などのミクロな世界を表す方程式には、i がそのまま登場する。スマホの半導体も、この理論で設計されている。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'complex-mul', level: 'calc' },
+        {
+          id: 'm2a-03-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$(2 + 3i)(2 - 3i) =$ ［アイ］、$(1 + i)^2 =$ ［ウ］$i$ である。',
+          answers: { ア: '1', イ: '3', ウ: '2' },
+          hint: '$(a + bi)(a - bi) = a^2 + b^2$。$(1 + i)^2 = 1 + 2i + i^2$。',
+          explain: '$4 - 9i^2 = 4 + 9 = 13$。$(1 + i)^2 = 1 + 2i - 1 = 2i$。',
+        },
+        { type: 'gen', gen: 'quad-complex', level: 'calc' },
+        {
+          id: 'm2a-03-q2',
+          type: 'choice',
+          level: 'calc',
+          prompt: '$\\dfrac{1}{1 + i}$ を $a + bi$ の形にすると？',
+          choices: ['$\\dfrac{1}{2} - \\dfrac{1}{2}i$', '$\\dfrac{1}{2} + \\dfrac{1}{2}i$', '$1 - i$', '$1 + i$'],
+          answer: 0,
+          hint: '分母と分子に、分母の共役 $1 - i$ をかける。',
+          explain: '$\\dfrac{1 - i}{(1 + i)(1 - i)} = \\dfrac{1 - i}{2} = \\dfrac{1}{2} - \\dfrac{1}{2}i$。',
+        },
+        {
+          id: 'm2a-03-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '2 次方程式 $x^2 + 2kx + k + 2 = 0$ が虚数解をもつような k の値の範囲は ［アイ］ $< k <$ ［ウ］ である。',
+          answers: { ア: '-', イ: '1', ウ: '2' },
+          hint: '$\\dfrac{D}{4} = k^2 - (k + 2) < 0$',
+          explain: '$k^2 - k - 2 < 0$ より $(k + 1)(k - 2) < 0$。$-1 < k < 2$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '砦の測量士メル', mood: 'happy', text: '$x = 1 \\pm 2i$。「解なし」じゃなかったのね！ 数の世界って、こんなに広かったんだ。' },
+        { who: 'michiru', mood: 'normal', text: '解を求めなくても、2 つの解の「和」と「積」はすぐわかるの。次はその理術よ。' },
+      ],
+    },
+  ],
+};

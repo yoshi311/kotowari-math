@@ -6,6 +6,7 @@ import { PriceBox } from './PriceBox';
 import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, ParabolaA, ParabolaShift, QuadIneq, Roots, Throw } from './QuadFigures';
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
+import { AmGm, Binomial, CircleLine, ComplexRoots, DivPoint, LineEq, Region, Remainder, Vieta } from './CoordFigures';
 import { Bisector, Ceva, Centers, InscribedAngle, Polyhedron, PowerPoint, TangentChord, TwoCircles } from './GeoFigures';
 import { CirclePerm, CondProb, DiceTable, Expectation, GridPath, Pascal, PermSlots, RepeatTrial, TreeDiagram } from './ProbFigures';
 import { BoxPlot, Histogram, Hypothesis, MeanBalance, Outlier, Scatter, Transform, Variance } from './StatsFigures';
@@ -128,5 +129,23 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <TwoCircles />;
     case 'polyhedron':
       return <Polyhedron />;
+    case 'binomial':
+      return <Binomial />;
+    case 'amgm':
+      return <AmGm />;
+    case 'complexRoots':
+      return <ComplexRoots />;
+    case 'vieta':
+      return <Vieta />;
+    case 'remainder':
+      return <Remainder />;
+    case 'divPoint':
+      return <DivPoint />;
+    case 'lineEq':
+      return <LineEq />;
+    case 'circleLine':
+      return <CircleLine />;
+    case 'region':
+      return <Region />;
   }
 }

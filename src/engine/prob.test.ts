@@ -17,5 +17,8 @@ describe('場合の数と確率の計算', () => {
     expect(fracStr(75, 216)).toBe('25/72');
     expect(fracStr(4, 2)).toBe('2');
     expect(fracTex(24, 81)).toBe('\\dfrac{8}{27}');
+    expect(fracStr(3, -6)).toBe('-1/2');
+    expect(fracTex(3, -6)).toBe('-\\dfrac{1}{2}');
+    expect(fracStr(-4, -6)).toBe('2/3');
   });
 });

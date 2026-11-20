@@ -1,0 +1,115 @@
+import type { Lesson } from '../../types';
+
+export const z07: Lesson = {
+  id: 'm2a-07',
+  no: 7,
+  title: '直線の方程式',
+  subtitle: '平行・垂直・点と直線の距離',
+  quest: '城壁までの最短の橋',
+  card: {
+    id: 'card-m2a-07',
+    name: 'まっすぐの槍',
+    term: '直線の方程式・点と直線の距離',
+    rarity: 2,
+    tool: '直線を式で表し、平行・垂直の条件や、点から直線までの最短距離を計算する道具',
+    formula: 'y - y_1 = m(x - x_1),\\quad m_1 m_2 = -1,\\quad d = \\dfrac{|ax_0 + by_0 + c|}{\\sqrt{a^2 + b^2}}',
+    uses: ['道路や線路の設計', 'ロボットの障害物までの距離', 'データの傾向線（回帰直線）'],
+    color: '#ffd166',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：いちばん短い橋',
+      scene: 'fort',
+      lines: [
+        { who: 'npc', npcName: '見張りの兵士トール', mood: 'think', text: '見張り塔 P(−2, 4) から、ななめに走る城壁まで橋をかけたいんだ。材料が少ないから、いちばん短くしたい。' },
+        { who: 'kai', mood: 'think', text: '城壁にまっすぐ…垂直にかければ最短だろうけど、長さはどう計算するんだ？' },
+        { who: 'michiru', mood: 'happy', text: '城壁を直線の式で表せば、「点と直線の距離」の公式で一発よ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：直線と距離',
+      lines: [{ who: 'michiru', text: '青い直線が城壁、金色の点線が P を通る垂直な線。傾きと切片を変えて、距離 d を見てみて。' }],
+      figure: { type: 'lineEq' },
+      prompts: ['直線の傾きを変えると、垂直な線の傾きはどう変わる？', 'PH の長さと、公式で計算した d はいつも同じ？'],
+      check: {
+        id: 'm2a-07-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '傾きが $m_1$、$m_2$ の 2 直線が垂直であるための条件は？',
+        choices: ['$m_1 m_2 = -1$', '$m_1 = m_2$', '$m_1 + m_2 = 0$', '$m_1 m_2 = 1$'],
+        answer: 0,
+        explain: '垂直な 2 直線の傾きの積は −1。傾き 2 の直線に垂直な直線の傾きは $-\\dfrac{1}{2}$。平行なら傾きが等しい（$m_1 = m_2$）。',
+      },
+      after: [{ who: 'zero', mood: 'happy', text: '傾きが 1/2 なら垂直な線は −2。ひっくり返して、符号を変えるんだね！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：直線の方程式',
+      tool: '直線を式で表し、平行・垂直の条件や、点から直線までの最短距離を計算する道具',
+      formulas: ['\\text{点 } (x_1, y_1) \\text{ を通り傾き } m：y - y_1 = m(x - x_1)', '\\text{平行：} m_1 = m_2,\\quad \\text{垂直：} m_1 m_2 = -1', 'd = \\dfrac{|ax_0 + by_0 + c|}{\\sqrt{a^2 + b^2}}\\quad (\\text{直線 } ax + by + c = 0)'],
+      analogy: {
+        title: 'たとえるなら「坂道の設計図」',
+        text: '傾きは「横に 1 進むとたてにいくつ上がるか」という坂の急さ。1 点と坂の急さがわかれば、道（直線）は 1 本に決まる。坂を 90° 回すと、急さは「逆数にして符号を変えたもの」になる。',
+      },
+      points: [
+        '**1 点と傾き**：$y - y_1 = m(x - x_1)$。**2 点を通る**：まず傾きを求める。',
+        '一般形 $ax + by + c = 0$ なら、たての直線（$x = k$）も表せる。',
+        '**平行**：傾きが等しい。**垂直**：傾きの積が −1。',
+        '**点と直線の距離**：直線を $ax + by + c = 0$ の形にしてから公式に入れる。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🛤️', title: '道路や線路', text: '道路の勾配は直線の傾きで表される。交差する道が垂直かどうかも、傾きの積で確かめられる。' },
+        { icon: '🤖', title: 'ロボットの障害物回避', text: '掃除ロボットは、壁を直線とみて、自分の位置から壁までの距離を計算しながら動いている。' },
+        { icon: '📈', title: 'データの傾向線', text: '散布図の点のならびにいちばん合う直線（回帰直線）を引くと、これからの値を予測できる。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        {
+          id: 'm2a-07-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '点 (1, 2) を通り、傾きが 3 の直線の方程式は $y =$ ［ア］$x -$ ［イ］ である。',
+          answers: { ア: '3', イ: '1' },
+          hint: '$y - 2 = 3(x - 1)$',
+          explain: '$y = 3x - 3 + 2 = 3x - 1$。',
+        },
+        { type: 'gen', gen: 'line-slope', level: 'calc' },
+        {
+          id: 'm2a-07-q2',
+          type: 'mark',
+          level: 'calc',
+          prompt: '2 直線 $y = 2x + 1$ と $y = ax - 3$ が垂直であるとき、$a = -$［ア］／［イ］ である。',
+          answers: { ア: '1', イ: '2' },
+          hint: '傾きの積が −1。',
+          explain: '$2a = -1$ より $a = -\\dfrac{1}{2}$。',
+        },
+        { type: 'gen', gen: 'point-line-dist', level: 'calc' },
+        {
+          id: 'm2a-07-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '点 (1, 2) と直線 $3x + 4y - 1 = 0$ の距離は ［ア］ である。',
+          answers: { ア: '2' },
+          hint: '$d = \\dfrac{|3 \\cdot 1 + 4 \\cdot 2 - 1|}{\\sqrt{3^2 + 4^2}}$',
+          explain: '$\\dfrac{|3 + 8 - 1|}{5} = \\dfrac{10}{5} = 2$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '見張りの兵士トール', mood: 'happy', text: '垂直にかければ最短で、その長さは公式ですぐわかる。材料を注文してくるよ！' },
+        { who: 'michiru', mood: 'normal', text: '砦の中庭には円い広場があるわ。円も式で表せるのよ。' },
+      ],
+    },
+  ],
+};

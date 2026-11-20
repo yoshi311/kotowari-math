@@ -131,7 +131,16 @@ export type FigureSpec =
   | { type: 'tangentChord' }
   | { type: 'power' }
   | { type: 'twoCircles' }
-  | { type: 'polyhedron' };
+  | { type: 'polyhedron' }
+  | { type: 'binomial' }
+  | { type: 'amgm' }
+  | { type: 'complexRoots' }
+  | { type: 'vieta' }
+  | { type: 'remainder' }
+  | { type: 'divPoint' }
+  | { type: 'lineEq' }
+  | { type: 'circleLine' }
+  | { type: 'region' };
 
 // ---------- ステップ ----------
 
@@ -200,7 +209,7 @@ export interface BossStep {
 
 export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep | BossStep;
 
-export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse' | 'plain' | 'dice' | 'ruins';
+export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse' | 'plain' | 'dice' | 'ruins' | 'fort';
 
 export interface CardDef {
   id: string;

@@ -4,6 +4,7 @@ import { fmt, paren, randInt, signed } from '../../engine/format';
 import { statGenerators } from './stats';
 import { probGenerators } from './prob';
 import { geoGenerators } from './geo';
+import { coordGenerators } from './coord';
 
 type Gen = (level: QLevel) => Question;
 
@@ -634,6 +635,7 @@ export const generators: Record<string, Gen> = {
   ...statGenerators,
   ...probGenerators,
   ...geoGenerators,
+  ...coordGenerators,
 };
 
 export function generate(gen: string, level: QLevel): Question {

@@ -24,7 +24,9 @@ export const gcd = (a: number, b: number): number => (b === 0 ? Math.abs(a) : gc
 /** 約分した分数 [分子, 分母] */
 export function reduce(n: number, d: number): [number, number] {
   const g = gcd(n, d) || 1;
-  return [n / g, d / g];
+  // 分母はいつも正にする（3/−2 → −3/2）
+  const s = d < 0 ? -1 : 1;
+  return [(s * n) / g, (s * d) / g];
 }
 
 /** 約分した分数の文字列（答えの判定用）："11/36"、分母が 1 なら "3" */
