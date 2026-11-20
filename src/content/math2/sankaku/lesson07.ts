@@ -1,0 +1,116 @@
+import type { Lesson } from '../../types';
+
+export const s07: Lesson = {
+  id: 'm2s-07',
+  no: 7,
+  title: '加法定理',
+  subtitle: '角のたし算をほどく',
+  quest: '75° の灯台の光',
+  card: {
+    id: 'card-m2s-07',
+    name: '重ね波の指輪',
+    term: '加法定理',
+    rarity: 3,
+    tool: '2 つの角の和や差の sin・cos・tan を、それぞれの角の値の組み合わせで求める道具',
+    formula: '\\sin(\\alpha \\pm \\beta) = \\sin\\alpha\\cos\\beta \\pm \\cos\\alpha\\sin\\beta,\\ \\cos(\\alpha \\pm \\beta) = \\cos\\alpha\\cos\\beta \\mp \\sin\\alpha\\sin\\beta',
+    uses: ['コンピュータグラフィックスの回転の計算', '2 つの波の重ね合わせ（うなり）', 'スマホの電波の送受信'],
+    color: '#f15bb5',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：75° の値',
+      scene: 'coast',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'think', text: '灯台の光が、海面から 75° の向きに出ている。光の高さを計算したいんだけど、sin 75° なんて表にのってないんだ。' },
+        { who: 'kai', mood: 'normal', text: '75° = 45° + 30° だろ。sin 45° + sin 30° でいいんじゃないか？' },
+        { who: 'michiru', mood: 'think', text: 'それだと 1 をこえてしまうわ。sin の値は 1 以下のはず。角のたし算には、正しいほどき方があるの。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：α と β を回す',
+      lines: [{ who: 'michiru', text: 'α だけ回した点を、さらに β だけ回すわ。下の式の左辺と右辺の値をくらべてみて。' }],
+      figure: { type: 'addition' },
+      prompts: ['α = 45°、β = 30° のとき、sin(α + β) はいくつ？ sin α + sin β とくらべると？', 'α − β に切りかえると、式のどこの符号が変わる？'],
+      check: {
+        id: 'm2s-07-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\sin(\\alpha + \\beta)$ と等しいのは？',
+        choices: ['$\\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$', '$\\sin\\alpha + \\sin\\beta$', '$\\sin\\alpha\\sin\\beta + \\cos\\alpha\\cos\\beta$', '$\\sin\\alpha\\cos\\beta - \\cos\\alpha\\sin\\beta$'],
+        answer: 0,
+        explain: '加法定理：$\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$。$\\sin\\alpha + \\sin\\beta$ ではない（45° と 30° で試すと 1 をこえてしまう）。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: 'sin と cos を「かけて」組み合わせるんだ。「サイン・コサイン・コサイン・サイン」だね！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：加法定理',
+      tool: '2 つの角の和や差の sin・cos・tan を、それぞれの角の値の組み合わせで求める道具',
+      formulas: ['\\sin(\\alpha \\pm \\beta) = \\sin\\alpha\\cos\\beta \\pm \\cos\\alpha\\sin\\beta', '\\cos(\\alpha \\pm \\beta) = \\cos\\alpha\\cos\\beta \\mp \\sin\\alpha\\sin\\beta', '\\tan(\\alpha \\pm \\beta) = \\dfrac{\\tan\\alpha \\pm \\tan\\beta}{1 \\mp \\tan\\alpha\\tan\\beta}'],
+      analogy: {
+        title: 'たとえるなら「2 回に分けた回転」',
+        text: 'α + β 回すのは、α 回してから β 回すのと同じ。1 回目で決まった点の座標（cos α, sin α）を、2 回目の回転でまぜ合わせる。だから cos と sin のかけ算が組み合わさる。',
+      },
+      points: [
+        '$\\sin 75^\\circ = \\sin(45^\\circ + 30^\\circ) = \\dfrac{\\sqrt{2}}{2} \\cdot \\dfrac{\\sqrt{3}}{2} + \\dfrac{\\sqrt{2}}{2} \\cdot \\dfrac{1}{2} = \\dfrac{\\sqrt{6} + \\sqrt{2}}{4}$。',
+        '**cos は符号が逆になる**：cos(α + β) の右辺は「−」、cos(α − β) は「＋」。',
+        '覚え方：sin は「サイコス・コスサイ」、cos は「コスコス・サイサイ（符号逆）」。',
+        '2 直線のなす角は、傾き $m_1 = \\tan\\alpha$、$m_2 = \\tan\\beta$ として $\\tan(\\alpha - \\beta)$ で求められる。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🖥️', title: '画像の回転', text: 'スマホの写真を回転させるとき、すべての点の座標を加法定理（回転の式）で計算している。' },
+        { icon: '🎶', title: 'うなり', text: '少しだけ高さのちがう 2 つの音を重ねると、音が大きくなったり小さくなったりする「うなり」が聞こえる。加法定理で説明できる。' },
+        { icon: '📶', title: '電波の通信', text: 'スマホの電波は、sin と cos の 2 つの波に情報をのせて送る。受信機は加法定理を使って情報を取り出す。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'addition-value', level: 'calc' },
+        {
+          id: 'm2s-07-q1',
+          type: 'choice',
+          level: 'calc',
+          prompt: '$\\cos 15^\\circ$ の値は？',
+          choices: ['$\\dfrac{\\sqrt{6} + \\sqrt{2}}{4}$', '$\\dfrac{\\sqrt{6} - \\sqrt{2}}{4}$', '$\\dfrac{\\sqrt{3} - 1}{2}$', '$\\dfrac{1}{4}$'],
+          answer: 0,
+          hint: '$15^\\circ = 45^\\circ - 30^\\circ$。cos(α − β) は「＋」。',
+          explain: '$\\cos 45^\\circ\\cos 30^\\circ + \\sin 45^\\circ\\sin 30^\\circ = \\dfrac{\\sqrt{2}}{2} \\cdot \\dfrac{\\sqrt{3}}{2} + \\dfrac{\\sqrt{2}}{2} \\cdot \\dfrac{1}{2} = \\dfrac{\\sqrt{6} + \\sqrt{2}}{4}$。',
+        },
+        { type: 'gen', gen: 'addition-calc', level: 'calc' },
+        {
+          id: 'm2s-07-q2',
+          type: 'mark',
+          level: 'exam',
+          prompt: '$\\tan\\alpha = 2$、$\\tan\\beta = 3$ のとき、$\\tan(\\alpha + \\beta) =$ ［アイ］ である。',
+          answers: { ア: '-', イ: '1' },
+          hint: '$\\tan(\\alpha + \\beta) = \\dfrac{\\tan\\alpha + \\tan\\beta}{1 - \\tan\\alpha\\tan\\beta}$',
+          explain: '$\\dfrac{2 + 3}{1 - 6} = \\dfrac{5}{-5} = -1$。',
+        },
+        {
+          id: 'm2s-07-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '$\\sin\\alpha = \\dfrac{4}{5}$、$\\cos\\beta = \\dfrac{5}{13}$（α、β はともに $0$ と $\\dfrac{\\pi}{2}$ のあいだ）のとき、$\\sin(\\alpha + \\beta) = \\dfrac{p}{65}$ と表すと p = ［アイ］ である。',
+          answers: { ア: '5', イ: '6' },
+          hint: '$\\cos\\alpha = \\dfrac{3}{5}$、$\\sin\\beta = \\dfrac{12}{13}$',
+          explain: '$\\dfrac{4}{5} \\cdot \\dfrac{5}{13} + \\dfrac{3}{5} \\cdot \\dfrac{12}{13} = \\dfrac{20 + 36}{65} = \\dfrac{56}{65}$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'happy', text: 'sin 75° は約 0.97。ちゃんと 1 より小さいな。これで灯台の光の高さが計算できる！' },
+        { who: 'michiru', mood: 'normal', text: '加法定理で α = β にすると、もっと便利な公式が生まれるの。次はそれよ。' },
+      ],
+    },
+  ],
+};

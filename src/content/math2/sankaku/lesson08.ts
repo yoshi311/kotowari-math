@@ -1,0 +1,116 @@
+import type { Lesson } from '../../types';
+
+export const s08: Lesson = {
+  id: 'm2s-08',
+  no: 8,
+  title: '2 倍角・半角の公式',
+  subtitle: '角を 2 倍・半分にする',
+  quest: '倍の速さで回る風車',
+  card: {
+    id: 'card-m2s-08',
+    name: '双子の風車',
+    term: '2 倍角・半角の公式',
+    rarity: 2,
+    tool: '2θ や θ/2 の三角関数を、θ の三角関数で表して計算や式の変形をする道具',
+    formula: '\\sin 2\\theta = 2\\sin\\theta\\cos\\theta,\\ \\cos 2\\theta = 1 - 2\\sin^2\\theta = 2\\cos^2\\theta - 1',
+    uses: ['物を最も遠くへ投げる角度（45°）の説明', '音響機器のひずみの分析', '面積や積分の計算（数学Ⅲへ）'],
+    color: '#06d6a0',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：2 倍の角',
+      scene: 'coast',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'think', text: '浜の小さな風車は、水車の 2 倍の速さで回る。水車が θ 回ると、風車は 2θ。sin 2θ を sin θ と cos θ で表せないかな？' },
+        { who: 'kai', mood: 'normal', text: 'sin 2θ = 2 sin θ … じゃないよな。加法定理でまちがえたばかりだ。' },
+        { who: 'michiru', mood: 'happy', text: 'えらいわ、カイ。加法定理で α = β = θ とおけば、正しい形が出てくるの。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：左辺と右辺のグラフ',
+      lines: [{ who: 'michiru', text: '桃色の線が左辺、青い点が右辺よ。公式を切りかえて、点が線の上にのるか見てみて。' }],
+      figure: { type: 'doubleAngle' },
+      prompts: ['どの θ でも、青い点は桃色の線にのっている？', 'sin 2θ のグラフの周期は、sin θ とくらべてどうなっている？'],
+      check: {
+        id: 'm2s-08-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\cos 2\\theta$ と等しくないものは？',
+        choices: ['$2\\cos\\theta$', '$1 - 2\\sin^2\\theta$', '$2\\cos^2\\theta - 1$', '$\\cos^2\\theta - \\sin^2\\theta$'],
+        answer: 0,
+        explain: '加法定理で $\\cos 2\\theta = \\cos^2\\theta - \\sin^2\\theta$。$\\sin^2\\theta + \\cos^2\\theta = 1$ を使うと $1 - 2\\sin^2\\theta$ にも $2\\cos^2\\theta - 1$ にもなる。$2\\cos\\theta$ は別物。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: 'cos 2θ には 3 つの顔があるんだね。使い分けられたら強そう！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：2 倍角・半角の公式',
+      tool: '2θ や θ/2 の三角関数を、θ の三角関数で表して計算や式の変形をする道具',
+      formulas: ['\\sin 2\\theta = 2\\sin\\theta\\cos\\theta', '\\cos 2\\theta = \\cos^2\\theta - \\sin^2\\theta = 1 - 2\\sin^2\\theta = 2\\cos^2\\theta - 1', '\\sin^2\\dfrac{\\theta}{2} = \\dfrac{1 - \\cos\\theta}{2},\\quad \\cos^2\\dfrac{\\theta}{2} = \\dfrac{1 + \\cos\\theta}{2}'],
+      analogy: {
+        title: 'たとえるなら「同じ回転を 2 回」',
+        text: '2θ 回すのは、θ を 2 回くり返すこと。加法定理の α と β に同じ θ を入れるだけ。半角の公式は、cos 2θ の式を逆向きに読んだもの。',
+      },
+      points: [
+        '$\\sin\\theta = \\dfrac{3}{5}$（θ は鋭角）なら $\\cos\\theta = \\dfrac{4}{5}$、$\\sin 2\\theta = 2 \\cdot \\dfrac{3}{5} \\cdot \\dfrac{4}{5} = \\dfrac{24}{25}$。',
+        'cos 2θ は、わかっているのが sin なら $1 - 2\\sin^2\\theta$、cos なら $2\\cos^2\\theta - 1$ を使う。',
+        '**次数を下げる**：$\\sin^2\\theta = \\dfrac{1 - \\cos 2\\theta}{2}$。2 乗が消えるので、最大・最小を求めやすくなる。',
+        '$\\cos 2\\theta + \\sin\\theta = 0$ のような方程式は、$1 - 2\\sin^2\\theta$ に直して sin だけの式にする。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '⚾', title: '最も遠くへ投げる角度', text: '同じ速さで投げたボールの飛ぶ距離は $\\sin 2\\theta$ に比例する。2θ = 90° のとき最大なので、45° で投げると最も遠くまで飛ぶ。' },
+        { icon: '🔊', title: '音のひずみ', text: 'スピーカーの音がひずむと、元の音の 2 倍の高さの音がまざる。2 倍角の公式で、そのしくみを説明できる。' },
+        { icon: '📈', title: '積分への準備', text: '$\\sin^2\\theta$ の面積（積分）は、半角の公式で 2 乗を消してから計算する。大学や物理でよく使う。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'double-angle', level: 'calc' },
+        {
+          id: 'm2s-08-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$0 < \\theta < \\dfrac{\\pi}{2}$ で $\\cos\\theta = \\dfrac{3}{5}$ のとき、$\\sin 2\\theta = \\dfrac{p}{25}$ と表すと p = ［アイ］ である。',
+          answers: { ア: '2', イ: '4' },
+          hint: '$\\sin\\theta = \\dfrac{4}{5}$。$\\sin 2\\theta = 2\\sin\\theta\\cos\\theta$',
+          explain: '$\\sin\\theta = \\dfrac{4}{5}$ より $\\sin 2\\theta = 2 \\cdot \\dfrac{4}{5} \\cdot \\dfrac{3}{5} = \\dfrac{24}{25}$。',
+        },
+        {
+          id: 'm2s-08-q2',
+          type: 'choice',
+          level: 'calc',
+          prompt: '半角の公式を使うと、$\\sin^2\\dfrac{\\pi}{8}$ の値は？',
+          choices: ['$\\dfrac{2 - \\sqrt{2}}{4}$', '$\\dfrac{2 + \\sqrt{2}}{4}$', '$\\dfrac{1}{4}$', '$\\dfrac{\\sqrt{2}}{4}$'],
+          answer: 0,
+          hint: '$\\sin^2\\dfrac{\\theta}{2} = \\dfrac{1 - \\cos\\theta}{2}$ で $\\theta = \\dfrac{\\pi}{4}$。',
+          explain: '$\\dfrac{1 - \\cos\\frac{\\pi}{4}}{2} = \\dfrac{1 - \\frac{\\sqrt{2}}{2}}{2} = \\dfrac{2 - \\sqrt{2}}{4}$。',
+        },
+        { type: 'gen', gen: 'sym-value', level: 'calc' },
+        {
+          id: 'm2s-08-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '$0 \\le \\theta < 2\\pi$ のとき、方程式 $\\cos 2\\theta = \\sin\\theta$ を $\\sin\\theta$ だけの式にすると $2\\sin^2\\theta + \\sin\\theta - 1 = 0$ となる。この方程式の解は全部で ［ア］ 個ある。',
+          answers: { ア: '3' },
+          hint: '$(2\\sin\\theta - 1)(\\sin\\theta + 1) = 0$',
+          explain: '$\\sin\\theta = \\dfrac{1}{2}$ より $\\theta = \\dfrac{\\pi}{6},\\ \\dfrac{5}{6}\\pi$。$\\sin\\theta = -1$ より $\\theta = \\dfrac{3}{2}\\pi$。全部で 3 個。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'happy', text: '風車の高さは 2 sin θ cos θ。水車の値から、すぐに計算できるようになったぞ。' },
+        { who: 'michiru', mood: 'normal', text: '最後の理術は、2 つの波を 1 つにまとめる「合成」よ。海竜のいる大渦は、もうすぐそこ。' },
+      ],
+    },
+  ],
+};

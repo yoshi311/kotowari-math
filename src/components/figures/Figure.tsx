@@ -7,6 +7,7 @@ import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, Para
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
 import { AmGm, Binomial, CircleLine, ComplexRoots, DivPoint, LineEq, Region, Remainder, Vieta } from './CoordFigures';
+import { Addition, DoubleAngle, Radian, SinWave, Synthesis, TrigCircle, TrigEq, TrigSym, WaveTransform } from './WaveFigures';
 import { BaseChange, Digits, ExpExtend, ExpGraph, ExpIneq, LogGraph, LogIneq, LogScale, SlideRule } from './ExpLogFigures';
 import { Bisector, Ceva, Centers, InscribedAngle, Polyhedron, PowerPoint, TangentChord, TwoCircles } from './GeoFigures';
 import { CirclePerm, CondProb, DiceTable, Expectation, GridPath, Pascal, PermSlots, RepeatTrial, TreeDiagram } from './ProbFigures';
@@ -166,5 +167,23 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <LogIneq />;
     case 'digits':
       return <Digits />;
+    case 'radian':
+      return <Radian />;
+    case 'trigCircle':
+      return <TrigCircle />;
+    case 'trigSym':
+      return <TrigSym />;
+    case 'sinWave':
+      return <SinWave />;
+    case 'waveTransform':
+      return <WaveTransform />;
+    case 'trigEq':
+      return <TrigEq />;
+    case 'addition':
+      return <Addition />;
+    case 'doubleAngle':
+      return <DoubleAngle />;
+    case 'synthesis':
+      return <Synthesis />;
   }
 }

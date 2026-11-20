@@ -1,0 +1,117 @@
+import type { Lesson } from '../../types';
+
+export const s02: Lesson = {
+  id: 'm2s-02',
+  no: 2,
+  title: '三角関数の定義',
+  subtitle: 'どんな角にも sin・cos・tan',
+  quest: '回り続ける水車の高さ',
+  card: {
+    id: 'card-m2s-02',
+    name: '回転の羅針盤',
+    term: '三角関数（一般角）',
+    rarity: 2,
+    tool: '単位円の上の点の座標で、何周回った角にも sin・cos・tan を決める道具',
+    formula: '\\sin\\theta = y,\\quad \\cos\\theta = x,\\quad \\tan\\theta = \\dfrac{y}{x}',
+    uses: ['観覧車のゴンドラの高さの計算', 'ロボットアームの関節の位置計算', 'GPS や地図アプリの方角の計算'],
+    color: '#f15bb5',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：180° をこえた角',
+      scene: 'coast',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'think', text: '水車の羽根の先の高さを知りたいんだ。でも水車は何周も回る。210° とか 480° の sin なんて、三角形ではかけないだろ？' },
+        { who: 'kai', mood: 'normal', text: 'たしかに。三角比は 0° から 180° までしか習ってないぞ。' },
+        { who: 'michiru', mood: 'happy', text: '単位円を使えばいいの。円の上を回る点の座標で決めれば、どんな角でも sin・cos・tan が決まるわ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：単位円を回る点',
+      lines: [{ who: 'michiru', text: '角 θ を動かして、点 P の x 座標（cos）と y 座標（sin）の符号を見てみて。マイナスの角や、1 周をこえる角も試してね。' }],
+      figure: { type: 'trigCircle' },
+      prompts: ['P が第 3 象限にあるとき、sin・cos・tan の符号は？', '30° と 390° の値をくらべると？'],
+      check: {
+        id: 'm2s-02-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\theta = \\dfrac{7}{6}\\pi$（210°）のとき、正しいのは？',
+        choices: ['$\\sin\\theta < 0,\\ \\cos\\theta < 0,\\ \\tan\\theta > 0$', '$\\sin\\theta > 0,\\ \\cos\\theta < 0,\\ \\tan\\theta < 0$', '$\\sin\\theta < 0,\\ \\cos\\theta > 0,\\ \\tan\\theta < 0$', '$\\sin\\theta < 0,\\ \\cos\\theta < 0,\\ \\tan\\theta < 0$'],
+        answer: 0,
+        explain: '210° の点は第 3 象限で、x も y も負。だから sin < 0、cos < 0。tan = y ÷ x は 負 ÷ 負 で正。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: '何周回っても、点の位置が同じなら値も同じ。円をかけば、どんな角でもへっちゃらだね！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：三角関数',
+      tool: '単位円の上の点の座標で、何周回った角にも sin・cos・tan を決める道具',
+      formulas: ['\\sin\\theta = y,\\quad \\cos\\theta = x,\\quad \\tan\\theta = \\dfrac{y}{x}', '-1 \\le \\sin\\theta \\le 1,\\quad -1 \\le \\cos\\theta \\le 1', '\\sin(\\theta + 2n\\pi) = \\sin\\theta,\\ \\cos(\\theta + 2n\\pi) = \\cos\\theta'],
+      analogy: {
+        title: 'たとえるなら「観覧車のゴンドラ」',
+        text: '中心から半径 1 の観覧車で、ゴンドラが角 θ だけ回ったとき、中心からの高さが sin θ、横のずれが cos θ。何周しても、同じ場所に来れば高さは同じ。',
+      },
+      points: [
+        '半径 1 の円（**単位円**）の上で、x 軸の正の向きから角 θ 回った点を P(x, y) とする。',
+        '**符号**：第 1 象限はすべて正。第 2 象限は sin だけ正。第 3 象限は tan だけ正。第 4 象限は cos だけ正。',
+        '$\\theta = \\dfrac{\\pi}{2}$ などで x = 0 になるとき、tan θ は定義されない。',
+        '値を求める手順：①角の位置に点をかく ②30°・45°・60° の直角三角形の形を見つける ③符号をつける。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🎡', title: '観覧車', text: '半径 50 m の観覧車で、角 θ だけ回ったゴンドラの高さは「中心の高さ + 50 sin θ」。何周しても計算できる。' },
+        { icon: '🦾', title: 'ロボットアーム', text: '関節が θ 回ったときの指先の位置は (L cos θ, L sin θ)。マイナスの角も 1 周以上の回転も、同じ式で扱える。' },
+        { icon: '🧭', title: '地図と方角', text: '北から θ の方向へ d km 進むと、東へ d sin θ、北へ d cos θ 進む。ナビアプリは三角関数で位置を計算している。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'trig-value2', level: 'calc' },
+        {
+          id: 'm2s-02-q1',
+          type: 'choice',
+          level: 'calc',
+          prompt: '$\\cos\\dfrac{4}{3}\\pi$ の値は？',
+          choices: ['$-\\dfrac{1}{2}$', '$\\dfrac{1}{2}$', '$-\\dfrac{\\sqrt{3}}{2}$', '$\\dfrac{\\sqrt{3}}{2}$'],
+          answer: 0,
+          hint: '$\\dfrac{4}{3}\\pi = 240^\\circ$。第 3 象限の点。',
+          explain: '240° の点は $\\left(-\\dfrac{1}{2}, -\\dfrac{\\sqrt{3}}{2}\\right)$。cos は x 座標なので $-\\dfrac{1}{2}$。',
+        },
+        {
+          id: 'm2s-02-q2',
+          type: 'choice',
+          level: 'calc',
+          prompt: '$\\sin\\left(-\\dfrac{\\pi}{4}\\right)$ の値は？',
+          choices: ['$-\\dfrac{\\sqrt{2}}{2}$', '$\\dfrac{\\sqrt{2}}{2}$', '$-1$', '$-\\dfrac{1}{2}$'],
+          answer: 0,
+          hint: '時計回りに 45° 回った点。第 4 象限。',
+          explain: '点は $\\left(\\dfrac{\\sqrt{2}}{2}, -\\dfrac{\\sqrt{2}}{2}\\right)$。sin は y 座標なので $-\\dfrac{\\sqrt{2}}{2}$。',
+        },
+        {
+          id: 'm2s-02-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '$\\sin\\theta < 0$ かつ $\\tan\\theta > 0$ のとき、θ は第 ［ア］ 象限の角である。',
+          answers: { ア: '3' },
+          hint: 'sin < 0 は第 3・4 象限。tan > 0 は第 1・3 象限。',
+          explain: '両方をみたすのは第 3 象限。',
+        },
+        { type: 'gen', gen: 'rad-convert', level: 'calc' },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'happy', text: '210° のときは sin が −1/2。羽根の先は、中心より半径の半分だけ下にあるってことか！' },
+        { who: 'michiru', mood: 'normal', text: '次は、sin・cos・tan どうしの関係と、角をずらしたときの性質よ。' },
+      ],
+    },
+  ],
+};

@@ -244,6 +244,34 @@ function Forest() {
   );
 }
 
+function Coast() {
+  // 夕暮れの海岸。サインカーブの波が重なり、水車が回る
+  const wave = (y: number, amp: number, len: number, phase: number) => {
+    let d = `M0 ${y}`;
+    for (let x = 0; x <= 400; x += 8) d += ` L${x} ${(y + amp * Math.sin((x / len) * 2 * Math.PI + phase)).toFixed(1)}`;
+    return d;
+  };
+  return (
+    <>
+      <Sky id="sky-coast" top="#3d348b" bottom="#f7b267" />
+      <circle cx="300" cy="78" r="22" fill="#f4845f" opacity="0.9" />
+      <path d={`${wave(86, 3, 90, 0)} L400 140 L0 140 Z`} fill="#277da1" />
+      <path d={`${wave(100, 4, 70, 1)} L400 140 L0 140 Z`} fill="#4d908e" opacity="0.9" />
+      <path d={wave(112, 5, 55, 2)} fill="none" stroke="#f1faee" strokeWidth="2" opacity="0.7" />
+      <path d="M0 122 Q80 112 160 124 L160 140 L0 140 Z" fill="#e9c46a" />
+      {/* 水車：回転が波になる */}
+      <g transform="translate(70 100)">
+        <circle r="20" fill="none" stroke="#8d5524" strokeWidth="3" />
+        {[0, 45, 90, 135].map((a) => (
+          <line key={a} x1={-20 * Math.cos((a * Math.PI) / 180)} y1={-20 * Math.sin((a * Math.PI) / 180)} x2={20 * Math.cos((a * Math.PI) / 180)} y2={20 * Math.sin((a * Math.PI) / 180)} stroke="#8d5524" strokeWidth="2" />
+        ))}
+        <circle r="3" fill="#8d5524" />
+      </g>
+      <rect x="66" y="100" width="8" height="26" fill="#6d4c41" />
+    </>
+  );
+}
+
 function Ruins() {
   // 円と三角形が刻まれた古代の遺跡
   return (
@@ -334,6 +362,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'ruins' && <Ruins />}
       {scene === 'fort' && <Fort />}
       {scene === 'forest' && <Forest />}
+      {scene === 'coast' && <Coast />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

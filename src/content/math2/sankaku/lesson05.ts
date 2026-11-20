@@ -1,0 +1,116 @@
+import type { Lesson } from '../../types';
+
+export const s05: Lesson = {
+  id: 'm2s-05',
+  no: 5,
+  title: 'グラフの変形と周期',
+  subtitle: '波を高く・速く・ずらす',
+  quest: '大波と小波',
+  card: {
+    id: 'card-m2s-05',
+    name: '波形の琴',
+    term: 'グラフの拡大・縮小・平行移動',
+    rarity: 2,
+    tool: 'y = a sin b(θ − p) の a・b・p から、波の高さ・周期・ずれを読みとる道具',
+    formula: 'y = a\\sin b(\\theta - p):\\ \\text{最大値 } |a|,\\ \\text{周期 } \\dfrac{2\\pi}{|b|},\\ \\text{右へ } p',
+    uses: ['音の高さ（周期）と大きさ（振幅）の調整', 'シンセサイザーや音声加工', '地震波の分析'],
+    color: '#ffd166',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：大きさのちがう波',
+      scene: 'coast',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'think', text: '沖の大波は高さが 2 倍で、2 倍速くくり返す。浜の小波とは形がちがうけど、同じ sin で表せるのかな？' },
+        { who: 'kai', mood: 'normal', text: '高さ 2 倍なら 2 sin θ かな。速さはどうするんだ？' },
+        { who: 'michiru', mood: 'happy', text: 'θ の前に数をかけると、波の速さ（周期）が変わるの。グラフで確かめましょう。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：a・b・ずらし',
+      lines: [{ who: 'michiru', text: '点線が $y = \\sin\\theta$。a・b・ずらしを 1 つずつ動かして、桃色の波の変わり方を見てみて。' }],
+      figure: { type: 'waveTransform' },
+      prompts: ['a を 2 にすると、波の高さは？', 'b を 2 にすると、周期（金の線）は何倍になる？', 'ずらしを動かすと、波はどちらへ動く？'],
+      check: {
+        id: 'm2s-05-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$y = \\sin 2\\theta$ の周期は？',
+        choices: ['$\\pi$', '$2\\pi$', '$4\\pi$', '$\\dfrac{\\pi}{2}$'],
+        answer: 0,
+        explain: 'θ が π 進むと、2θ は 2π 進んで 1 周分。だから周期は $\\dfrac{2\\pi}{2} = \\pi$。グラフは横に $\\dfrac{1}{2}$ 倍にちぢむ。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: 'b を大きくすると、波がぎゅっとちぢんで速くなる。周期は 2π ÷ b だね！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：グラフの変形',
+      tool: 'y = a sin b(θ − p) の a・b・p から、波の高さ・周期・ずれを読みとる道具',
+      formulas: ['y = a\\sin\\theta:\\ \\text{たてに } a \\text{ 倍（最大値 } |a|)', 'y = \\sin b\\theta:\\ \\text{よこに } \\dfrac{1}{b} \\text{ 倍（周期 } \\dfrac{2\\pi}{b})', 'y = \\sin(\\theta - p):\\ \\theta \\text{ 軸方向に } p \\text{ 平行移動}'],
+      analogy: {
+        title: 'たとえるなら「ブランコ」',
+        text: 'a は「どれだけ高くこぐか（振れはば）」、b は「どれだけせわしなくこぐか（回数）」、p は「こぎはじめるタイミングのずれ」。3 つを決めれば、波の形が 1 つに決まる。',
+      },
+      points: [
+        '$y = 3\\sin 2\\theta$：最大値 3、最小値 −3、周期 π。',
+        '**注意**：$y = \\sin\\left(2\\theta - \\dfrac{\\pi}{3}\\right) = \\sin 2\\left(\\theta - \\dfrac{\\pi}{6}\\right)$。ずれは $\\dfrac{\\pi}{3}$ ではなく $\\dfrac{\\pi}{6}$。b でくくってから読む。',
+        '$y = \\sin\\theta + 1$ のように数を足すと、グラフは上へ平行移動する（最大値 2、最小値 0）。',
+        'たての倍率やずらしでは、周期は変わらない。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🎤', title: '音の高さと大きさ', text: '振幅 a が大きいほど大きな音、周期が短い（b が大きい）ほど高い音。1 オクターブ上の音は、周期がちょうど半分。' },
+        { icon: '🎹', title: 'シンセサイザー', text: '電子楽器は、a・b・p を変えた sin の波をつくって重ね、いろいろな音色をつくりだす。' },
+        { icon: '🌐', title: '地震波の分析', text: '地震計の記録を、周期と振幅のちがう波に分けて調べる。建物がゆれやすい周期を知る手がかりになる。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'period', level: 'calc' },
+        {
+          id: 'm2s-05-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$y = 3\\sin 4\\theta$ の最大値は ［ア］ である。また、周期を $\\dfrac{p}{q}\\pi$（既約分数）と表すと、p = ［イ］、q = ［ウ］ である。',
+          answers: { ア: '3', イ: '1', ウ: '2' },
+          hint: '周期は $\\dfrac{2\\pi}{4}$。',
+          explain: '最大値は 3。周期は $\\dfrac{2\\pi}{4} = \\dfrac{1}{2}\\pi$。',
+        },
+        {
+          id: 'm2s-05-q2',
+          type: 'choice',
+          level: 'calc',
+          prompt: '$y = \\sin\\left(2\\theta - \\dfrac{\\pi}{3}\\right)$ のグラフは、$y = \\sin 2\\theta$ のグラフを θ 軸方向にどれだけ平行移動したもの？',
+          choices: ['$\\dfrac{\\pi}{6}$', '$\\dfrac{\\pi}{3}$', '$-\\dfrac{\\pi}{3}$', '$\\dfrac{2}{3}\\pi$'],
+          answer: 0,
+          hint: '2 でくくると $\\sin 2\\left(\\theta - \\square\\right)$。',
+          explain: '$\\sin\\left(2\\theta - \\dfrac{\\pi}{3}\\right) = \\sin 2\\left(\\theta - \\dfrac{\\pi}{6}\\right)$。θ 軸方向に $\\dfrac{\\pi}{6}$ 平行移動。',
+        },
+        { type: 'gen', gen: 'trig-value2', level: 'calc' },
+        {
+          id: 'm2s-05-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '関数 $y = 2\\cos\\theta - 1$ の最大値は ［ア］、最小値は ［イウ］ である。',
+          answers: { ア: '1', イ: '-', ウ: '3' },
+          hint: '$-1 \\le \\cos\\theta \\le 1$ を 2 倍して 1 を引く。',
+          explain: '$-2 \\le 2\\cos\\theta \\le 2$ より $-3 \\le y \\le 1$。最大値 1、最小値 −3。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'happy', text: '沖の大波は $y = 2\\sin 2\\theta$。高さ 2 倍、周期は半分の π だ！' },
+        { who: 'michiru', mood: 'normal', text: '次は、「波の高さがちょうど○○になるのはいつ？」を求める方程式よ。' },
+      ],
+    },
+  ],
+};

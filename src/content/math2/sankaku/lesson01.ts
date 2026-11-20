@@ -1,0 +1,117 @@
+import type { Lesson } from '../../types';
+
+export const s01: Lesson = {
+  id: 'm2s-01',
+  no: 1,
+  title: '一般角と弧度法',
+  subtitle: '角を「長さ」で測る',
+  quest: '水車の羽根はどれだけ回った？',
+  card: {
+    id: 'card-m2s-01',
+    name: '半径のものさし',
+    term: '弧度法',
+    rarity: 1,
+    tool: '角の大きさを「半径何本分の弧か」で表し、回転と長さを同じ数で計算する道具',
+    formula: '180^\\circ = \\pi,\\quad \\ell = r\\theta,\\quad S = \\dfrac{1}{2}r^2\\theta',
+    uses: ['車輪やタイヤの回転と進んだ距離の計算', 'モーターの回転速度（ラジアン毎秒）', 'プログラムで角度を扱う計算（多くはラジアン）'],
+    color: '#00bbf9',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：回った角と進んだ長さ',
+      scene: 'coast',
+      lines: [
+        { who: 'narrator', text: '一行は、波の音がひびく「波音の海岸」にたどりついた。浜辺では、古い水車がぎいぎいと回っている。' },
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'think', text: 'この水車の羽根の先が、どれだけの長さを進んだか知りたいんだ。回った角は 120° なんだけど、長さに直すのがめんどうでね。' },
+        { who: 'kai', mood: 'normal', text: '円周 × 120/360 だろ？ 毎回わり算するのは、たしかに面倒だな。' },
+        { who: 'michiru', mood: 'happy', text: '角を「半径何本分の弧か」で測れば、長さ ＝ 半径 × 角 のかけ算だけになるの。それが弧度法よ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：半径何本分？',
+      lines: [{ who: 'michiru', text: '金色の目もりは、半径と同じ長さの弧ごとに付いているわ。角を動かして、半周でいくつ分になるか見てみて。' }],
+      figure: { type: 'radian' },
+      prompts: ['半周（180°）の弧は、半径のおよそ何本分？', '1 ラジアンは、だいたい何度？'],
+      check: {
+        id: 'm2s-01-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$180^\\circ$ を弧度法で表すと？',
+        choices: ['$\\pi$', '$2\\pi$', '$180$', '$\\dfrac{\\pi}{2}$'],
+        answer: 0,
+        explain: '半周の弧の長さは、半径 r の円で $\\pi r$。半径の π 本分なので $180^\\circ = \\pi$（ラジアン）。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: '半周は半径の 3.14 本分。だから 180° が π なんだね！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：一般角と弧度法',
+      tool: '角の大きさを「半径何本分の弧か」で表し、回転と長さを同じ数で計算する道具',
+      formulas: ['180^\\circ = \\pi\\ \\text{（ラジアン）},\\quad 1^\\circ = \\dfrac{\\pi}{180}', '\\ell = r\\theta,\\quad S = \\dfrac{1}{2}r^2\\theta = \\dfrac{1}{2}r\\ell', '\\theta + 2n\\pi\\ (n \\text{ は整数}) \\text{ は同じ位置の角}'],
+      analogy: {
+        title: 'たとえるなら「歩数で測る距離」',
+        text: '度数法は円を 360 等分した「目もり」、弧度法は「半径という歩幅で何歩歩いたか」。歩幅がわかれば、歩数 × 歩幅 ですぐ距離が出る。だから弧の長さは $r\\theta$。',
+      },
+      points: [
+        '$30^\\circ = \\dfrac{\\pi}{6}$、$45^\\circ = \\dfrac{\\pi}{4}$、$60^\\circ = \\dfrac{\\pi}{3}$、$90^\\circ = \\dfrac{\\pi}{2}$、$360^\\circ = 2\\pi$。',
+        '**一般角**：回転の向きもふくめた角。反時計回りが正、時計回りが負。何周回ってもよい（$390^\\circ$、$-60^\\circ$ など）。',
+        '$\\dfrac{13}{6}\\pi = 2\\pi + \\dfrac{\\pi}{6}$ は、$\\dfrac{\\pi}{6}$ と同じ位置。',
+        '弧度法ではふつう単位「ラジアン」を書かない。$\\theta = 2$ は「2 ラジアン（約 115°）」のこと。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🚲', title: '車輪と距離', text: '半径 30 cm のタイヤが 10 ラジアン回ると、進んだ距離は 30 × 10 = 300 cm。弧度法ならかけ算 1 回で求まる。' },
+        { icon: '⚙️', title: 'モーターの回転', text: 'モーターや地球の自転の速さは「ラジアン毎秒」で表す。物理の公式は弧度法で書かれている。' },
+        { icon: '🎮', title: 'ゲームとプログラム', text: 'プログラムの sin・cos は、角度をラジアンで受け取ることが多い。キャラクターを回転させるときに必ず使う。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'rad-convert', level: 'calc' },
+        {
+          id: 'm2s-01-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\dfrac{5}{4}\\pi$ を度数法で表すと ［アイウ］° である。',
+          answers: { ア: '2', イ: '2', ウ: '5' },
+          hint: '$\\pi = 180^\\circ$',
+          explain: '$\\dfrac{5}{4} \\times 180^\\circ = 225^\\circ$。',
+        },
+        { type: 'gen', gen: 'arc-sector', level: 'calc' },
+        {
+          id: 'm2s-01-q2',
+          type: 'choice',
+          level: 'meaning',
+          prompt: '$\\dfrac{25}{6}\\pi$ と同じ位置にある角は？',
+          choices: ['$\\dfrac{\\pi}{6}$', '$\\dfrac{5}{6}\\pi$', '$\\dfrac{\\pi}{3}$', '$-\\dfrac{\\pi}{6}$'],
+          answer: 0,
+          hint: '2π（1 周）を何回か引く。',
+          explain: '$\\dfrac{25}{6}\\pi = 4\\pi + \\dfrac{\\pi}{6}$。2 周して $\\dfrac{\\pi}{6}$ 回った位置。',
+        },
+        {
+          id: 'm2s-01-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '半径 6、弧の長さ $4\\pi$ のおうぎ形の中心角は $\\dfrac{p}{q}\\pi$（既約分数）で、p = ［ア］、q = ［イ］ である。また、面積は ［ウエ］$\\pi$ である。',
+          answers: { ア: '2', イ: '3', ウ: '1', エ: '2' },
+          hint: '$\\ell = r\\theta$ より $\\theta = \\dfrac{\\ell}{r}$。面積は $S = \\dfrac{1}{2}r\\ell$。',
+          explain: '$\\theta = \\dfrac{4\\pi}{6} = \\dfrac{2}{3}\\pi$。面積は $\\dfrac{1}{2} \\times 6 \\times 4\\pi = 12\\pi$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'happy', text: '120° は $\\dfrac{2}{3}\\pi$。半径 3 m の羽根なら、3 × $\\dfrac{2}{3}\\pi$ ＝ 2π m。かけ算だけでわかった！' },
+        { who: 'michiru', mood: 'normal', text: '角を自由に扱えるようになったわね。次は、どんな角にも sin・cos・tan を決めるわ。' },
+      ],
+    },
+  ],
+};

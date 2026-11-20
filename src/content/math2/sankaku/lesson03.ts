@@ -1,0 +1,116 @@
+import type { Lesson } from '../../types';
+
+export const s03: Lesson = {
+  id: 'm2s-03',
+  no: 3,
+  title: '三角関数の相互関係と性質',
+  subtitle: '1 つわかれば、残りもわかる',
+  quest: '欠けた航海日誌',
+  card: {
+    id: 'card-m2s-03',
+    name: '鏡うつしの貝',
+    term: '三角関数の相互関係・性質',
+    rarity: 2,
+    tool: 'sin² + cos² = 1 や対称な点の関係を使い、1 つの値からほかの値や別の角の値を求める道具',
+    formula: '\\sin^2\\theta + \\cos^2\\theta = 1,\\quad \\tan\\theta = \\dfrac{\\sin\\theta}{\\cos\\theta},\\quad 1 + \\tan^2\\theta = \\dfrac{1}{\\cos^2\\theta}',
+    uses: ['測量で、1 つの角の値からほかの値を求める', 'コンピュータで三角関数をすばやく計算するくふう', '物理で、力を縦と横に分けたときの関係'],
+    color: '#06d6a0',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：にじんだ航海日誌',
+      scene: 'coast',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'sad', text: 'じいさんの航海日誌が波でぬれて、「sin θ = 3/5、θ は第 2 象限」としか読めないんだ。cos θ の値も知りたいのに…。' },
+        { who: 'kai', mood: 'normal', text: '角度がわからないと、cos は出せないんじゃないか？' },
+        { who: 'michiru', mood: 'happy', text: '単位円の点は、いつも原点から距離 1。だから sin と cos には決まった関係があるの。角度がわからなくても求められるわ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：対称な点',
+      lines: [{ who: 'michiru', text: 'P と、P を折り返した点 Q をくらべてみて。座標はどう変わるかしら。下の式で sin² + cos² も見てね。' }],
+      figure: { type: 'trigSym' },
+      prompts: ['π − θ の点 Q は、P をどの線で折り返した位置？', 'θ を変えても、sin²θ + cos²θ はいつもいくつ？'],
+      check: {
+        id: 'm2s-03-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\sin(\\pi - \\theta)$ と等しいのは？',
+        choices: ['$\\sin\\theta$', '$-\\sin\\theta$', '$\\cos\\theta$', '$-\\cos\\theta$'],
+        answer: 0,
+        explain: 'π − θ の点は、θ の点を y 軸で折り返した位置。高さ（y 座標）は同じなので $\\sin(\\pi - \\theta) = \\sin\\theta$。x 座標は符号が逆で $\\cos(\\pi - \\theta) = -\\cos\\theta$。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: '折り返すだけだから、値は同じか、符号が逆か、sin と cos が入れかわるかのどれかなんだね！' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：相互関係と性質',
+      tool: 'sin² + cos² = 1 や対称な点の関係を使い、1 つの値からほかの値や別の角の値を求める道具',
+      formulas: ['\\sin^2\\theta + \\cos^2\\theta = 1,\\quad \\tan\\theta = \\dfrac{\\sin\\theta}{\\cos\\theta}', '1 + \\tan^2\\theta = \\dfrac{1}{\\cos^2\\theta}', '\\sin(-\\theta) = -\\sin\\theta,\\ \\cos(-\\theta) = \\cos\\theta,\\ \\sin\\left(\\dfrac{\\pi}{2} - \\theta\\right) = \\cos\\theta'],
+      analogy: {
+        title: 'たとえるなら「長さ 1 のロープ」',
+        text: '原点にむすんだ長さ 1 のロープの先が点 P。横に cos、縦に sin だけ進んでいて、三平方の定理から $\\cos^2 + \\sin^2 = 1^2$。片方がわかれば、もう片方の大きさもわかる。',
+      },
+      points: [
+        '**手順**：$\\sin\\theta = \\dfrac{3}{5}$（第 2 象限）なら $\\cos^2\\theta = 1 - \\dfrac{9}{25} = \\dfrac{16}{25}$。第 2 象限で cos < 0 なので $\\cos\\theta = -\\dfrac{4}{5}$。',
+        '符号は「θ の象限」で決める。2 乗をはずすときに ± のどちらかを選ぶ。',
+        '$\\sin\\theta + \\cos\\theta = t$ なら、両辺を 2 乗して $\\sin\\theta\\cos\\theta = \\dfrac{t^2 - 1}{2}$。',
+        '$\\pi + \\theta$ は原点対称：sin も cos も符号が逆、tan はそのまま。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '📐', title: '測量', text: '坂の傾き（tan）がわかれば、$1 + \\tan^2\\theta = \\dfrac{1}{\\cos^2\\theta}$ から、斜面の長さと水平距離の比も求められる。' },
+        { icon: '💻', title: '計算のくふう', text: 'コンピュータは 0〜45° の値だけ計算して、残りは対称性の公式で求めることがある。記憶と時間の節約になる。' },
+        { icon: '🏋️', title: '力の分解', text: '斜面の上の物体にはたらく重力は、斜面方向 $mg\\sin\\theta$ と垂直方向 $mg\\cos\\theta$ に分かれる。2 乗して足すと元の $(mg)^2$。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'trig-identity', level: 'calc' },
+        {
+          id: 'm2s-03-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\dfrac{\\pi}{2} < \\theta < \\pi$ で $\\sin\\theta = \\dfrac{3}{5}$ のとき、$\\cos\\theta = -\\dfrac{a}{b}$（既約分数）とすると、a = ［ア］、b = ［イ］ である。',
+          answers: { ア: '4', イ: '5' },
+          hint: '$\\cos^2\\theta = 1 - \\sin^2\\theta$。第 2 象限では cos < 0。',
+          explain: '$\\cos^2\\theta = 1 - \\dfrac{9}{25} = \\dfrac{16}{25}$。第 2 象限なので $\\cos\\theta = -\\dfrac{4}{5}$。',
+        },
+        { type: 'gen', gen: 'sym-value', level: 'calc' },
+        {
+          id: 'm2s-03-q2',
+          type: 'choice',
+          level: 'calc',
+          prompt: '$\\cos\\left(\\dfrac{\\pi}{2} - \\theta\\right) + \\sin(\\pi + \\theta)$ を簡単にすると？',
+          choices: ['$0$', '$2\\sin\\theta$', '$\\cos\\theta - \\sin\\theta$', '$-2\\sin\\theta$'],
+          answer: 0,
+          hint: '$\\cos\\left(\\dfrac{\\pi}{2} - \\theta\\right) = \\sin\\theta$、$\\sin(\\pi + \\theta) = -\\sin\\theta$',
+          explain: '$\\sin\\theta + (-\\sin\\theta) = 0$。',
+        },
+        {
+          id: 'm2s-03-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '$\\tan\\theta = 2$ のとき、$\\cos^2\\theta = \\dfrac{1}{p}$ と表すと p = ［ア］ である。',
+          answers: { ア: '5' },
+          hint: '$1 + \\tan^2\\theta = \\dfrac{1}{\\cos^2\\theta}$',
+          explain: '$\\dfrac{1}{\\cos^2\\theta} = 1 + 4 = 5$ より $\\cos^2\\theta = \\dfrac{1}{5}$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '海辺の漁師ナギ', mood: 'happy', text: 'cos θ = −4/5。日誌の続きが読めたぞ！ 船は西よりに進んでいたんだな。' },
+        { who: 'michiru', mood: 'normal', text: '次は、θ を動かしたときの sin や cos の変化をグラフにするわ。そこに「波」があらわれるの。' },
+      ],
+    },
+  ],
+};
