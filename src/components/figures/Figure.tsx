@@ -8,6 +8,7 @@ import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
 import { AmGm, Binomial, CircleLine, ComplexRoots, DivPoint, LineEq, Region, Remainder, Vieta } from './CoordFigures';
 import { Addition, DoubleAngle, Radian, SinWave, Synthesis, TrigCircle, TrigEq, TrigSym, WaveTransform } from './WaveFigures';
+import { AreaBetween, Antideriv, AvgRate, DerivGraph, Increase, MaxMin, PowerRule, Riemann, TangentLine } from './CalcFigures';
 import { BaseChange, Digits, ExpExtend, ExpGraph, ExpIneq, LogGraph, LogIneq, LogScale, SlideRule } from './ExpLogFigures';
 import { Bisector, Ceva, Centers, InscribedAngle, Polyhedron, PowerPoint, TangentChord, TwoCircles } from './GeoFigures';
 import { CirclePerm, CondProb, DiceTable, Expectation, GridPath, Pascal, PermSlots, RepeatTrial, TreeDiagram } from './ProbFigures';
@@ -185,5 +186,23 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <DoubleAngle />;
     case 'synthesis':
       return <Synthesis />;
+    case 'avgRate':
+      return <AvgRate />;
+    case 'derivGraph':
+      return <DerivGraph />;
+    case 'powerRule':
+      return <PowerRule />;
+    case 'tangentLine':
+      return <TangentLine />;
+    case 'increase':
+      return <Increase />;
+    case 'maxMin':
+      return <MaxMin />;
+    case 'antideriv':
+      return <Antideriv />;
+    case 'riemann':
+      return <Riemann />;
+    case 'areaBetween':
+      return <AreaBetween />;
   }
 }

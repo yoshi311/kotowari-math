@@ -158,7 +158,16 @@ export type FigureSpec =
   | { type: 'trigEq' }
   | { type: 'addition' }
   | { type: 'doubleAngle' }
-  | { type: 'synthesis' };
+  | { type: 'synthesis' }
+  | { type: 'avgRate' }
+  | { type: 'derivGraph' }
+  | { type: 'powerRule' }
+  | { type: 'tangentLine' }
+  | { type: 'increase' }
+  | { type: 'maxMin' }
+  | { type: 'antideriv' }
+  | { type: 'riemann' }
+  | { type: 'areaBetween' };
 
 // ---------- ステップ ----------
 
@@ -227,7 +236,7 @@ export interface BossStep {
 
 export type Step = StoryStep | ExploreStep | ConceptStep | UsageStep | PracticeStep | CardStep | BossStep;
 
-export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse' | 'plain' | 'dice' | 'ruins' | 'fort' | 'forest' | 'coast';
+export type SceneId = 'market' | 'workshop' | 'plaza' | 'night' | 'gate' | 'valley' | 'fountain' | 'lighthouse' | 'plain' | 'dice' | 'ruins' | 'fort' | 'forest' | 'coast' | 'tower';
 
 export interface CardDef {
   id: string;

@@ -272,6 +272,39 @@ function Coast() {
   );
 }
 
+function Tower() {
+  // 夜明け前の時計塔。歯車が回り、空には放物線の軌跡と接線
+  const gear = (cx: number, cy: number, r: number, teeth: number, color: string) => {
+    let d = '';
+    for (let i = 0; i < teeth * 2; i++) {
+      const a = (i * Math.PI) / teeth;
+      const rr = i % 2 === 0 ? r : r * 0.78;
+      const a2 = ((i + 1) * Math.PI) / teeth;
+      d += `${i === 0 ? 'M' : 'L'}${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)} L${(cx + rr * Math.cos(a2)).toFixed(1)} ${(cy + rr * Math.sin(a2)).toFixed(1)} `;
+    }
+    return <path d={`${d}Z`} fill={color} opacity="0.85" />;
+  };
+  return (
+    <>
+      <Sky id="sky-tower" top="#14213d" bottom="#7b2cbf" />
+      {/* 放物線の軌跡と接線 */}
+      <path d="M20 120 Q110 -10 200 120" fill="none" stroke="#ffd166" strokeWidth="2" strokeDasharray="4 4" opacity="0.8" />
+      <line x1="31" y1="90.4" x2="117" y2="40.4" stroke="#f15bb5" strokeWidth="2" opacity="0.9" />
+      <circle cx="74" cy="65.4" r="3" fill="#f15bb5" />
+      {/* 時計塔 */}
+      <rect x="262" y="34" width="64" height="106" fill="#3c096c" stroke="#9d4edd" strokeWidth="2" />
+      <polygon points="256,36 332,36 294,6" fill="#5a189a" stroke="#9d4edd" strokeWidth="2" />
+      <circle cx="294" cy="64" r="20" fill="#f8f9fa" stroke="#ffd166" strokeWidth="3" />
+      <line x1="294" y1="64" x2="294" y2="50" stroke="#14213d" strokeWidth="2.5" />
+      <line x1="294" y1="64" x2="305" y2="69" stroke="#14213d" strokeWidth="2" />
+      <rect x="282" y="104" width="24" height="36" rx="12" fill="#240046" />
+      {gear(350, 104, 16, 8, '#ffd166')}
+      {gear(372, 82, 11, 6, '#06d6a0')}
+      <rect y="132" width="400" height="8" fill="#10002b" />
+    </>
+  );
+}
+
 function Ruins() {
   // 円と三角形が刻まれた古代の遺跡
   return (
@@ -363,6 +396,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'fort' && <Fort />}
       {scene === 'forest' && <Forest />}
       {scene === 'coast' && <Coast />}
+      {scene === 'tower' && <Tower />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );
