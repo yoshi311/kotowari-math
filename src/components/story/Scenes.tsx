@@ -305,6 +305,32 @@ function Tower() {
   );
 }
 
+function Observatory() {
+  // 星空の天文台。等比で明るさが変わる星の列と、つりがね形の星雲
+  const bell = (x: number) => 84 - 52 * Math.exp(-((x - 205) ** 2) / (2 * 22 * 22));
+  let d = 'M140 84';
+  for (let x = 140; x <= 270; x += 5) d += ` L${x} ${bell(x).toFixed(1)}`;
+  return (
+    <>
+      <Sky id="sky-observatory" top="#03045e" bottom="#3a0ca3" />
+      {/* 等差に並ぶ星の列（だんだん大きく） */}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <circle key={i} cx={24 + i * 30} cy={70 - i * 9} r={1.2 + i * 0.7} fill="#ffd166" />
+      ))}
+      <path d={`${d} L270 84 Z`} fill="#f15bb5" opacity="0.25" />
+      <path d={d} fill="none" stroke="#f15bb5" strokeWidth="2" opacity="0.8" />
+      {/* 天文台のドームと望遠鏡 */}
+      <g transform="translate(220 0)">
+        <path d="M60 112 A44 44 0 0 1 148 112 Z" fill="#adb5bd" stroke="#e9ecef" strokeWidth="2" />
+        <rect x="99" y="68" width="10" height="44" fill="#495057" />
+        <rect x="96" y="58" width="44" height="10" rx="4" fill="#ced4da" transform="rotate(-30 100 70)" />
+        <rect x="52" y="112" width="104" height="22" fill="#6c757d" />
+      </g>
+      <rect y="132" width="400" height="8" fill="#10002b" />
+    </>
+  );
+}
+
 function Ruins() {
   // 円と三角形が刻まれた古代の遺跡
   return (
@@ -397,6 +423,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'forest' && <Forest />}
       {scene === 'coast' && <Coast />}
       {scene === 'tower' && <Tower />}
+      {scene === 'observatory' && <Observatory />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

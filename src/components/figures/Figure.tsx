@@ -9,6 +9,7 @@ import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
 import { AmGm, Binomial, CircleLine, ComplexRoots, DivPoint, LineEq, Region, Remainder, Vieta } from './CoordFigures';
 import { Addition, DoubleAngle, Radian, SinWave, Synthesis, TrigCircle, TrigEq, TrigSym, WaveTransform } from './WaveFigures';
 import { AreaBetween, Antideriv, AvgRate, DerivGraph, Increase, MaxMin, PowerRule, Riemann, TangentLine } from './CalcFigures';
+import { ArithSeq, BinomDist, DiffSeq, Estimate, GeoSeq, Normal, RandVar, Recurrence, SigmaDots } from './SeqStatFigures';
 import { BaseChange, Digits, ExpExtend, ExpGraph, ExpIneq, LogGraph, LogIneq, LogScale, SlideRule } from './ExpLogFigures';
 import { Bisector, Ceva, Centers, InscribedAngle, Polyhedron, PowerPoint, TangentChord, TwoCircles } from './GeoFigures';
 import { CirclePerm, CondProb, DiceTable, Expectation, GridPath, Pascal, PermSlots, RepeatTrial, TreeDiagram } from './ProbFigures';
@@ -204,5 +205,23 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <Riemann />;
     case 'areaBetween':
       return <AreaBetween />;
+    case 'arithSeq':
+      return <ArithSeq />;
+    case 'geoSeq':
+      return <GeoSeq />;
+    case 'sigmaDots':
+      return <SigmaDots />;
+    case 'diffSeq':
+      return <DiffSeq />;
+    case 'recurrence':
+      return <Recurrence />;
+    case 'randVar':
+      return <RandVar />;
+    case 'binomDist':
+      return <BinomDist />;
+    case 'normal':
+      return <Normal />;
+    case 'estimate':
+      return <Estimate />;
   }
 }
