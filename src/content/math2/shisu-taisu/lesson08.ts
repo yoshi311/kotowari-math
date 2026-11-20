@@ -1,0 +1,120 @@
+import type { Lesson } from '../../types';
+
+export const e08: Lesson = {
+  id: 'm2e-08',
+  no: 8,
+  title: '対数方程式・不等式',
+  subtitle: '「真数は正」の約束を守る',
+  quest: '薬草の調合の式',
+  card: {
+    id: 'card-m2e-08',
+    name: '真数の封印',
+    term: '対数方程式・対数不等式',
+    rarity: 2,
+    tool: '真数条件をおさえてから、log をはずして解く道具',
+    formula: '\\log_a M = \\log_a N \\iff M = N\\quad (M > 0,\\ N > 0)',
+    uses: ['化学で pH から酸の濃さを求める', 'マグニチュードから地震のエネルギーを求める', '貯金が目標額に届く年数の計算'],
+    color: '#00bbf9',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：2 つの答え',
+      scene: 'forest',
+      lines: [
+        { who: 'npc', npcName: '樹海の薬草師ネム', mood: 'think', text: '薬草の濃さを決める式 $\\log_2 x + \\log_2 (x - 2) = 3$ を解いたら、x = 4 と x = −2 が出てきたの。どっちの濃さで調合すればいい？' },
+        { who: 'kai', mood: 'normal', text: '2 つとも出たんだから、両方とも答えでいいんじゃないか？' },
+        { who: 'michiru', mood: 'think', text: '待って。log の中身（真数）は正でないといけない、という約束があったわよね。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：対数不等式の解',
+      lines: [{ who: 'michiru', text: 'グラフが金色の線より下（または上）になる x の範囲が解。でも、log のグラフは x > 0 にしかないことに注意してね。' }],
+      figure: { type: 'logIneq' },
+      prompts: ['底 2・「＜」のとき、解の範囲の左はしはどこ？ なぜ？', '底を 1/2 にすると、不等号の向きはどうなる？'],
+      check: {
+        id: 'm2e-08-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\log_2 x < 3$ の解は？',
+        choices: ['$0 < x < 8$', '$x < 8$', '$x < 6$', '$x > 8$'],
+        answer: 0,
+        explain: '真数条件より x > 0。$3 = \\log_2 8$ なので $\\log_2 x < \\log_2 8$。底 2 は 1 より大きいので $x < 8$。あわせて $0 < x < 8$。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: '「x < 8」だけだと、マイナスの x も入っちゃう。真数条件で x > 0 をつけ足すんだね。' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：対数方程式・不等式',
+      tool: '真数条件をおさえてから、log をはずして解く道具',
+      formulas: [
+        '\\text{真数条件：}\\log_a M \\text{ では } M > 0',
+        'a > 1:\\ \\log_a M < \\log_a N \\iff 0 < M < N',
+        '0 < a < 1:\\ \\log_a M < \\log_a N \\iff M > N > 0',
+      ],
+      analogy: {
+        title: 'たとえるなら「入場券のチェック」',
+        text: 'log の世界に入れるのは、正の数の入場券を持った数だけ。式を解いて出てきた答えも、最後に入場券（真数が正か）をチェックしないといけない。',
+      },
+      points: [
+        '**手順 1**：真数条件をはじめに書く。$\\log_2 x + \\log_2 (x - 2)$ なら $x > 0$ かつ $x > 2$、つまり x > 2。',
+        '**手順 2**：log を 1 つにまとめる。$\\log_2 x(x - 2) = 3$。',
+        '**手順 3**：数も log に直す（$3 = \\log_2 8$）か、$\\log_a M = k \\iff M = a^k$ を使って log をはずす。',
+        '**手順 4**：出てきた答えを真数条件でふるいにかける。x = −2 は x > 2 をみたさないので答えではない。',
+        '$(\\log_2 x)^2 - \\log_2 x - 2 = 0$ のような式は、$\\log_2 x = t$ とおく。t はどんな実数でもよい。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🧪', title: 'pH と濃さ', text: '$\\text{pH} = -\\log_{10} [\\text{H}^+]$。pH 3 の液の水素イオンの濃さは、対数方程式を解いて $10^{-3}$ と求められる。' },
+        { icon: '🌋', title: '地震のエネルギー', text: 'マグニチュード M とエネルギー E には $\\log_{10} E = 4.8 + 1.5M$ の関係がある。M から E を求めるのは対数方程式。' },
+        { icon: '💰', title: '貯金の目標', text: '年利 2% で 100 万円が 150 万円をこえるのは何年後？ $1.02^n > 1.5$ の両辺の log をとって解く。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'log-eq', level: 'calc' },
+        {
+          id: 'm2e-08-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '方程式 $\\log_2 x + \\log_2 (x - 2) = 3$ の解は x = ［ア］ である。',
+          answers: { ア: '4' },
+          hint: '真数条件は x > 2。左辺をまとめると $\\log_2 x(x - 2)$。',
+          explain: '真数条件より x > 2。$x(x - 2) = 8$、$x^2 - 2x - 8 = 0$、$(x - 4)(x + 2) = 0$。x > 2 より x = 4。',
+        },
+        { type: 'gen', gen: 'log-ineq', level: 'calc' },
+        {
+          id: 'm2e-08-q2',
+          type: 'mark',
+          level: 'exam',
+          prompt: '不等式 $\\log_{\\frac{1}{2}} (x - 1) > -2$ の解は ［ア］ $< x <$ ［イ］ である。',
+          answers: { ア: '1', イ: '5' },
+          hint: '真数条件 x − 1 > 0。$-2 = \\log_{\\frac{1}{2}} 4$。底が 1 より小さいので向きが逆。',
+          explain: '真数条件より x > 1。$\\log_{\\frac{1}{2}} (x - 1) > \\log_{\\frac{1}{2}} 4$ で、底が 1 より小さいので $x - 1 < 4$、x < 5。あわせて 1 < x < 5。',
+        },
+        {
+          id: 'm2e-08-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '方程式 $(\\log_2 x)^2 - \\log_2 x - 2 = 0$ の解は、x = ［ア］ と、x = 1 ／［イ］ である。',
+          answers: { ア: '4', イ: '2' },
+          hint: '$\\log_2 x = t$ とおくと $t^2 - t - 2 = 0$。',
+          explain: '$(t - 2)(t + 1) = 0$ より t = 2, −1。$\\log_2 x = 2$ より x = 4、$\\log_2 x = -1$ より $x = \\dfrac{1}{2}$。どちらも真数条件 x > 0 をみたす。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '樹海の薬草師ネム', mood: 'happy', text: 'x = −2 だと $\\log_2 (-2)$ になって約束違反。答えは x = 4 だけね！ これで正しく調合できるわ。' },
+        { who: 'michiru', mood: 'normal', text: '最後は、とても大きな数を log で読む方法よ。千年樹に会う前に、身につけておきましょう。' },
+      ],
+    },
+  ],
+};

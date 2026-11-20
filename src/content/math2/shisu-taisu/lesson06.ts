@@ -1,0 +1,116 @@
+import type { Lesson } from '../../types';
+
+export const e06: Lesson = {
+  id: 'm2e-06',
+  no: 6,
+  title: '底の変換公式',
+  subtitle: 'ちがう底の log をそろえる',
+  quest: '2 種類のものさし',
+  card: {
+    id: 'card-m2e-06',
+    name: '変換の羅針盤',
+    term: '底の変換公式',
+    rarity: 2,
+    tool: '底のちがう対数を、同じ底の対数の分数に直して、くらべたり計算したりする道具',
+    formula: '\\log_a b = \\dfrac{\\log_c b}{\\log_c a}',
+    uses: ['電卓の log ボタン（底 10）で、どんな底の log も計算する', '情報量の単位の変換', 'プログラムの速さの見積もり'],
+    color: '#06d6a0',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：まざった記録',
+      scene: 'forest',
+      lines: [
+        { who: 'npc', npcName: '樹海の薬草師ネム', mood: 'sad', text: '2 倍ずつふえる苔の記録は $\\log_2$、3 倍ずつふえるキノコの記録は $\\log_3$ で書いてあるの。ものさしがまざって、くらべられないわ。' },
+        { who: 'kai', mood: 'normal', text: '単位がちがうなら、そろえればいいんじゃないか？ メートルとセンチみたいに。' },
+        { who: 'michiru', mood: 'happy', text: 'その通り。どんな底の log も、ひとつの底にそろえられるの。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：ものさし何本分？',
+      lines: [{ who: 'michiru', text: '金色のわくが $\\log_{10} N$ の長さ、青と紫の 1 本が $\\log_{10} a$ の長さ。N の長さは、a のものさし何本分かしら。' }],
+      figure: { type: 'baseChange' },
+      prompts: ['底 2、N = 8 のとき、ものさしは何本分？', '底を 2 から 5 に変えると、本数はふえる？ へる？'],
+      check: {
+        id: 'm2e-06-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\log_4 8$ を底 2 の対数で表して計算すると？',
+        choices: ['$\\dfrac{\\log_2 8}{\\log_2 4} = \\dfrac{3}{2}$', '$\\log_2 8 - \\log_2 4 = 1$', '$\\log_2 8 \\times \\log_2 4 = 6$', '$\\dfrac{\\log_2 4}{\\log_2 8} = \\dfrac{2}{3}$'],
+        answer: 0,
+        explain: '底の変換公式で $\\log_4 8 = \\dfrac{\\log_2 8}{\\log_2 4} = \\dfrac{3}{2}$。分母に「もとの底」、分子に「もとの真数」。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: '$\\log_a N$ は「log N の長さ ÷ log a の長さ」。わり算でそろえられるんだね。' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：底の変換公式',
+      tool: '底のちがう対数を、同じ底の対数の分数に直して、くらべたり計算したりする道具',
+      formulas: ['\\log_a b = \\dfrac{\\log_c b}{\\log_c a}', '\\log_a b = \\dfrac{1}{\\log_b a}', '\\log_a b \\cdot \\log_b c = \\log_a c'],
+      analogy: {
+        title: 'たとえるなら「メートルとフィート」',
+        text: '同じ長さでも、メートルで測るかフィートで測るかで数がちがう。底は「ものさしの種類」。底 10 のものさしで測った長さどうしをわり算すれば、どんな底の値にも直せる。',
+      },
+      points: [
+        'c は 1 でない正の数なら何でもよい。計算しやすい底（2、3、10 など）を選ぶ。',
+        '$\\log_9 27 = \\dfrac{\\log_3 27}{\\log_3 9} = \\dfrac{3}{2}$。',
+        '$\\log_2 3 \\cdot \\log_3 8 = \\dfrac{\\log 3}{\\log 2} \\cdot \\dfrac{\\log 8}{\\log 3} = \\log_2 8 = 3$。分母と分子が約分される。',
+        '分母と分子の位置に注意：もとの**底は分母**、もとの**真数は分子**。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🧮', title: '電卓の log ボタン', text: '電卓には底 10 の log しかないことが多い。$\\log_2 10 = \\dfrac{\\log 10}{\\log 2}$ のように、底の変換で計算する。' },
+        { icon: '📡', title: '情報量の単位', text: '情報量は底 2 なら「ビット」、底 10 なら「ディット」。底の変換公式で単位を換算する。' },
+        { icon: '⚙️', title: 'プログラムの速さ', text: '辞書を半分ずつ調べる探し方は、N 語でも約 $\\log_2 N$ 回で見つかる。底がちがっても、速さの見積もりは定数倍しか変わらない。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'log-change', level: 'calc' },
+        {
+          id: 'm2e-06-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\log_9 27 = \\dfrac{p}{q}$（既約分数）とすると、p = ［ア］、q = ［イ］ である。',
+          answers: { ア: '3', イ: '2' },
+          hint: '底を 3 にそろえる。',
+          explain: '$\\log_9 27 = \\dfrac{\\log_3 27}{\\log_3 9} = \\dfrac{3}{2}$。',
+        },
+        {
+          id: 'm2e-06-q2',
+          type: 'mark',
+          level: 'calc',
+          prompt: '$\\log_2 3 \\cdot \\log_3 4 \\cdot \\log_4 8 =$ ［ア］ である。',
+          answers: { ア: '3' },
+          hint: 'すべて底 10（または底 2）の分数にすると、約分できる。',
+          explain: '$\\dfrac{\\log 3}{\\log 2} \\cdot \\dfrac{\\log 4}{\\log 3} \\cdot \\dfrac{\\log 8}{\\log 4} = \\dfrac{\\log 8}{\\log 2} = \\log_2 8 = 3$。',
+        },
+        { type: 'gen', gen: 'log-value', level: 'calc' },
+        {
+          id: 'm2e-06-q3',
+          type: 'choice',
+          level: 'exam',
+          prompt: '$\\log_2 3 = a$、$\\log_3 5 = b$ のとき、$\\log_2 30$ を a、b で表すと？',
+          choices: ['$1 + a + ab$', '$1 + a + b$', '$a + ab$', '$1 + ab$'],
+          answer: 0,
+          hint: '$30 = 2 \\times 3 \\times 5$。$\\log_2 5 = \\log_2 3 \\cdot \\log_3 5$',
+          explain: '$\\log_2 30 = \\log_2 2 + \\log_2 3 + \\log_2 5 = 1 + a + \\log_2 3 \\cdot \\log_3 5 = 1 + a + ab$。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '樹海の薬草師ネム', mood: 'happy', text: 'ものさしをそろえたら、苔とキノコの記録がくらべられたわ！' },
+        { who: 'michiru', mood: 'normal', text: '次は、log のグラフ。指数関数のグラフと、ふしぎな関係があるの。' },
+      ],
+    },
+  ],
+};

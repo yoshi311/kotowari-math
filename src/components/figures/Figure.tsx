@@ -7,6 +7,7 @@ import { AxisMove, CompleteSquare, Discriminant, DomainMaxMin, FuncMachine, Para
 import { Contra, FactorTiles, Nested, SqrtSquare, Venn } from './ShapeFigures';
 import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
 import { AmGm, Binomial, CircleLine, ComplexRoots, DivPoint, LineEq, Region, Remainder, Vieta } from './CoordFigures';
+import { BaseChange, Digits, ExpExtend, ExpGraph, ExpIneq, LogGraph, LogIneq, LogScale, SlideRule } from './ExpLogFigures';
 import { Bisector, Ceva, Centers, InscribedAngle, Polyhedron, PowerPoint, TangentChord, TwoCircles } from './GeoFigures';
 import { CirclePerm, CondProb, DiceTable, Expectation, GridPath, Pascal, PermSlots, RepeatTrial, TreeDiagram } from './ProbFigures';
 import { BoxPlot, Histogram, Hypothesis, MeanBalance, Outlier, Scatter, Transform, Variance } from './StatsFigures';
@@ -147,5 +148,23 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <CircleLine />;
     case 'region':
       return <Region />;
+    case 'expExtend':
+      return <ExpExtend />;
+    case 'expGraph':
+      return <ExpGraph />;
+    case 'expIneq':
+      return <ExpIneq />;
+    case 'logScale':
+      return <LogScale />;
+    case 'slideRule':
+      return <SlideRule />;
+    case 'baseChange':
+      return <BaseChange />;
+    case 'logGraph':
+      return <LogGraph />;
+    case 'logIneq':
+      return <LogIneq />;
+    case 'digits':
+      return <Digits />;
   }
 }

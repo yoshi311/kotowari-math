@@ -203,6 +203,47 @@ function Fort() {
   );
 }
 
+/** 枝が 2 本ずつに分かれる木（倍々にふえる枝） */
+function branches(x: number, y: number, len: number, ang: number, depth: number, out: { x1: number; y1: number; x2: number; y2: number; w: number }[]) {
+  const x2 = x + len * Math.cos(ang);
+  const y2 = y - len * Math.sin(ang);
+  out.push({ x1: x, y1: y, x2, y2, w: depth * 1.4 + 0.6 });
+  if (depth > 0) {
+    branches(x2, y2, len * 0.72, ang + 0.42, depth - 1, out);
+    branches(x2, y2, len * 0.72, ang - 0.42, depth - 1, out);
+  }
+  return out;
+}
+
+function Forest() {
+  // 倍々に枝分かれする大樹と、光るキノコの樹海
+  const tree = branches(200, 140, 34, Math.PI / 2, 6, []);
+  return (
+    <>
+      <Sky id="sky-forest" top="#081c15" bottom="#2d6a4f" />
+      {[20, 70, 120, 280, 330, 380].map((x, i) => (
+        <g key={x}>
+          <rect x={x - 5} y={80 + (i % 2) * 8} width="10" height="60" fill="#1b4332" />
+          <circle cx={x} cy={74 + (i % 2) * 8} r={22 + (i % 3) * 4} fill={i % 2 ? '#2d6a4f' : '#40916c'} opacity="0.9" />
+        </g>
+      ))}
+      {tree.map((s, i) => (
+        <line key={i} x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke="#7f5539" strokeWidth={s.w} strokeLinecap="round" />
+      ))}
+      {tree.filter((_, i) => i % 3 === 0).map((s, i) => (
+        <circle key={i} cx={s.x2} cy={s.y2} r="3" fill="#95d5b2" opacity="0.7" />
+      ))}
+      {[[90, 128], [130, 132], [270, 130], [310, 127]].map(([x, y], i) => (
+        <g key={i}>
+          <rect x={x - 2} y={y - 6} width="4" height="8" fill="#f1faee" />
+          <path d={`M${x - 8} ${y - 5} Q${x} ${y - 16} ${x + 8} ${y - 5} Z`} fill={i % 2 ? '#ffd166' : '#f15bb5'} opacity="0.9" />
+        </g>
+      ))}
+      <rect y="132" width="400" height="8" fill="#1b4332" />
+    </>
+  );
+}
+
 function Ruins() {
   // 円と三角形が刻まれた古代の遺跡
   return (
@@ -292,6 +333,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'dice' && <DiceTown />}
       {scene === 'ruins' && <Ruins />}
       {scene === 'fort' && <Fort />}
+      {scene === 'forest' && <Forest />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

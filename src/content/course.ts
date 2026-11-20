@@ -7,9 +7,10 @@ import { unitDataBunseki } from './math1/data-bunseki';
 import { unitBaaiKakuritsu } from './mathA/baai-kakuritsu';
 import { unitZukeiSeishitsu } from './mathA/zukei-seishitsu';
 import { unitShikiZukei } from './math2/shiki-zukei';
+import { unitShisuTaisu } from './math2/shisu-taisu';
 import type { CardDef, Lesson, Question, QuestionItem, Unit } from './types';
 
-export const units: Unit[] = [unitSuuToShiki, unitNijiKansuu, unitZukeiKeiryou, unitDataBunseki, unitBaaiKakuritsu, unitZukeiSeishitsu, unitShikiZukei];
+export const units: Unit[] = [unitSuuToShiki, unitNijiKansuu, unitZukeiKeiryou, unitDataBunseki, unitBaaiKakuritsu, unitZukeiSeishitsu, unitShikiZukei, unitShisuTaisu];
 
 /** まだ作っていない地方（ワールドマップでの予告） */
 const plannedRegions: { subject: string; title: string; region: string }[] = [

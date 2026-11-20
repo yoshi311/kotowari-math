@@ -1,0 +1,120 @@
+import type { Lesson } from '../../types';
+
+export const e03: Lesson = {
+  id: 'm2e-03',
+  no: 3,
+  title: '指数方程式・不等式',
+  subtitle: '底をそろえて指数をくらべる',
+  quest: '苔が 1024 個になる日',
+  card: {
+    id: 'card-m2e-03',
+    name: '均衡の天秤',
+    term: '指数方程式・指数不等式',
+    rarity: 2,
+    tool: '両辺の底をそろえて、指数どうしの式にして解く道具',
+    formula: 'a^p = a^q \\iff p = q,\\quad a > 1:\\ a^p < a^q \\iff p < q',
+    uses: ['ローンの返済期間の計算', 'データの量が何年で 2 倍になるかの予測', '感染症の流行の予測'],
+    color: '#00bbf9',
+  },
+  steps: [
+    {
+      kind: 'story',
+      title: 'なぞ：何日で 1024 個？',
+      scene: 'forest',
+      lines: [
+        { who: 'npc', npcName: '樹海の薬草師ネム', mood: 'think', text: '光る苔を 1 個から育てて、1024 個にしたいの。毎日 2 倍にふえるとして、何日かかるかしら。' },
+        { who: 'kai', mood: 'normal', text: '2、4、8、16…って数えていけば、そのうち着くだろ。' },
+        { who: 'michiru', mood: 'happy', text: '$2^x = 1024$ という方程式よ。1024 を 2 の累乗に直せば一発ね。「〇個をこえるのはいつ？」なら不等式になるわ。' },
+      ],
+    },
+    {
+      kind: 'explore',
+      title: 'さわって発見：不等式の解とグラフ',
+      lines: [{ who: 'michiru', text: 'グラフが金色の線より上（または下）になる x の範囲が、不等式の解よ。底を切りかえてみて。' }],
+      figure: { type: 'expIneq' },
+      prompts: ['底を 1/2 に切りかえると、解の向きはどうなる？', '右辺（線の高さ）を変えると、境目の x はどう動く？'],
+      check: {
+        id: 'm2e-03-ex1',
+        type: 'choice',
+        level: 'meaning',
+        prompt: '$\\left(\\dfrac{1}{2}\\right)^x > \\dfrac{1}{8}$ の解は？',
+        choices: ['$x < 3$', '$x > 3$', '$x > -3$', '$x < -3$'],
+        answer: 0,
+        explain: '$\\dfrac{1}{8} = \\left(\\dfrac{1}{2}\\right)^3$ なので $\\left(\\dfrac{1}{2}\\right)^x > \\left(\\dfrac{1}{2}\\right)^3$。底が 1 より小さい（右下がり）ので向きが逆になり、$x < 3$。',
+      },
+      after: [{ who: 'zero', mood: 'surprised', text: '右下がりのグラフだと、x が小さいほうが y は大きい。だから不等号がひっくり返るんだね。' }],
+    },
+    {
+      kind: 'concept',
+      title: 'ことばにする：指数方程式・不等式',
+      tool: '両辺の底をそろえて、指数どうしの式にして解く道具',
+      formulas: [
+        'a^p = a^q \\iff p = q',
+        'a > 1:\\ a^p < a^q \\iff p < q',
+        '0 < a < 1:\\ a^p < a^q \\iff p > q\\ \\text{（向きが逆）}',
+      ],
+      analogy: {
+        title: 'たとえるなら「通貨をそろえてくらべる」',
+        text: '100 ドルと 1 万円、どちらが高いかは、同じ円に直さないとくらべられない。指数も同じで、$4^x$ と $8$ は、どちらも「2 の何乗」に直してから、指数どうしをくらべる。',
+      },
+      points: [
+        '**底をそろえる**：$4 = 2^2$、$\\dfrac{1}{8} = 2^{-3}$、$\\sqrt{2} = 2^{\\frac{1}{2}}$ のように、同じ底の累乗に直す。',
+        '$4^{x} = 32$ なら $2^{2x} = 2^5$ より $2x = 5$、$x = \\dfrac{5}{2}$。',
+        '**おきかえ**：$4^x - 3 \\cdot 2^x - 4 = 0$ は $2^x = t$ とおくと $t^2 - 3t - 4 = 0$。$t > 0$ に注意。',
+        '不等式は、底が 1 より小さいとき不等号の向きを逆にする。',
+      ],
+    },
+    {
+      kind: 'usage',
+      title: 'どこで使われている？',
+      items: [
+        { icon: '🏠', title: 'ローンの返済', text: '借りたお金に利息がつくと、残高は指数関数的にふえる。何年で返し終わるかは、指数の不等式で計算する。' },
+        { icon: '💾', title: 'データ量の予測', text: '世界のデータの量は約 2 年で 2 倍にふえるといわれる。何年後に今の 100 倍をこえるかを予測できる。' },
+        { icon: '🧪', title: '流行の予測', text: '感染者が 1 週間で 2 倍になるとき、病院のベッドが足りなくなるのは何週後か。指数の不等式で見積もる。' },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: '練習：理術の修行',
+      questions: [
+        { type: 'gen', gen: 'exp-eq', level: 'calc' },
+        {
+          id: 'm2e-03-q1',
+          type: 'mark',
+          level: 'calc',
+          prompt: '方程式 $9^x = 27$ の解を $x = \\dfrac{p}{q}$（既約分数）とすると、p = ［ア］、q = ［イ］ である。',
+          answers: { ア: '3', イ: '2' },
+          hint: '$9 = 3^2$、$27 = 3^3$',
+          explain: '$3^{2x} = 3^3$ より $2x = 3$、$x = \\dfrac{3}{2}$。',
+        },
+        { type: 'gen', gen: 'exp-ineq', level: 'calc' },
+        {
+          id: 'm2e-03-q2',
+          type: 'choice',
+          level: 'calc',
+          prompt: '不等式 $2^{x + 1} > 32$ の解は？',
+          choices: ['$x > 4$', '$x > 5$', '$x < 4$', '$x > 16$'],
+          answer: 0,
+          hint: '$32 = 2^5$。底 2 は 1 より大きいので向きはそのまま。',
+          explain: '$2^{x + 1} > 2^5$ より $x + 1 > 5$、$x > 4$。',
+        },
+        {
+          id: 'm2e-03-q3',
+          type: 'mark',
+          level: 'exam',
+          prompt: '方程式 $4^x - 3 \\cdot 2^x - 4 = 0$ で $2^x = t$ とおくと、$t^2 - 3t - 4 = 0$ となる。$t > 0$ より t = ［ア］ で、x = ［イ］ である。',
+          answers: { ア: '4', イ: '2' },
+          hint: '$(t - 4)(t + 1) = 0$。$t = 2^x$ はいつも正。',
+          explain: '$(t - 4)(t + 1) = 0$ より t = 4, −1。$t = 2^x > 0$ なので t = 4。$2^x = 4 = 2^2$ より x = 2。',
+        },
+      ],
+    },
+    {
+      kind: 'card',
+      lines: [
+        { who: 'npc', npcName: '樹海の薬草師ネム', mood: 'happy', text: '$2^{10} = 1024$ だから、10 日ね！ 底をそろえれば、数えなくてもわかるのね。' },
+        { who: 'michiru', mood: 'normal', text: 'でも、1000 個ぴったりなら？ 2 を何乗すれば 1000 になるか…それを表すのが次の「対数」よ。' },
+      ],
+    },
+  ],
+};
