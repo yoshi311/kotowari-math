@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { go } from '../app/router';
-import { futureRegions, isUnlocked, units } from '../content/course';
+import { futureRegions, recommendedLesson, units } from '../content/course';
 import { DAILY_GOAL, today, useProgress } from '../engine/progress';
 import { dueIds } from '../engine/srs';
 import { Village } from '../components/story/Scenes';
@@ -24,43 +24,68 @@ export function HomeScreen() {
   const due = dueIds(srs).length;
   const todayXp = daily.date === today() ? daily.xp : 0;
 
-  // はじめは「まだクリアしていない依頼がある最初の地方」を開く
+  // はじめは「おすすめの依頼（物語順で最初の未クリア）」がある地方を開く
+  const recommended = recommendedLesson(lessons);
   const [ui, setUi] = useState(() => {
-    const i = units.findIndex((u) => u.lessons.some((l) => !lessons[l.id]));
+    const i = recommended ? units.findIndex((u) => u.lessons.some((l) => l.id === recommended.id)) : -1;
     return i === -1 ? units.length - 1 : i;
   });
+  const [mapOpen, setMapOpen] = useState(false);
   const unit = units[ui];
-  const nextUnit = units[ui + 1];
   const total = unit.lessons.length + unit.upcoming.length;
   const cleared = unit.lessons.filter((l) => lessons[l.id]).length;
   const nextLesson = unit.lessons.find((l) => !lessons[l.id]);
+  const recUnit = recommended ? units.find((u) => u.lessons.some((l) => l.id === recommended.id)) : undefined;
 
   const tip = due > 0
     ? `${name}、復習の時間だよ！ ${due} 問が「そろそろ忘れそう」になってる。今やると一気に定着するよ。`
     : nextLesson
-      ? `次の依頼は「${nextLesson.quest}」だよ。行ってみよう！`
-      : nextUnit
-        ? `${unit.region}に灯がもどったよ！ 次は「${nextUnit.region}」へ行こう！`
-        : unit.upcoming.length === 0 && futureRegions.length === 0
-        ? `${unit.region}に灯がもどって、12 の灯がぜんぶそろったよ！ あとは星3つ集めと復習クエストで、共通テスト 9 割を目指そう！`
-        : unit.upcoming.length === 0
-        ? `${unit.region}に灯がもどったよ！ 次の地方は準備中。星3つ集めや復習クエストで、理術をみがいておこう！`
-        : '今ある依頼はぜんぶクリア！ 星3つを目指して、もう一度挑戦するのもアリだね。';
+      ? `おすすめは「${nextLesson.quest}」。でも、どの依頼から挑戦してもOKだよ！ 上の「地方をえらぶ」から、好きな地方へも行けるよ。`
+      : recUnit
+        ? `${unit.region}に灯がもどったよ！ 物語の続きは「${recUnit.region}」。もちろん好きな地方を選んでもいいよ。`
+        : futureRegions.length === 0
+          ? `${unit.region}に灯がもどって、12 の灯がぜんぶそろったよ！ あとは星3つ集めと復習クエストで、共通テスト 9 割を目指そう！`
+          : `${unit.region}に灯がもどったよ！ 次の地方は準備中。星3つ集めや復習クエストで、理術をみがいておこう！`;
+
+  const subjects = [...new Set(units.map((u) => u.subject))];
 
   return (
     <div className="home">
-      {units.length > 1 && (
-        <div className="region-tabs" role="tablist">
-          {units.map((u, i) => {
-            const open = isUnlocked(u.lessons[0].id, lessons);
-            const done = u.lessons.every((l) => lessons[l.id]);
-            return (
-              <button key={u.id} role="tab" aria-selected={i === ui} className={`region-tab ${i === ui ? 'active' : ''}`} disabled={!open} onClick={() => setUi(i)}>
-                {open ? (done ? '🏮 ' : '') : '🔒 '}
-                {u.region}
-              </button>
-            );
-          })}
+      <button className="map-toggle" aria-expanded={mapOpen} onClick={() => setMapOpen(!mapOpen)}>
+        <span>🗺️ 地方をえらぶ</span>
+        <span className="map-current">{unit.region} {mapOpen ? '▲' : '▼'}</span>
+      </button>
+      {mapOpen && (
+        <div className="region-map pop-in">
+          {subjects.map((sub) => (
+            <section key={sub}>
+              <h4 className="map-subject">{sub}</h4>
+              <div className="map-grid">
+                {units.map((u, i) => {
+                  if (u.subject !== sub) return null;
+                  const n = u.lessons.filter((l) => lessons[l.id]).length;
+                  const done = n === u.lessons.length;
+                  return (
+                    <button
+                      key={u.id}
+                      className={`map-card ${i === ui ? 'active' : ''} ${done ? 'done' : ''}`}
+                      onClick={() => {
+                        setUi(i);
+                        setMapOpen(false);
+                      }}
+                    >
+                      <strong>{done ? '🏮 ' : ''}{u.region}</strong>
+                      <span>{u.title}</span>
+                      <span className="map-progress">
+                        <span style={{ width: `${(n / u.lessons.length) * 100}%` }} />
+                      </span>
+                      <span className="map-count">{n}/{u.lessons.length}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </div>
       )}
       <section className="region-card">
@@ -83,7 +108,7 @@ export function HomeScreen() {
         className="zero-tip"
         onClick={() => {
           if (due > 0) go('/review');
-          else if (!nextLesson && nextUnit) setUi(ui + 1);
+          else if (!nextLesson && recUnit) setUi(units.indexOf(recUnit));
         }}
       >
         <CharacterSvg who="zero" mood={due > 0 ? 'surprised' : 'happy'} size={52} />
@@ -107,23 +132,24 @@ export function HomeScreen() {
       <ol className="lesson-path">
         {unit.lessons.map((l) => {
           const rec = lessons[l.id];
-          const open = isUnlocked(l.id, lessons);
           const isNext = nextLesson?.id === l.id;
           const isBoss = l.steps.some((st) => st.kind === 'boss');
           return (
             <li key={l.id}>
               <button
                 className={`lesson-node ${rec ? 'done' : ''} ${isNext ? 'next' : ''} ${isBoss ? 'boss' : ''}`}
-                disabled={!open}
                 onClick={() => go(`/lesson/${l.id}`)}
               >
                 <span className="node-no">{rec ? '✓' : isBoss ? '👹' : l.no}</span>
                 <span className="node-body">
-                  <span className="node-quest">{l.quest}</span>
+                  <span className="node-quest">
+                    {l.quest}
+                    {isNext && <span className="rec-badge">おすすめ</span>}
+                  </span>
                   <span className="node-title">{l.title}</span>
                   <span className="node-sub">{l.subtitle}</span>
                 </span>
-                {rec ? <Stars n={rec.stars} /> : open ? <span className="node-go">{isNext ? 'GO!' : '▶'}</span> : <span>🔒</span>}
+                {rec ? <Stars n={rec.stars} /> : <span className="node-go">{isNext ? 'GO!' : '▶'}</span>}
               </button>
             </li>
           );

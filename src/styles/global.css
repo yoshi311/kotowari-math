@@ -1616,7 +1616,7 @@ strong {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
   gap: 12px;
 }
 
@@ -2374,4 +2374,723 @@ strong.bad,
   border-color: var(--accent);
   background: var(--accent);
   color: #fff;
+}
+
+/* ---------- 地方をえらぶ（ステージ選択） ---------- */
+
+.map-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+  font-weight: 800;
+  color: inherit;
+}
+
+.map-current {
+  color: var(--accent);
+  font-size: 0.88rem;
+}
+
+.region-map {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px 14px;
+  margin-bottom: 12px;
+}
+
+.map-subject {
+  margin: 8px 0 6px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.map-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.map-card {
+  display: grid;
+  gap: 3px;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  background: var(--panel2);
+  color: inherit;
+  font-size: 0.78rem;
+  transition: transform 0.12s;
+}
+
+.map-card strong {
+  font-size: 0.92rem;
+}
+
+.map-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.map-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.2);
+}
+
+.map-card.done {
+  background: linear-gradient(135deg, rgba(255, 209, 102, 0.18), var(--panel2));
+}
+
+.map-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.map-progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.map-count {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.rec-badge {
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #2a1d00;
+  font-size: 0.7rem;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+/* ---------- 演出（粒・浮かぶ文字・コンボ・フラッシュ） ---------- */
+
+.fx-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.fx-p {
+  position: absolute;
+  margin: -5px 0 0 -5px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: fx-fly ease-out forwards;
+}
+
+.fx-dot {
+  border-radius: 50%;
+}
+
+.fx-star {
+  width: auto !important;
+  height: auto !important;
+  font-size: 15px;
+  line-height: 1;
+  text-shadow: 0 0 6px currentColor;
+}
+
+@keyframes fx-fly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(0.6);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.3)) rotate(calc(var(--rot) * 0.3)) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), calc(var(--dy) + 40px)) rotate(var(--rot)) scale(0.8);
+  }
+}
+
+.fx-text {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  font-size: 1.25rem;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45), 0 0 12px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  animation: fx-rise 1.25s ease-out forwards;
+}
+
+.fx-text.big {
+  font-size: 2rem;
+}
+
+@keyframes fx-rise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -60%) scale(1.2);
+  }
+  40% {
+    transform: translate(-50%, -70%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -160%) scale(1);
+  }
+}
+
+.fx-banner {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  transform: translate(-50%, -50%);
+  animation: fx-banner 1.45s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+}
+
+.fx-banner span {
+  display: inline-block;
+  padding: 10px 26px;
+  border-radius: 999px;
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: #2a1d00;
+  background: linear-gradient(135deg, #ffe08a, #ffb703);
+  box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.35), 0 10px 30px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
+.fx-banner.tier-2 span {
+  background: linear-gradient(135deg, #ff9e00, #f15bb5);
+  color: #fff;
+  box-shadow: 0 0 0 5px rgba(241, 91, 181, 0.35), 0 0 40px rgba(255, 158, 0, 0.6);
+}
+
+.fx-banner.tier-3 span {
+  background: linear-gradient(135deg, #00bbf9, #c77dff, #f15bb5, #ffd166);
+  background-size: 300% 300%;
+  color: #fff;
+  font-size: 2rem;
+  animation: holo-move 1.2s linear infinite;
+  box-shadow: 0 0 0 6px rgba(199, 125, 255, 0.4), 0 0 60px rgba(0, 187, 249, 0.6);
+}
+
+@keyframes fx-banner {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(-8deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1) rotate(2deg);
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(1) rotate(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -70%) scale(1);
+  }
+}
+
+.fx-flash {
+  position: absolute;
+  inset: 0;
+  animation: fx-flash 0.42s ease-out forwards;
+}
+
+@keyframes fx-flash {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes holo-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+/* 正解のとき、問題のカードがはずんで緑に光る／まちがいは一瞬赤く */
+.question.glow-ok {
+  animation: glow-ok 0.6s ease-out;
+}
+
+.question.glow-ng {
+  animation: glow-ng 0.5s ease-out;
+}
+
+@keyframes glow-ok {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.9);
+  }
+  30% {
+    transform: scale(1.025);
+    box-shadow: 0 0 0 8px rgba(6, 214, 160, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 18px rgba(6, 214, 160, 0);
+  }
+}
+
+@keyframes glow-ng {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 71, 111, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(239, 71, 111, 0);
+  }
+}
+
+.feedback.correct .fb-title {
+  display: inline-block;
+  animation: fb-pop 0.5s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+@keyframes fb-pop {
+  0% {
+    transform: scale(0.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .question.glow-ok,
+  .question.glow-ng,
+  .fx-banner,
+  .feedback.correct .fb-title {
+    animation-duration: 0.01s;
+  }
+}
+
+/* ---------- カードゲーム風の理術カード ---------- */
+
+.tcg {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 30%;
+  --metal1: #c98a52;
+  --metal2: #7a4a24;
+  --metal3: #f3c08c;
+  position: relative;
+  aspect-ratio: 5 / 7;
+  border-radius: 12px;
+  padding: 5px;
+  background: linear-gradient(135deg, var(--metal3), var(--metal1) 30%, var(--metal2) 55%, var(--metal3) 80%, var(--metal1));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.25s ease-out;
+  overflow: hidden;
+  color: #fff;
+  text-align: left;
+  user-select: none;
+}
+
+.tcg.rarity-2 {
+  --metal1: #c9d1dc;
+  --metal2: #6c7a8c;
+  --metal3: #f4f7fb;
+}
+
+.tcg.rarity-3 {
+  --metal1: #ffd166;
+  --metal2: #b8860b;
+  --metal3: #fff3c4;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 209, 102, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.tcg.clickable {
+  cursor: pointer;
+}
+
+.tcg.small:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.tcg.big {
+  width: min(330px, 86vw);
+  aspect-ratio: auto;
+  min-height: calc(min(330px, 86vw) * 1.4);
+  padding: 7px;
+  border-radius: 16px;
+}
+
+.tcg-frame {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 8px;
+  padding: 5px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 55%, #1b1640), #1b1640 70%);
+  border: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+.tcg.big .tcg-frame {
+  border-radius: 11px;
+  padding: 7px;
+  gap: 6px;
+}
+
+.tcg-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.tcg-subject {
+  flex-shrink: 0;
+  font-size: 0.58rem;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--card);
+  color: #1b1640;
+}
+
+.tcg-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.76rem;
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.tcg-stars {
+  flex-shrink: 0;
+  font-size: 0.66rem;
+  color: #ffd166;
+  text-shadow: 0 0 4px rgba(255, 209, 102, 0.8);
+}
+
+.tcg.big .tcg-subject {
+  font-size: 0.72rem;
+}
+
+.tcg.big .tcg-name {
+  font-size: 1.08rem;
+}
+
+.tcg.big .tcg-stars {
+  font-size: 0.9rem;
+}
+
+.tcg-art {
+  border-radius: 5px;
+  overflow: hidden;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25);
+  line-height: 0;
+}
+
+.tcg-art-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.tcg-type {
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tcg.big .tcg-type {
+  font-size: 0.78rem;
+}
+
+.tcg-text {
+  flex: 1;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: linear-gradient(180deg, #fbf3dc, #efe0b9);
+  color: #3a2a12;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  box-shadow: inset 0 0 0 1px rgba(120, 80, 20, 0.35);
+}
+
+.tcg-text p {
+  margin: 0 0 6px;
+}
+
+.tcg-text b,
+.tcg-label {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #fff;
+  background: #7a4a24;
+}
+
+.tcg-formula {
+  margin: 4px 0 6px;
+  padding: 6px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  overflow-x: auto;
+}
+
+.tcg-formula .tcg-label {
+  display: block;
+  width: fit-content;
+  margin-bottom: 3px;
+  background: #b5179e;
+}
+
+.tcg-uses ul {
+  margin: 3px 0 0;
+  padding-left: 18px;
+  font-size: 0.74rem;
+}
+
+.tcg-uses .tcg-label {
+  background: #1d7a5f;
+}
+
+.tcg-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 0.52rem;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tcg.big .tcg-foot {
+  font-size: 0.66rem;
+}
+
+/* 光：★1・2 はやわらかく流れる光、★3 は虹色のホログラム */
+.tcg-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.28) 48%, transparent 60%);
+  background-size: 250% 100%;
+  animation: tcg-sweep 4.5s ease-in-out infinite;
+  mix-blend-mode: soft-light;
+}
+
+.tcg.big .tcg-shine {
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.35), transparent 45%);
+  animation: none;
+  mix-blend-mode: overlay;
+}
+
+.tcg-holo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(125deg, rgba(255, 0, 128, 0.25), rgba(255, 209, 102, 0.25), rgba(6, 214, 160, 0.25), rgba(0, 187, 249, 0.25), rgba(199, 125, 255, 0.25), rgba(255, 0, 128, 0.25));
+  background-size: 300% 300%;
+  background-position: var(--mx) var(--my);
+  mix-blend-mode: color-dodge;
+  opacity: 0.55;
+  animation: holo-move 6s linear infinite;
+}
+
+.tcg.big .tcg-holo {
+  animation: none;
+  opacity: 0.6;
+}
+
+@keyframes tcg-sweep {
+  0%,
+  60% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* カードの裏面 */
+.tcg-back {
+  position: relative;
+  aspect-ratio: 5 / 7;
+  border-radius: 12px;
+  padding: 5px;
+  background: linear-gradient(135deg, #3c096c, #1b1640 55%, #240046);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), inset 0 0 0 2px rgba(255, 209, 102, 0.45);
+  overflow: hidden;
+}
+
+.tcg-back.big {
+  width: min(330px, 86vw);
+}
+
+.tcg-back.small {
+  opacity: 0.55;
+}
+
+.tcg-back-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.tcg-back-q {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* 獲得：裏から表へ立体的にめくる */
+.card-get {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.4s;
+  margin-bottom: 8px;
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.card-get.show {
+  opacity: 1;
+  transform: none;
+}
+
+.flip-card {
+  position: relative;
+  width: min(330px, 86vw);
+  perspective: 1200px;
+}
+
+.flip-inner {
+  position: relative;
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.flip-card:not(.flipped) .flip-inner {
+  animation: flip-wait 0.9s ease-in-out infinite alternate;
+}
+
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-front {
+  transform: rotateY(180deg);
+}
+
+.flip-rays {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 180%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(0.3);
+  opacity: 0;
+  pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 209, 102, 0.35) 0deg 8deg, transparent 8deg 22deg);
+  border-radius: 50%;
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+}
+
+.flip-card.flipped .flip-rays {
+  animation: rays-in 1.2s ease-out 0.3s forwards, rays-spin 14s linear 1.5s infinite;
+}
+
+.flip-card.rarity-3 .flip-rays {
+  background: repeating-conic-gradient(from 0deg, rgba(255, 0, 128, 0.3) 0deg 6deg, rgba(0, 187, 249, 0.3) 6deg 12deg, transparent 12deg 20deg);
+}
+
+@keyframes flip-wait {
+  0% {
+    transform: rotateY(-6deg) scale(0.97);
+  }
+  100% {
+    transform: rotateY(6deg) scale(1);
+  }
+}
+
+@keyframes rays-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes rays-spin {
+  from {
+    transform: translate(-50%, -50%) scale(1) rotate(0);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tcg-shine,
+  .tcg-holo,
+  .flip-card:not(.flipped) .flip-inner,
+  .flip-card.flipped .flip-rays {
+    animation: none;
+  }
 }

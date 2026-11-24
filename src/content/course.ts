@@ -73,8 +73,20 @@ export function lookupQuestion(id: string): { q: Question; lessonId: string } | 
   return { q: materialize(hit.item), lessonId: hit.lessonId };
 }
 
-/** レッスンが遊べるか：1つ前のレッスンをクリアしていればOK */
-export function isUnlocked(lessonId: string, cleared: Record<string, unknown>): boolean {
-  const idx = allLessons.findIndex((l) => l.id === lessonId);
-  return idx <= 0 || !!cleared[allLessons[idx - 1].id];
+/** レッスンが遊べるか：どのステージも最初から自由に選べる */
+export function isUnlocked(_lessonId: string, _cleared: Record<string, unknown>): boolean {
+  return true;
+}
+
+/** 物語の順番で、まだクリアしていない最初の依頼（おすすめ）。全部クリアなら undefined */
+export function recommendedLesson(cleared: Record<string, unknown>): Lesson | undefined {
+  return allLessons.find((l) => !cleared[l.id]);
+}
+
+/** カードが、どの地方の何番目の依頼のものか */
+export function cardMeta(cardId: string): { lesson: Lesson; unit: Unit; no: number; total: number } | undefined {
+  const i = allLessons.findIndex((l) => l.card.id === cardId);
+  if (i < 0) return undefined;
+  const lesson = allLessons[i];
+  return { lesson, unit: findLesson(lesson.id)!.unit, no: i + 1, total: allLessons.length };
 }

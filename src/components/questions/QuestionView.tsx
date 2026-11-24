@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChoiceQuestion, InputQuestion, MarkQuestion, Question } from '../../content/types';
 import { checkInput, checkMark, markLabels } from '../../engine/answerCheck';
 import { play } from '../../engine/sound';
+import { fx } from '../../engine/fx';
 import { Figure } from '../figures/Figure';
 import { RichText } from '../RichText';
 import { Bubble } from '../story/Dialogue';
@@ -19,7 +20,17 @@ export function QuestionView({ q, combo, onFinish }: { q: Question; combo: numbe
   const [phase, setPhase] = useState<Phase>('answering');
   const [notice, setNotice] = useState('');
   const answerRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const firstTry = useRef(true);
+
+  /** 問題のカードを光らせる（クラスを付けなおしてアニメーションをやり直す） */
+  const glow = (cls: 'glow-ok' | 'glow-ng') => {
+    const el = rootRef.current;
+    if (!el) return;
+    el.classList.remove('glow-ok', 'glow-ng');
+    void el.offsetWidth;
+    el.classList.add(cls);
+  };
 
   // 作り直さずに揺らす（作り直すと、選んだ選択肢や入力した式が消えてしまう）
   const shake = () =>
@@ -36,10 +47,24 @@ export function QuestionView({ q, combo, onFinish }: { q: Question; combo: numbe
 
   const judge = (ok: boolean) => {
     if (ok) {
-      play('ok', firstTry.current ? combo + 1 : 0);
+      const perfect = firstTry.current;
+      const c = perfect ? combo + 1 : 0;
+      play('ok', c);
+      if (perfect) play('perfect', c);
+      glow('glow-ok');
+      fx.burst(answerRef.current, { perfect, combo: c });
+      // 3・5 コンボと、その先は 5 コンボごとに大きな演出
+      if (c === 3 || (c >= 5 && c % 5 === 0)) {
+        setTimeout(() => {
+          fx.banner(`🔥 ${c} コンボ！`, c >= 10 ? 3 : c >= 5 ? 2 : 1);
+          fx.flash('rgba(255, 209, 102, 0.25)');
+          play('combo', c);
+        }, 180);
+      }
       setPhase('correct');
     } else {
       play('ng');
+      glow('glow-ng');
       shake();
       if (firstTry.current) {
         firstTry.current = false;
@@ -53,7 +78,7 @@ export function QuestionView({ q, combo, onFinish }: { q: Question; combo: numbe
   const done = phase === 'correct' || phase === 'reveal';
 
   return (
-    <div className="question">
+    <div className="question" ref={rootRef}>
       <div className={`q-level lv-${q.level}`}>{LEVEL_LABEL[q.level]}</div>
       <div className="q-prompt">
         {q.type !== 'mark' && <RichText text={q.prompt} />}

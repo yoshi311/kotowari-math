@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { itemId, materialize } from '../content/course';
 import type { BossStep } from '../content/types';
 import { useProgress } from '../engine/progress';
 import { play } from '../engine/sound';
+import { fx } from '../engine/fx';
 import { QuestionView } from '../components/questions/QuestionView';
 import { Dialogue } from '../components/story/Dialogue';
 import { xpForAnswer, type SessionResult } from './PracticeSession';
@@ -27,6 +28,7 @@ export function BossView({ step, lessonId, onWin }: { step: BossStep; lessonId: 
   const [combo, setCombo] = useState(0);
   const [stats, setStats] = useState({ firstOk: 0, total: 0, maxCombo: 0, xp: 0 });
   const [hit, setHit] = useState(0);
+  const bossRef = useRef<HTMLDivElement>(null);
   const [loseReason, setLoseReason] = useState<'time' | 'lives'>('lives');
 
   // 挑戦のたびに、生成問題の数字を作り直す
@@ -70,6 +72,15 @@ export function BossView({ step, lessonId, onWin }: { step: BossStep; lessonId: 
     if (ok) {
       gainXp(gained);
       setHit((h) => h + 1);
+      // 画面がボスのほうへもどってから、打撃の演出
+      setTimeout(() => {
+        play('hit', nextCombo);
+        fx.flash('rgba(255, 255, 255, 0.4)');
+        fx.text(bossRef.current, '-1', '#ff5d8f', true);
+        fx.burst(bossRef.current, { combo: nextCombo });
+      }, 280);
+    } else {
+      setTimeout(() => fx.flash('rgba(239, 71, 111, 0.25)'), 280);
     }
     setBestCombo(nextCombo);
     const s = {
@@ -103,7 +114,7 @@ export function BossView({ step, lessonId, onWin }: { step: BossStep; lessonId: 
     <>
       <h2 className="step-title">{step.title}</h2>
       <div className="boss-arena">
-        <div key={hit} className={`boss-figure ${hit ? 'hit' : ''}`}>{phase === 'lose' ? '😈' : '👹'}</div>
+        <div key={hit} ref={bossRef} className={`boss-figure ${hit ? 'hit' : ''}`}>{phase === 'lose' ? '😈' : '👹'}</div>
         <div className="boss-name">{step.boss.name}</div>
         <div className="hp-bar">
           <div style={{ width: `${(hp / step.boss.hp) * 100}%` }} />

@@ -10,7 +10,9 @@ import { RichText, Tex } from '../components/RichText';
 import { Dialogue } from '../components/story/Dialogue';
 import { SceneBanner } from '../components/story/Scenes';
 import { BossView } from './BossView';
-import { RiCard } from './CardsScreen';
+import { TcgCard } from '../components/cards/TcgCard';
+import { CardBack } from '../components/cards/CardBack';
+import { fx } from '../engine/fx';
 import { PracticeSession, type SessionResult } from './PracticeSession';
 
 const STEP_META: Record<Step['kind'], { icon: string; label: string }> = {
@@ -263,6 +265,7 @@ function CardView({ step, lesson, result }: { step: CardStep; lesson: Lesson; re
   const [firstClear] = useState(() => !useProgress.getState().lessons[lesson.id]);
   const [newCard] = useState(() => !useProgress.getState().cards.includes(lesson.card.id));
   const savedRef = useRef(false);
+  const revealRef = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
 
   const accuracy = result ? result.firstOk / Math.max(result.total, 1) : 1;
@@ -275,11 +278,20 @@ function CardView({ step, lesson, result }: { step: CardStep; lesson: Lesson; re
       gainXp(bonus);
       play('clear');
     }
-    const t = setTimeout(() => {
-      setRevealed(true);
-      play('card');
-    }, 1200);
-    return () => clearTimeout(t);
+    const stars = starsFor(accuracy);
+    const timers = [
+      setTimeout(() => fx.confetti(), 150),
+      // 星を 1 つずつ、音つきで
+      ...[0, 1, 2].filter((i) => i < stars).map((i) => setTimeout(() => play('star', i), 500 + i * 250)),
+      setTimeout(() => {
+        setRevealed(true);
+        play('reveal');
+        if (lesson.card.rarity === 3) play('rare');
+        else play('card');
+      }, 1700),
+      setTimeout(() => fx.burst(revealRef.current, { perfect: true, combo: lesson.card.rarity * 3 }), 2150),
+    ];
+    return () => timers.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -308,20 +320,24 @@ function CardView({ step, lesson, result }: { step: CardStep; lesson: Lesson; re
         </div>
         <div>
           <span>獲得 XP</span>
-          <strong>+{(result?.xp ?? 0) + bonus}</strong>
+          <strong>
+            +<CountUp to={(result?.xp ?? 0) + bonus} />
+          </strong>
         </div>
       </div>
       {stars < 3 && <p className="retry-note">一発正解 9 割以上で星3つ。もう一度挑戦すると、記録が更新されるよ。</p>}
 
-      <div className={`card-reveal ${revealed ? 'revealed' : ''}`}>
-        {revealed ? (
-          <>
-            <div className="card-get">{newCard ?'✨ 新しい理術カードを手に入れた！ ✨' : '理術カード（獲得ずみ）'}</div>
-            <RiCard card={lesson.card} owned big />
-          </>
-        ) : (
-          <div className="card-back shimmer">？</div>
-        )}
+      <div className={`card-reveal ${revealed ? 'revealed' : ''}`} ref={revealRef}>
+        <div className={`card-get ${revealed ? 'show' : ''}`}>{newCard ? '✨ 新しい理術カードを手に入れた！ ✨' : '理術カード（獲得ずみ）'}</div>
+        <div className={`flip-card ${revealed ? 'flipped' : ''} rarity-${lesson.card.rarity}`}>
+          <div className="flip-rays" />
+          <div className="flip-inner">
+            <div className="flip-face flip-back">
+              <CardBack />
+            </div>
+            <div className="flip-face flip-front">{revealed && <TcgCard card={lesson.card} big />}</div>
+          </div>
+        </div>
       </div>
 
       {revealed && <Dialogue lines={step.lines} />}
@@ -336,4 +352,21 @@ function CardView({ step, lesson, result }: { step: CardStep; lesson: Lesson; re
       </div>
     </div>
   );
+}
+
+/** 数字を 0 からカウントアップして見せる */
+function CountUp({ to, ms = 900 }: { to: number; ms?: number }) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (t: number) => {
+      const r = Math.min((t - t0) / ms, 1);
+      setN(Math.round(to * (1 - (1 - r) ** 3)));
+      if (r < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [to, ms]);
+  return <>{n}</>;
 }

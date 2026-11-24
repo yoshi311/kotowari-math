@@ -5,6 +5,7 @@ import { LessonScreen } from '../screens/LessonScreen';
 import { Prologue } from '../screens/Prologue';
 import { ReviewScreen } from '../screens/ReviewScreen';
 import { StatsScreen } from '../screens/StatsScreen';
+import { FxLayer } from '../components/fx/FxLayer';
 import { BottomNav, TopBar } from './Chrome';
 import { useRoute } from './router';
 
@@ -26,6 +27,7 @@ export function App() {
         {route.name === 'stats' && <StatsScreen />}
       </main>
       {!inLesson && <BottomNav current={route.name} />}
+      <FxLayer />
     </div>
   );
 }

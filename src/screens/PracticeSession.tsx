@@ -41,7 +41,7 @@ export function PracticeSession({ items, onDone }: { items: SessionItem[]; onDon
       gained = xpForAnswer(nextCombo);
       gainXp(gained);
       setPop({ key: Date.now(), text: `+${gained} XP` });
-      if (nextCombo > 0 && nextCombo % 5 === 0) play('combo');
+      play('xp');
     }
     setBestCombo(nextCombo);
     const s = {
