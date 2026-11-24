@@ -11,9 +11,10 @@ import { unitShisuTaisu } from './math2/shisu-taisu';
 import { unitSankaku } from './math2/sankaku';
 import { unitBibunSekibun } from './math2/bibun-sekibun';
 import { unitSuretsuToukei } from './mathB/suretsu-toukei';
+import { unitVectorComplex } from './mathC/vector-complex';
 import type { CardDef, Lesson, Question, QuestionItem, Unit } from './types';
 
-export const units: Unit[] = [unitSuuToShiki, unitNijiKansuu, unitZukeiKeiryou, unitDataBunseki, unitBaaiKakuritsu, unitZukeiSeishitsu, unitShikiZukei, unitShisuTaisu, unitSankaku, unitBibunSekibun, unitSuretsuToukei];
+export const units: Unit[] = [unitSuuToShiki, unitNijiKansuu, unitZukeiKeiryou, unitDataBunseki, unitBaaiKakuritsu, unitZukeiSeishitsu, unitShikiZukei, unitShisuTaisu, unitSankaku, unitBibunSekibun, unitSuretsuToukei, unitVectorComplex];
 
 /** まだ作っていない地方（ワールドマップでの予告） */
 const plannedRegions: { subject: string; title: string; region: string }[] = [

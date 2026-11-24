@@ -331,6 +331,36 @@ function Observatory() {
   );
 }
 
+function SkyCastle() {
+  // 雲の上にうかぶ城。矢印（ベクトル）の光と、回転する複素数の環
+  return (
+    <>
+      <Sky id="sky-skycastle" top="#0b132b" bottom="#5bc0be" />
+      {/* 回転する環（複素数平面の単位円と 8 つの点） */}
+      <circle cx="190" cy="46" r="26" fill="none" stroke="#c77dff" strokeWidth="1.5" opacity="0.8" />
+      {[0, 1, 2, 3, 4, 5, 6, 7].map((k) => (
+        <circle key={k} cx={190 + 26 * Math.cos((k * Math.PI) / 4)} cy={46 - 26 * Math.sin((k * Math.PI) / 4)} r={k === 1 ? 4 : 2.5} fill={k === 1 ? '#f15bb5' : '#ffd166'} />
+      ))}
+      <line x1="190" y1="46" x2={190 + 26 * Math.cos(Math.PI / 4)} y2={46 - 26 * Math.sin(Math.PI / 4)} stroke="#f15bb5" strokeWidth="2" />
+      {/* 光の矢印 */}
+      <line x1="60" y1="62" x2="120" y2="28" stroke="#ffd166" strokeWidth="2.5" />
+      <polygon points="120,28 108,29 113,38" fill="#ffd166" />
+      {/* 雲 */}
+      <ellipse cx="300" cy="118" rx="90" ry="18" fill="#e0fbfc" opacity="0.9" />
+      <ellipse cx="250" cy="112" rx="40" ry="14" fill="#ffffff" opacity="0.9" />
+      {/* 城 */}
+      <rect x="262" y="58" width="76" height="52" fill="#3a506b" stroke="#c77dff" strokeWidth="2" />
+      <rect x="252" y="40" width="18" height="70" fill="#3a506b" stroke="#c77dff" strokeWidth="2" />
+      <rect x="330" y="40" width="18" height="70" fill="#3a506b" stroke="#c77dff" strokeWidth="2" />
+      <polygon points="249,40 261,22 273,40" fill="#6930c3" />
+      <polygon points="327,40 339,22 351,40" fill="#6930c3" />
+      <polygon points="282,58 300,30 318,58" fill="#6930c3" />
+      <rect x="292" y="84" width="16" height="26" rx="8" fill="#1c2541" />
+      <ellipse cx="200" cy="132" rx="200" ry="10" fill="#e0fbfc" opacity="0.6" />
+    </>
+  );
+}
+
 function Ruins() {
   // 円と三角形が刻まれた古代の遺跡
   return (
@@ -424,6 +454,7 @@ export function SceneBanner({ scene }: { scene?: SceneId }) {
       {scene === 'coast' && <Coast />}
       {scene === 'tower' && <Tower />}
       {scene === 'observatory' && <Observatory />}
+      {scene === 'skycastle' && <SkyCastle />}
       {(scene === 'night' || scene === 'gate' || !scene) && <Night />}
     </svg>
   );

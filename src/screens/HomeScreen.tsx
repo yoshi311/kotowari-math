@@ -41,6 +41,8 @@ export function HomeScreen() {
       ? `次の依頼は「${nextLesson.quest}」だよ。行ってみよう！`
       : nextUnit
         ? `${unit.region}に灯がもどったよ！ 次は「${nextUnit.region}」へ行こう！`
+        : unit.upcoming.length === 0 && futureRegions.length === 0
+        ? `${unit.region}に灯がもどって、12 の灯がぜんぶそろったよ！ あとは星3つ集めと復習クエストで、共通テスト 9 割を目指そう！`
         : unit.upcoming.length === 0
         ? `${unit.region}に灯がもどったよ！ 次の地方は準備中。星3つ集めや復習クエストで、理術をみがいておこう！`
         : '今ある依頼はぜんぶクリア！ 星3つを目指して、もう一度挑戦するのもアリだね。';
@@ -140,16 +142,20 @@ export function HomeScreen() {
         ))}
       </ol>
 
-      <h3 className="section-title">この先の地方</h3>
-      <div className="future-grid">
-        {futureRegions.map((r) => (
-          <div key={r.region} className="future-card">
-            <span className="subject-tag small">{r.subject}</span>
-            <strong>{r.region}</strong>
-            <span>{r.title}</span>
+      {futureRegions.length > 0 && (
+        <>
+          <h3 className="section-title">この先の地方</h3>
+          <div className="future-grid">
+            {futureRegions.map((r) => (
+              <div key={r.region} className="future-card">
+                <span className="subject-tag small">{r.subject}</span>
+                <strong>{r.region}</strong>
+                <span>{r.title}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }

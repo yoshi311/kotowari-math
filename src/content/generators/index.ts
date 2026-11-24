@@ -9,6 +9,7 @@ import { expLogGenerators } from './explog';
 import { waveGenerators } from './wave';
 import { calcGenerators } from './calc';
 import { seqStatGenerators } from './seqstat';
+import { mathCGenerators } from './mathc';
 
 type Gen = (level: QLevel) => Question;
 
@@ -644,6 +645,7 @@ export const generators: Record<string, Gen> = {
   ...waveGenerators,
   ...calcGenerators,
   ...seqStatGenerators,
+  ...mathCGenerators,
 };
 
 export function generate(gen: string, level: QLevel): Question {

@@ -9,6 +9,7 @@ import { LikeTerms, MentalMath, PowerBlocks } from './SmallFigures';
 import { AmGm, Binomial, CircleLine, ComplexRoots, DivPoint, LineEq, Region, Remainder, Vieta } from './CoordFigures';
 import { Addition, DoubleAngle, Radian, SinWave, Synthesis, TrigCircle, TrigEq, TrigSym, WaveTransform } from './WaveFigures';
 import { AreaBetween, Antideriv, AvgRate, DerivGraph, Increase, MaxMin, PowerRule, Riemann, TangentLine } from './CalcFigures';
+import { ComplexPlane, Conics, DeMoivre, DotProduct, ParamCurve, Space3D, VecAdd, VecDiv, VecMin } from './MathCFigures';
 import { ArithSeq, BinomDist, DiffSeq, Estimate, GeoSeq, Normal, RandVar, Recurrence, SigmaDots } from './SeqStatFigures';
 import { BaseChange, Digits, ExpExtend, ExpGraph, ExpIneq, LogGraph, LogIneq, LogScale, SlideRule } from './ExpLogFigures';
 import { Bisector, Ceva, Centers, InscribedAngle, Polyhedron, PowerPoint, TangentChord, TwoCircles } from './GeoFigures';
@@ -223,5 +224,23 @@ export function Figure({ spec }: { spec: FigureSpec }) {
       return <Normal />;
     case 'estimate':
       return <Estimate />;
+    case 'vecAdd':
+      return <VecAdd />;
+    case 'dotProduct':
+      return <DotProduct />;
+    case 'vecMin':
+      return <VecMin />;
+    case 'vecDiv':
+      return <VecDiv />;
+    case 'space3d':
+      return <Space3D />;
+    case 'conics':
+      return <Conics />;
+    case 'paramCurve':
+      return <ParamCurve />;
+    case 'complexPlane':
+      return <ComplexPlane />;
+    case 'deMoivre':
+      return <DeMoivre />;
   }
 }
